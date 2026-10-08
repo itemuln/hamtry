@@ -1,0 +1,264 @@
+/* Generated from Hamtry Figma Page 2; keep names aligned with Figma code syntax. */
+:root {
+  --font-sans: 'Inter', sans-serif;
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 999px;
+  --border-width: 1px;
+  --border-focus-width: 2px;
+  --size-touch: 44px;
+  --size-control-sm: 36px;
+  --size-control-md: 44px;
+  --size-control-lg: 52px;
+  --size-avatar-sm: 32px;
+  --size-avatar-md: 48px;
+  --size-avatar-lg: 80px;
+  --layout-viewport: 1440px;
+  --layout-container: 1200px;
+  --layout-gutter: 24px;
+  --layout-columns: 12;
+  --type-display-lg: 56px;
+  --type-display-md: 44px;
+  --type-heading-h1: 36px;
+  --type-heading-h2: 28px;
+  --type-heading-h3: 24px;
+  --type-heading-h4: 20px;
+  --line-height-display-lg: 64px;
+  --line-height-display-md: 52px;
+  --line-height-heading-h1: 44px;
+  --line-height-heading-h2: 36px;
+  --line-height-heading-h3: 32px;
+  --line-height-heading-h4: 28px;
+  --type-body-lg: 18px;
+  --line-height-body-lg: 28px;
+  --type-body-md: 16px;
+  --line-height-body-md: 24px;
+  --type-body-sm: 14px;
+  --line-height-body-sm: 20px;
+  --type-label-lg: 16px;
+  --line-height-label-lg: 24px;
+  --type-label-md: 14px;
+  --line-height-label-md: 20px;
+  --type-label-sm: 12px;
+  --line-height-label-sm: 16px;
+  --type-caption: 12px;
+  --line-height-caption: 18px;
+  --icon-stroke-width: 1.5px;
+  --elevation-sm-opacity: 6;
+  --elevation-sm-offset-y: 2px;
+  --elevation-sm-blur: 4px;
+  --elevation-md-opacity: 8;
+  --elevation-md-offset-y: 6px;
+  --elevation-md-blur: 16px;
+  --elevation-lg-opacity: 12;
+  --elevation-lg-offset-y: 12px;
+  --elevation-lg-blur: 32px;
+  --layout-margin: 120px;
+  --icon-size: 20px;
+  --brand-primary: #35664c;
+  --brand-primary-hover: #294f3b;
+  --brand-primary-pressed: #203e2f;
+  --brand-primary-subtle: #e8f0e5;
+  --surface-base: #fdfcfa;
+  --surface-subtle: #f4f3ee;
+  --surface-elevated: #ffffff;
+  --surface-interactive: #ecefe8;
+  --text-primary: #202d26;
+  --text-secondary: #54645a;
+  --text-tertiary: #6d786f;
+  --text-disabled: #9ba399;
+  --text-inverse: #ffffff;
+  --border-subtle: #ebede6;
+  --border-default: #dde3d9;
+  --border-strong: #a2b29f;
+  --status-success: #35664c;
+  --status-success-subtle: #e8f0e5;
+  --status-warning: #946018;
+  --status-warning-subtle: #faf0da;
+  --status-error: #ad3e35;
+  --status-error-subtle: #fbeae6;
+  --status-info: #346a88;
+  --status-info-subtle: #e8f1f5;
+  --shadow-sm: 0 2px 4px rgb(32 45 38 / 6%);
+  --shadow-md: 0 6px 16px rgb(32 45 38 / 8%);
+  --shadow-lg: 0 12px 32px rgb(32 45 38 / 12%);
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --layout-viewport: 768px;
+    --layout-container: 704px;
+    --layout-gutter: 24px;
+    --layout-columns: 8;
+    --type-display-lg: 44px;
+    --type-display-md: 36px;
+    --type-heading-h1: 32px;
+    --type-heading-h2: 26px;
+    --type-heading-h3: 22px;
+    --type-heading-h4: 20px;
+    --line-height-display-lg: 52px;
+    --line-height-display-md: 44px;
+    --line-height-heading-h1: 40px;
+    --line-height-heading-h2: 34px;
+    --line-height-heading-h3: 30px;
+    --line-height-heading-h4: 28px;
+    --type-body-lg: 18px;
+    --line-height-body-lg: 28px;
+    --type-body-md: 16px;
+    --line-height-body-md: 24px;
+    --type-body-sm: 14px;
+    --line-height-body-sm: 20px;
+    --type-label-lg: 16px;
+    --line-height-label-lg: 24px;
+    --type-label-md: 14px;
+    --line-height-label-md: 20px;
+    --type-label-sm: 12px;
+    --line-height-label-sm: 16px;
+    --type-caption: 12px;
+    --line-height-caption: 18px;
+    --layout-margin: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --layout-viewport: 390px;
+    --layout-container: 358px;
+    --layout-gutter: 16px;
+    --layout-columns: 4;
+    --type-display-lg: 36px;
+    --type-display-md: 30px;
+    --type-heading-h1: 28px;
+    --type-heading-h2: 24px;
+    --type-heading-h3: 20px;
+    --type-heading-h4: 18px;
+    --line-height-display-lg: 44px;
+    --line-height-display-md: 38px;
+    --line-height-heading-h1: 36px;
+    --line-height-heading-h2: 32px;
+    --line-height-heading-h3: 28px;
+    --line-height-heading-h4: 26px;
+    --type-body-lg: 18px;
+    --line-height-body-lg: 28px;
+    --type-body-md: 16px;
+    --line-height-body-md: 24px;
+    --type-body-sm: 14px;
+    --line-height-body-sm: 20px;
+    --type-label-lg: 16px;
+    --line-height-label-lg: 24px;
+    --type-label-md: 14px;
+    --line-height-label-md: 20px;
+    --type-label-sm: 12px;
+    --line-height-label-sm: 16px;
+    --type-caption: 12px;
+    --line-height-caption: 18px;
+    --layout-margin: 16px;
+  }
+}
+
+.type-display-lg {
+  font-size: var(--type-display-lg);
+  line-height: var(--line-height-display-lg);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.type-display-md {
+  font-size: var(--type-display-md);
+  line-height: var(--line-height-display-md);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.type-heading-h1 {
+  font-size: var(--type-heading-h1);
+  line-height: var(--line-height-heading-h1);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.type-heading-h2 {
+  font-size: var(--type-heading-h2);
+  line-height: var(--line-height-heading-h2);
+  font-weight: 600;
+  letter-spacing: -0.00699999988079071em;
+}
+
+.type-heading-h3 {
+  font-size: var(--type-heading-h3);
+  line-height: var(--line-height-heading-h3);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.type-heading-h4 {
+  font-size: var(--type-heading-h4);
+  line-height: var(--line-height-heading-h4);
+  font-weight: 600;
+  letter-spacing: -0.0030000001192092896em;
+}
+
+.type-body-lg {
+  font-size: var(--type-body-lg);
+  line-height: var(--line-height-body-lg);
+  font-weight: 400;
+  letter-spacing: 0em;
+}
+
+.type-body-md {
+  font-size: var(--type-body-md);
+  line-height: var(--line-height-body-md);
+  font-weight: 400;
+  letter-spacing: 0em;
+}
+
+.type-body-sm {
+  font-size: var(--type-body-sm);
+  line-height: var(--line-height-body-sm);
+  font-weight: 400;
+  letter-spacing: 0em;
+}
+
+.type-label-lg {
+  font-size: var(--type-label-lg);
+  line-height: var(--line-height-label-lg);
+  font-weight: 600;
+  letter-spacing: 0em;
+}
+
+.type-label-md {
+  font-size: var(--type-label-md);
+  line-height: var(--line-height-label-md);
+  font-weight: 600;
+  letter-spacing: 0em;
+}
+
+.type-label-sm {
+  font-size: var(--type-label-sm);
+  line-height: var(--line-height-label-sm);
+  font-weight: 600;
+  letter-spacing: 0.0020000000298023225em;
+}
+
+.type-caption {
+  font-size: var(--type-caption);
+  line-height: var(--line-height-caption);
+  font-weight: 400;
+  letter-spacing: 0em;
+}
