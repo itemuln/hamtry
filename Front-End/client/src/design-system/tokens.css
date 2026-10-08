@@ -1,5 +1,11 @@
-/* Generated from Hamtry Figma Page 2; keep names aligned with Figma code syntax. */
+/* Hamtry dimensions from Figma; colors refined from the user palette (2026-10-08). */
 :root {
+  --radius-card: 20px;
+  --radius-action: 10px;
+  --radius-tag: 6px;
+  --spacing-card: 10px;
+  --size-field: 48px;
+  --size-textarea: 120px;
   --font-sans: 'Inter', sans-serif;
   --spacing-0: 0px;
   --spacing-1: 4px;
@@ -71,33 +77,35 @@
   --elevation-lg-blur: 32px;
   --layout-margin: 120px;
   --icon-size: 20px;
-  --brand-primary: #35664c;
-  --brand-primary-hover: #294f3b;
-  --brand-primary-pressed: #203e2f;
-  --brand-primary-subtle: #e8f0e5;
-  --surface-base: #fdfcfa;
-  --surface-subtle: #f4f3ee;
+  --brand-primary: #2f371f;
+  --brand-primary-hover: #252c18;
+  --brand-primary-pressed: #1c2212;
+  --brand-primary-subtle: var(--brand-accent-lime);
+  --surface-base: #fcfdf8;
+  --surface-subtle: #f2f5e9;
   --surface-elevated: #ffffff;
-  --surface-interactive: #ecefe8;
-  --text-primary: #202d26;
-  --text-secondary: #54645a;
-  --text-tertiary: #6d786f;
-  --text-disabled: #9ba399;
+  --surface-interactive: #e8eddb;
+  --text-primary: var(--brand-primary);
+  --text-secondary: #566047;
+  --text-tertiary: #69745a;
+  --text-disabled: #9da68e;
   --text-inverse: #ffffff;
-  --border-subtle: #ebede6;
-  --border-default: #dde3d9;
-  --border-strong: #a2b29f;
-  --status-success: #35664c;
-  --status-success-subtle: #e8f0e5;
-  --status-warning: #946018;
-  --status-warning-subtle: #faf0da;
-  --status-error: #ad3e35;
-  --status-error-subtle: #fbeae6;
-  --status-info: #346a88;
-  --status-info-subtle: #e8f1f5;
-  --shadow-sm: 0 2px 4px rgb(32 45 38 / 6%);
-  --shadow-md: 0 6px 16px rgb(32 45 38 / 8%);
-  --shadow-lg: 0 12px 32px rgb(32 45 38 / 12%);
+  --border-subtle: #e3e8d7;
+  --border-default: #cbd5bb;
+  --border-strong: #879574;
+  --status-success: #3e5b29;
+  --status-success-subtle: #eff8dd;
+  --status-warning: #805715;
+  --status-warning-subtle: #fff2d6;
+  --status-error: #933b45;
+  --status-error-subtle: #ffe9e9;
+  --status-info: #365b70;
+  --status-info-subtle: #eaf2f6;
+  --brand-accent-lime: #dbf799;
+  --brand-accent-pink: #ffc4c5;
+  --shadow-sm: 0 2px 4px rgb(47 55 31 / 6%);
+  --shadow-md: 0 6px 16px rgb(47 55 31 / 8%);
+  --shadow-lg: 0 12px 32px rgb(47 55 31 / 12%);
 }
 
 @media (max-width: 1024px) {

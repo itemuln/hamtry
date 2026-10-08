@@ -1,0 +1,366 @@
+- generic [ref=f2e2]:
+  - link "Үндсэн хэсэг рүү очих" [ref=f2e3] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f2e4]:
+    - link "hamtry ®" [ref=f2e5] [cursor=pointer]:
+      - /url: "#"
+      - text: hamtry
+      - generic [ref=f2e6]: ®
+    - button "Edit variables" [ref=f2e8] [cursor=pointer]
+  - generic [ref=f2e9]:
+    - complementary [ref=f2e10]:
+      - navigation "Design system sections" [ref=f2e11]:
+        - link "Foundations" [ref=f2e12] [cursor=pointer]:
+          - /url: "#foundations"
+        - link "Typography" [ref=f2e13] [cursor=pointer]:
+          - /url: "#typography"
+        - link "Actions" [ref=f2e14] [cursor=pointer]:
+          - /url: "#actions"
+        - link "Forms" [ref=f2e15] [cursor=pointer]:
+          - /url: "#forms"
+        - link "Feedback" [ref=f2e16] [cursor=pointer]:
+          - /url: "#feedback"
+        - link "Marketplace" [ref=f2e17] [cursor=pointer]:
+          - /url: "#marketplace"
+    - main [ref=f2e18]:
+      - generic [ref=f2e19]:
+        - generic [ref=f2e20]:
+          - paragraph [ref=f2e21]: HAMTRY / FOUNDATIONS & COMPONENTS
+          - heading "A little closer. A place to belong." [level=1] [ref=f2e22]: A little closer.A place to belong.
+          - paragraph [ref=f2e23]: Хамт амьдрахад илүү ойр.Тайван өнгө, ойлгомжтой үйлдэл, итгэлтэй холбоо.
+          - generic [ref=f2e24]:
+            - link "Explore components ↓" [ref=f2e25] [cursor=pointer]:
+              - /url: "#actions"
+            - generic [ref=f2e26]: Designed in Figma. Built in React.
+        - generic [ref=f2e27]:
+          - generic [ref=f2e28]: OUR VISUAL LANGUAGE
+          - generic [ref=f2e29]:
+            - text: hamtry
+            - generic [ref=f2e30]: ®
+          - generic [ref=f2e31]:
+            - generic [ref=f2e32]: Fresh lime.Soft pink.
+            - generic [ref=f2e33]: 2F371FDBF799
+      - generic [ref=f2e34]:
+        - generic [ref=f2e35]:
+          - strong [ref=f2e36]: "26"
+          - generic [ref=f2e37]: Semantic colors
+        - generic [ref=f2e38]:
+          - strong [ref=f2e39]: "13"
+          - generic [ref=f2e40]: Type styles
+        - generic [ref=f2e41]:
+          - strong [ref=f2e42]: 4px
+          - generic [ref=f2e43]: Spacing rhythm
+        - generic [ref=f2e44]:
+          - strong [ref=f2e45]: CSS
+          - generic [ref=f2e46]: Framework independent tokens
+      - generic [ref=f2e47]:
+        - generic [ref=f2e48]:
+          - generic [ref=f2e49]: "01"
+          - generic [ref=f2e50]:
+            - heading "Foundations" [level=2] [ref=f2e51]
+            - paragraph [ref=f2e52]: Purposeful color. A consistent rhythm. Shared variables for your component library.
+        - generic [ref=f2e53]:
+          - generic [ref=f2e54]:
+            - strong [ref=f2e56]: brand/primary
+            - generic [ref=f2e57]: "#2F371F"
+          - generic [ref=f2e58]:
+            - strong [ref=f2e60]: brand/primary-hover
+            - generic [ref=f2e61]: "#252C18"
+          - generic [ref=f2e62]:
+            - strong [ref=f2e64]: brand/primary-pressed
+            - generic [ref=f2e65]: "#1C2212"
+          - generic [ref=f2e66]:
+            - strong [ref=f2e68]: brand/primary-subtle
+            - generic [ref=f2e69]: "#DBF799"
+          - generic [ref=f2e70]:
+            - strong [ref=f2e72]: surface/base
+            - generic [ref=f2e73]: "#FCFDF8"
+          - generic [ref=f2e74]:
+            - strong [ref=f2e76]: surface/subtle
+            - generic [ref=f2e77]: "#F2F5E9"
+          - generic [ref=f2e78]:
+            - strong [ref=f2e80]: surface/elevated
+            - generic [ref=f2e81]: "#FFFFFF"
+          - generic [ref=f2e82]:
+            - strong [ref=f2e84]: surface/interactive
+            - generic [ref=f2e85]: "#E8EDDB"
+          - generic [ref=f2e86]:
+            - strong [ref=f2e88]: text/primary
+            - generic [ref=f2e89]: "#2F371F"
+          - generic [ref=f2e90]:
+            - strong [ref=f2e92]: text/secondary
+            - generic [ref=f2e93]: "#566047"
+          - generic [ref=f2e94]:
+            - strong [ref=f2e96]: text/tertiary
+            - generic [ref=f2e97]: "#69745A"
+          - generic [ref=f2e98]:
+            - strong [ref=f2e100]: text/disabled
+            - generic [ref=f2e101]: "#9DA68E"
+          - generic [ref=f2e102]:
+            - strong [ref=f2e104]: text/inverse
+            - generic [ref=f2e105]: "#FFFFFF"
+          - generic [ref=f2e106]:
+            - strong [ref=f2e108]: border/subtle
+            - generic [ref=f2e109]: "#E3E8D7"
+          - generic [ref=f2e110]:
+            - strong [ref=f2e112]: border/default
+            - generic [ref=f2e113]: "#CBD5BB"
+          - generic [ref=f2e114]:
+            - strong [ref=f2e116]: border/strong
+            - generic [ref=f2e117]: "#879574"
+          - generic [ref=f2e118]:
+            - strong [ref=f2e120]: status/success
+            - generic [ref=f2e121]: "#3E5B29"
+          - generic [ref=f2e122]:
+            - strong [ref=f2e124]: status/success-subtle
+            - generic [ref=f2e125]: "#EFF8DD"
+          - generic [ref=f2e126]:
+            - strong [ref=f2e128]: status/warning
+            - generic [ref=f2e129]: "#805715"
+          - generic [ref=f2e130]:
+            - strong [ref=f2e132]: status/warning-subtle
+            - generic [ref=f2e133]: "#FFF2D6"
+          - generic [ref=f2e134]:
+            - strong [ref=f2e136]: status/error
+            - generic [ref=f2e137]: "#933B45"
+          - generic [ref=f2e138]:
+            - strong [ref=f2e140]: status/error-subtle
+            - generic [ref=f2e141]: "#FFE9E9"
+          - generic [ref=f2e142]:
+            - strong [ref=f2e144]: status/info
+            - generic [ref=f2e145]: "#365B70"
+          - generic [ref=f2e146]:
+            - strong [ref=f2e148]: status/info-subtle
+            - generic [ref=f2e149]: "#EAF2F6"
+          - generic [ref=f2e150]:
+            - strong [ref=f2e152]: brand/accent-lime
+            - generic [ref=f2e153]: "#DBF799"
+          - generic [ref=f2e154]:
+            - strong [ref=f2e156]: brand/accent-pink
+            - generic [ref=f2e157]: "#FFC4C5"
+        - generic [ref=f2e158]:
+          - generic [ref=f2e159]:
+            - heading "Spacing / 4px base" [level=3] [ref=f2e160]
+            - generic [ref=f2e161]:
+              - generic [ref=f2e162]: "4"
+              - generic [ref=f2e165]: "8"
+              - generic [ref=f2e168]: "12"
+              - generic [ref=f2e171]: "16"
+              - generic [ref=f2e174]: "24"
+              - generic [ref=f2e177]: "32"
+              - generic [ref=f2e180]: "48"
+              - generic [ref=f2e183]: "64"
+          - generic [ref=f2e186]:
+            - heading "Corner radius" [level=3] [ref=f2e187]
+            - generic [ref=f2e188]:
+              - generic [ref=f2e189]: "4"
+              - generic [ref=f2e190]: "8"
+              - generic [ref=f2e191]: "12"
+              - generic [ref=f2e192]: "16"
+      - generic [ref=f2e193]:
+        - generic [ref=f2e194]:
+          - generic [ref=f2e195]: "02"
+          - generic [ref=f2e196]:
+            - heading "Typography" [level=2] [ref=f2e197]
+            - paragraph [ref=f2e198]: Inter. Clear, welcoming, and ready for Mongolian content.
+        - generic [ref=f2e199]:
+          - generic [ref=f2e200]:
+            - generic [ref=f2e201]: Display / 56
+            - paragraph [ref=f2e202]: Хамтдаа, илүү тухтай.
+          - generic [ref=f2e203]:
+            - generic [ref=f2e204]: Heading / 36
+            - paragraph [ref=f2e205]: Өөрт тохирох хамтрагчаа олоорой.
+          - generic [ref=f2e206]:
+            - generic [ref=f2e207]: Heading / 24
+            - paragraph [ref=f2e208]: Шинэ эхлэл эндээс
+          - generic [ref=f2e209]:
+            - generic [ref=f2e210]: Body / 16
+            - paragraph [ref=f2e211]: Амьдралын хэв маяг, сонирхол, хэрэгцээндээ тохирох хамтрагчтай холбогдоорой.
+          - generic [ref=f2e212]:
+            - generic [ref=f2e213]: Label / 14
+            - paragraph [ref=f2e214]: Профайл харах
+          - generic [ref=f2e215]:
+            - generic [ref=f2e216]: Caption / 12
+            - paragraph [ref=f2e217]: Таны мэдээллийг бусдад харуулахгүй.
+      - generic [ref=f2e218]:
+        - generic [ref=f2e219]:
+          - generic [ref=f2e220]: "03"
+          - generic [ref=f2e221]:
+            - heading "Actions" [level=2] [ref=f2e222]
+            - paragraph [ref=f2e223]: Five intentions. Three sizes. Clear feedback for every interaction.
+        - generic [ref=f2e224]:
+          - generic [ref=f2e225]:
+            - generic [ref=f2e226]:
+              - button "Профайл харах" [ref=f2e227] [cursor=pointer]
+              - generic [ref=f2e228]: primary
+            - generic [ref=f2e229]:
+              - button "Профайл харах" [ref=f2e230] [cursor=pointer]
+              - generic [ref=f2e231]: secondary
+            - generic [ref=f2e232]:
+              - button "Профайл харах" [ref=f2e233] [cursor=pointer]
+              - generic [ref=f2e234]: outline
+            - generic [ref=f2e235]:
+              - button "Профайл харах" [ref=f2e236] [cursor=pointer]
+              - generic [ref=f2e237]: ghost
+            - generic [ref=f2e238]:
+              - button "Устгах" [ref=f2e239] [cursor=pointer]
+              - generic [ref=f2e240]: destructive
+          - generic [ref=f2e241]:
+            - button "Small" [ref=f2e242] [cursor=pointer]
+            - button "Medium" [ref=f2e243] [cursor=pointer]
+            - button "Large" [ref=f2e244] [cursor=pointer]
+            - button "Disabled" [disabled] [ref=f2e245]
+            - button "Loading" [disabled] [ref=f2e246]
+      - generic [ref=f2e248]:
+        - generic [ref=f2e249]:
+          - generic [ref=f2e250]: "04"
+          - generic [ref=f2e251]:
+            - heading "Forms & preferences" [level=2] [ref=f2e252]
+            - paragraph [ref=f2e253]: Visible labels, helpful errors, and familiar native controls.
+        - generic [ref=f2e254]:
+          - generic [ref=f2e255]:
+            - generic [ref=f2e256]:
+              - generic [ref=f2e257]: И-мэйл хаяг
+              - textbox "И-мэйл хаяг" [ref=f2e258]:
+                - /placeholder: name@example.mn
+              - paragraph [ref=f2e259]: Таны мэдээллийг бусдад харуулахгүй.
+            - generic [ref=f2e260]:
+              - generic [ref=f2e261]: Дүүрэг сонгох
+              - combobox "Дүүрэг сонгох" [ref=f2e263]:
+                - option "Дүүрэг сонгох" [disabled] [selected]
+                - option "Сүхбаатар"
+                - option "Хан-Уул"
+                - option "Баянзүрх"
+              - paragraph [ref=f2e264]: Хайлт хийх дүүргээ сонгоно уу.
+            - generic [ref=f2e265]:
+              - generic [ref=f2e266]: Утасны дугаар
+              - textbox "Утасны дугаар" [invalid] [ref=f2e267]:
+                - /placeholder: Утасны дугаараа оруулна уу
+              - paragraph [ref=f2e268]: Утасны дугаар 8 оронтой байна.
+            - generic [ref=f2e269]:
+              - generic [ref=f2e270]: Баталгаажсан хаяг
+              - textbox "Баталгаажсан хаяг" [ref=f2e271]: nomin@example.mn
+              - paragraph [ref=f2e272]: Read-only
+            - generic [ref=f2e273]:
+              - generic [ref=f2e274]: Өөрийн тухай
+              - textbox "Өөрийн тухай" [ref=f2e275]:
+                - /placeholder: Өөрийн тухай бичнэ үү
+              - paragraph [ref=f2e276]: Хамт амьдрах хүндээ өөрийгөө танилцуулаарай.
+            - generic [ref=f2e277]:
+              - generic [ref=f2e278]: Одоогоор боломжгүй
+              - textbox "Одоогоор боломжгүй" [disabled] [ref=f2e279]:
+                - /placeholder: Disabled
+          - generic [ref=f2e280]:
+            - generic [ref=f2e281]:
+              - generic [ref=f2e282] [cursor=pointer]:
+                - checkbox "Тамхи татдаггүй" [checked] [ref=f2e284]
+                - generic [ref=f2e285]: Тамхи татдаггүй
+              - generic [ref=f2e286] [cursor=pointer]:
+                - checkbox "Амьтанд дуртай" [ref=f2e288]
+                - generic [ref=f2e289]: Амьтанд дуртай
+              - generic [ref=f2e290] [cursor=pointer]:
+                - checkbox "Бүгдийг сонгох" [checked=mixed] [ref=f2e292]
+                - generic [ref=f2e293]: Бүгдийг сонгох
+            - group "Өрөөний төрөл" [ref=f2e294]:
+              - generic [ref=f2e296] [cursor=pointer]:
+                - radio "Хувийн өрөө" [checked] [ref=f2e298]
+                - generic [ref=f2e299]: Хувийн өрөө
+              - generic [ref=f2e300] [cursor=pointer]:
+                - radio "Хамтын өрөө" [ref=f2e302]
+                - generic [ref=f2e303]: Хамтын өрөө
+            - generic [ref=f2e304]:
+              - switch "Мэдэгдэл хүлээн авах" [checked] [ref=f2e305] [cursor=pointer]
+              - generic [ref=f2e309]:
+                - checkbox "Боломжгүй сонголт" [disabled] [ref=f2e311]
+                - generic [ref=f2e312]: Боломжгүй сонголт
+          - generic [ref=f2e313]:
+            - button "Мэдээлэл шалгах" [ref=f2e314] [cursor=pointer]
+            - generic [ref=f2e315]: Try submitting to see validation.
+      - generic [ref=f2e316]:
+        - generic [ref=f2e317]:
+          - generic [ref=f2e318]: "05"
+          - generic [ref=f2e319]:
+            - heading "Feedback & navigation" [level=2] [ref=f2e320]
+            - paragraph [ref=f2e321]: Status always has a label. Tabs support arrow keys, Home, and End.
+        - generic [ref=f2e322]:
+          - generic [ref=f2e323]:
+            - generic [ref=f2e324]: Цэвэрч
+            - generic [ref=f2e325]: ✓ Баталгаажсан
+            - generic [ref=f2e326]: Хүлээгдэж буй
+            - generic [ref=f2e327]: Алдаа
+            - generic [ref=f2e328]: Мэдээлэл
+          - generic [ref=f2e329]:
+            - status [ref=f2e330]:
+              - generic [ref=f2e333]:
+                - strong [ref=f2e334]: Мэдээллээ баталгаажуулаарай
+                - paragraph [ref=f2e335]: Итгэлтэй, аюулгүй хамтран амьдрах эхний алхам.
+              - button "Мэдэгдэл хаах" [ref=f2e336] [cursor=pointer]
+            - status [ref=f2e338]:
+              - generic [ref=f2e341]:
+                - strong [ref=f2e342]: Амжилттай хадгаллаа
+                - paragraph [ref=f2e343]: Таны сонголт шинэчлэгдлээ.
+            - status [ref=f2e344]:
+              - generic [ref=f2e347]:
+                - strong [ref=f2e348]: Мэдээллээ шалгана уу
+                - paragraph [ref=f2e349]: Профайлаа бүрэн бөглөж дуусгаарай.
+            - alert [ref=f2e350]:
+              - generic [ref=f2e353]:
+                - strong [ref=f2e354]: Дахин оролдоно уу
+                - paragraph [ref=f2e355]: Шаардлагатай мэдээлэл дутуу байна.
+          - generic [ref=f2e356]:
+            - tablist "Хайх төрөл" [ref=f2e357]:
+              - tab "Roommate" [selected] [ref=f2e358] [cursor=pointer]
+              - tab "Өрөө" [ref=f2e359] [cursor=pointer]
+              - tab "Хадгалсан" [ref=f2e360] [cursor=pointer]
+            - tabpanel "Roommate" [ref=f2e361]: Өөрт тохирох хамтрагчаа олоорой.
+      - generic [ref=f2e362]:
+        - generic [ref=f2e363]:
+          - generic [ref=f2e364]: "06"
+          - generic [ref=f2e365]:
+            - heading "Marketplace" [level=2] [ref=f2e366]
+            - paragraph [ref=f2e367]: The system in context. Real Figma imagery and reusable listing components.
+        - generic [ref=f2e368]:
+          - article [ref=f2e369]:
+            - generic [ref=f2e370]:
+              - img "Номингийн профайл зураг" [ref=f2e371]
+              - button "Хадгалах" [ref=f2e372] [cursor=pointer]: ♡
+            - generic [ref=f2e373]:
+              - generic [ref=f2e374]:
+                - heading "Номин, 24" [level=3] [ref=f2e375]
+                - generic [ref=f2e376]: ✓ Баталгаажсан
+              - paragraph [ref=f2e377]: UX дизайнер · MCS
+              - paragraph [ref=f2e378]: Сүхбаатар · 8-р хороо
+              - strong [ref=f2e379]: 750,000 ₮ / сар
+              - paragraph [ref=f2e380]: 2026.11.01-ээс нүүнэ
+              - generic [ref=f2e381]: 94% тохирно
+              - generic [ref=f2e382]:
+                - generic [ref=f2e383]: Тамхи татдаггүй
+                - generic [ref=f2e384]: Цэвэрч
+                - generic [ref=f2e385]: Амьтанд дуртай
+              - button "Профайл харах" [ref=f2e386] [cursor=pointer]
+          - article [ref=f2e387]:
+            - generic [ref=f2e388]:
+              - img "Нарлаг, тавилгатай хувийн өрөө" [ref=f2e389]
+              - button "Хадгалах" [ref=f2e390] [cursor=pointer]: ♡
+            - generic [ref=f2e391]:
+              - generic [ref=f2e392]:
+                - heading "850,000 ₮ / сар" [level=3] [ref=f2e393]
+                - generic [ref=f2e394]: ✓ Баталгаажсан
+              - strong [ref=f2e395]: Нарлаг, тавилгатай хувийн өрөө
+              - paragraph [ref=f2e396]: Сүхбаатар · 8-р хороо
+              - paragraph [ref=f2e397]: Хувийн өрөө · 2 хамтран амьдрагч
+              - paragraph [ref=f2e398]: 2026.11.01-ээс боломжтой
+              - generic [ref=f2e399]:
+                - generic [ref=f2e400]: Wi-Fi
+                - generic [ref=f2e401]: Тавилгатай
+          - generic [ref=f2e402]:
+            - generic [ref=f2e403]: BUILT FOR CONNECTION
+            - heading "People first. Details that matter." [level=3] [ref=f2e404]: People first.Details that matter.
+            - paragraph [ref=f2e405]: Баталгаажуулалт, төсөв, байршил, амьдралын хэв маяг — нэг дор.
+            - generic [ref=f2e406]: 94% тохирно
+            - paragraph [ref=f2e407]: Try the heart buttons to save a listing.
+      - generic [ref=f2e408]:
+        - generic [ref=f2e409]:
+          - text: hamtry
+          - generic [ref=f2e410]: ®
+        - generic [ref=f2e411]: DESIGN SYSTEM / 2026

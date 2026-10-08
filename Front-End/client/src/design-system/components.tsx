@@ -7,11 +7,6 @@ import {
   type SelectHTMLAttributes,
   type TextareaHTMLAttributes,
 } from 'react'
-import infoIcon from './assets/info.svg'
-import closeIcon from './assets/close.svg'
-import chevronIcon from './assets/chevron.svg'
-import switchOff from './assets/switch-off.svg'
-import switchOn from './assets/switch-on.svg'
 import checkIcon from './assets/check.svg'
 import loaderIcon from './assets/loader.svg'
 import './components.css'
@@ -142,7 +137,7 @@ export function Select({
         >
           {children}
         </select>
-        <img src={chevronIcon} alt="" />
+        <span className="ht-icon ht-icon--chevron" aria-hidden="true" />
       </div>
     </Field>
   )
@@ -209,7 +204,7 @@ export function Switch({
       onClick={() => onChange(!checked)}
     >
       <span className="ht-switch-target">
-        <img src={checked ? switchOn : switchOff} alt="" />
+        <span className="ht-switch-track" aria-hidden="true" />
       </span>
       <span>{label}</span>
     </button>
@@ -245,7 +240,7 @@ export function Alert({
       role={tone === 'error' ? 'alert' : 'status'}
     >
       <span className="ht-icon-slot">
-        <img src={infoIcon} alt="" />
+        <span className="ht-icon ht-icon--info" aria-hidden="true" />
       </span>
       <div className="ht-alert-content">
         <strong>{title}</strong>
@@ -258,7 +253,7 @@ export function Alert({
           onClick={onDismiss}
           aria-label="Мэдэгдэл хаах"
         >
-          <img src={closeIcon} alt="" />
+          <span className="ht-icon ht-icon--close" aria-hidden="true" />
         </button>
       )}
     </div>

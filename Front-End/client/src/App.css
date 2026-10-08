@@ -69,7 +69,7 @@
   border-radius: 8px;
 }
 .sidebar nav a:hover {
-  background: var(--brand-primary-subtle);
+  background: var(--brand-accent-pink);
   color: var(--brand-primary);
 }
 .sidebar nav span {
@@ -119,6 +119,10 @@ h1 {
 }
 h1 > span {
   color: var(--brand-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--brand-accent-pink);
+  text-decoration-thickness: 6px;
+  text-underline-offset: 6px;
 }
 .intro-description {
   font-size: 14px;
@@ -175,6 +179,9 @@ h1 > span {
   line-height: 18px;
 }
 .specimen-footer > span:last-child {
+  background: var(--brand-accent-pink);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
   font-family: monospace;
 }
 .library-stats {
@@ -242,7 +249,7 @@ main > section:not(.intro) {
 .color-token > div {
   height: 64px;
   border-radius: 8px;
-  border: 1px solid rgb(32 45 38 / 6%);
+  border: 1px solid rgb(47 55 31 / 6%);
   margin-bottom: 4px;
 }
 .color-token strong {
@@ -414,7 +421,7 @@ main > section:not(.intro) {
   gap: 24px;
   flex-wrap: wrap;
   padding: 24px;
-  background: var(--brand-primary-subtle);
+  background: var(--brand-accent-pink);
   border-radius: 12px;
 }
 .marketplace-note h3 {

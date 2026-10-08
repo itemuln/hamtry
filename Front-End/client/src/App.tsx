@@ -14,7 +14,9 @@ import {
   TextInput,
   type ButtonVariant,
 } from './design-system/components'
-import tokenData from './design-system/tokens.json'
+import { ThemeEditor } from './design-system/ThemeEditor'
+import { useTheme } from './design-system/useTheme'
+import { resolvedColor, themeTokens } from './design-system/theme'
 import roommateImage from './design-system/assets/roommate.jpg'
 import propertyImage from './design-system/assets/property-source.png'
 import './App.css'
@@ -34,9 +36,7 @@ const buttonVariants: ButtonVariant[] = [
   'ghost',
   'destructive',
 ]
-const colorTokens = tokenData.tokens.filter(
-  (token) => typeof token.value === 'object',
-)
+const colorTokens = themeTokens.filter((token) => token.color)
 function SectionHeading({
   number,
   title,
@@ -57,6 +57,7 @@ function SectionHeading({
   )
 }
 function App() {
+  const theme = useTheme()
   const [tab, setTab] = useState('roommates')
   const [notifications, setNotifications] = useState(true)
   const [roommateSaved, setRoommateSaved] = useState(false)
@@ -111,12 +112,15 @@ function App() {
         <span className="edition">
           DESIGN SYSTEM <span> / </span> V1.0
         </span>
-        <a
-          className="figma-link"
-          href="https://www.figma.com/design/LPm4B10FkuJyly7Ck2SNNM/Hamtry?node-id=13-29"
-        >
-          Open in Figma ↗
-        </a>
+        <div className="header-actions">
+          <ThemeEditor {...theme} />
+          <a
+            className="figma-link"
+            href="https://www.figma.com/design/LPm4B10FkuJyly7Ck2SNNM/Hamtry?node-id=13-29"
+          >
+            Open in Figma ↗
+          </a>
+        </div>
       </header>
       <div className="workspace">
         <aside className="sidebar">
@@ -131,7 +135,7 @@ function App() {
           </nav>
           <div className="sidebar-note">
             <span className="status-dot" />
-            Figma → React
+            Shared CSS variables
             <p>
               One shared visual language.
               <br />
@@ -167,21 +171,35 @@ function App() {
               </div>
               <div className="specimen-footer">
                 <span>
-                  Warm green.
+                  Fresh lime.
                   <br />
-                  Quiet neutrals.
+                  Soft pink.
                 </span>
                 <span>
-                  35664C
+                  {resolvedColor(
+                    colorTokens.find(
+                      (token) => token.name === 'brand/primary',
+                    )!,
+                    theme.overrides,
+                  )
+                    .slice(1)
+                    .toUpperCase()}
                   <br />
-                  FDFCFA
+                  {resolvedColor(
+                    colorTokens.find(
+                      (token) => token.name === 'brand/accent-lime',
+                    )!,
+                    theme.overrides,
+                  )
+                    .slice(1)
+                    .toUpperCase()}
                 </span>
               </div>
             </div>
           </section>
           <div className="library-stats">
             <div>
-              <strong>24</strong>
+              <strong>{colorTokens.length}</strong>
               <span>Semantic colors</span>
             </div>
             <div>
@@ -193,29 +211,19 @@ function App() {
               <span>Spacing rhythm</span>
             </div>
             <div>
-              <strong>React</strong>
-              <span>Accessible components</span>
+              <strong>CSS</strong>
+              <span>Framework independent tokens</span>
             </div>
           </div>
           <section id="foundations">
             <SectionHeading
               number="01"
               title="Foundations"
-              description="Purposeful color. A consistent rhythm. Tokens shared with Figma."
+              description="Purposeful color. A consistent rhythm. Shared variables for your component library."
             />
             <div className="color-grid">
               {colorTokens.map((token) => {
-                const value = token.value as { r: number; g: number; b: number }
-                const hex =
-                  '#' +
-                  [value.r, value.g, value.b]
-                    .map((channel) =>
-                      Math.round(channel * 255)
-                        .toString(16)
-                        .padStart(2, '0'),
-                    )
-                    .join('')
-                    .toUpperCase()
+                const hex = resolvedColor(token, theme.overrides).toUpperCase()
                 return (
                   <div className="color-token" key={token.name}>
                     <div style={{ backgroundColor: hex }} />

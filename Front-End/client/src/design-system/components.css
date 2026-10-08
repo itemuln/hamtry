@@ -4,7 +4,7 @@
   justify-content: center;
   gap: var(--spacing-2);
   padding: 0 var(--spacing-4);
-  border: 1px solid transparent;
+  border: var(--border-width) solid transparent;
   border-radius: var(--radius-md);
   font-size: var(--type-label-lg);
   font-weight: 600;
@@ -95,7 +95,7 @@
 }
 .ht-input {
   width: 100%;
-  height: 48px;
+  height: var(--size-field);
   padding: var(--spacing-3);
   border: var(--border-width) solid var(--border-default);
   border-radius: var(--radius-md);
@@ -136,8 +136,8 @@
   color: var(--status-error);
 }
 .ht-textarea {
-  min-height: 120px;
-  height: 120px;
+  min-height: var(--size-textarea);
+  height: var(--size-textarea);
   resize: vertical;
 }
 .ht-select {
@@ -147,7 +147,7 @@
   appearance: none;
   padding-right: 48px;
 }
-.ht-select img {
+.ht-select .ht-icon {
   position: absolute;
   right: 18px;
   top: 21px;
@@ -167,8 +167,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: var(--size-touch);
+  height: var(--size-touch);
   flex-shrink: 0;
 }
 .ht-choice input {
@@ -176,15 +176,15 @@
   inset: 0;
   opacity: 0;
   margin: 0;
-  width: 44px;
-  height: 44px;
+  width: var(--size-touch);
+  height: var(--size-touch);
   cursor: inherit;
 }
 .ht-checkbox-visual,
 .ht-radio-visual {
   width: 20px;
   height: 20px;
-  border: 1px solid var(--border-default);
+  border: var(--border-width) solid var(--border-default);
   background: var(--surface-elevated);
   border-radius: var(--radius-sm);
   display: grid;
@@ -207,7 +207,7 @@
   content: '';
   width: 10px;
   height: 2px;
-  background: white;
+  background: var(--text-inverse);
 }
 .ht-choice input:indeterminate + .ht-checkbox-visual img {
   display: none;
@@ -244,7 +244,7 @@
   display: grid;
   place-items: center;
   width: 68px;
-  height: 44px;
+  height: var(--size-touch);
   flex-shrink: 0;
 }
 .ht-badge {
@@ -308,8 +308,8 @@
   flex-shrink: 0;
 }
 .ht-icon-button {
-  width: 44px;
-  height: 44px;
+  width: var(--size-touch);
+  height: var(--size-touch);
   display: grid;
   place-items: center;
   border: 0;
@@ -360,7 +360,7 @@
   width: 384px;
   max-width: 100%;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   background: var(--surface-elevated);
   box-shadow: var(--shadow-sm);
   transition: box-shadow 0.15s;
@@ -385,8 +385,8 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  width: 44px;
-  height: 44px;
+  width: var(--size-touch);
+  height: var(--size-touch);
   border: 0;
   border-radius: 999px;
   background: var(--surface-elevated);
@@ -403,13 +403,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
-  padding: 20px;
+  gap: var(--spacing-card);
+  padding: var(--spacing-5);
 }
 .ht-listing-identity {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-card);
   width: 100%;
   flex-wrap: wrap;
 }
@@ -432,13 +432,13 @@
 }
 .ht-listing p {
   margin: 0;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: var(--type-body-sm);
+  line-height: var(--line-height-body-sm);
   color: var(--text-secondary);
 }
 .ht-listing strong {
-  font-size: 14px;
-  line-height: 20px;
+  font-size: var(--type-body-sm);
+  line-height: var(--line-height-body-sm);
   font-weight: 600;
 }
 .ht-listing .ht-budget {
@@ -451,7 +451,7 @@
 }
 .ht-compatibility {
   padding: 6px 10px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--brand-primary-subtle);
   color: var(--brand-primary);
   font-size: 13px;
@@ -465,17 +465,17 @@
 }
 .ht-traits span {
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: var(--radius-tag);
   background: var(--surface-subtle);
   color: var(--text-secondary);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: var(--type-caption);
+  line-height: var(--line-height-caption);
 }
 .ht-profile-action {
   width: 100%;
-  border-radius: 10px;
-  font-size: 14px;
-  line-height: 20px;
+  border-radius: var(--radius-action);
+  font-size: var(--type-body-sm);
+  line-height: var(--line-height-body-sm);
 }
 @media (prefers-reduced-motion: reduce) {
   .ht-spinner {
@@ -485,4 +485,55 @@
   .ht-listing {
     transition: none;
   }
+}
+
+/* Themeable controls inherit the shared palette even inside custom elements. */
+.ht-switch-track {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-full);
+  background: var(--surface-elevated);
+}
+.ht-switch-track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: var(--text-secondary);
+}
+.ht-switch[aria-checked='true'] .ht-switch-track {
+  background: var(--brand-primary);
+}
+.ht-switch[aria-checked='true'] .ht-switch-track::after {
+  left: 22px;
+  background: var(--surface-elevated);
+}
+
+.ht-icon {
+  display: inline-block;
+  background: var(--text-secondary);
+  mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  flex-shrink: 0;
+}
+.ht-icon--info {
+  width: 17.5px;
+  height: 17.5px;
+  mask-image: url('./assets/info.svg');
+}
+.ht-icon--close {
+  width: 13.5px;
+  height: 13.5px;
+  mask-image: url('./assets/close.svg');
+}
+.ht-icon--chevron {
+  width: 11.5px;
+  height: 6.5px;
+  mask-image: url('./assets/chevron.svg');
 }
