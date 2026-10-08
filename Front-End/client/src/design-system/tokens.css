@@ -1,272 +1,93 @@
-/* Hamtry dimensions from Figma; colors refined from the user palette (2026-10-08). */
+/* Generated from Hamtry Figma Page 2; keep names aligned with Figma code syntax. */
 :root {
-  --radius-card: 1.25rem;
-  --radius-action: 0.625rem;
-  --radius-tag: 0.375rem;
-  --spacing-card: 0.625rem;
-  --size-field: 3rem;
-  --size-textarea: 7.5rem;
   --font-sans: 'Inter', sans-serif;
-  --spacing-0: 0rem;
-  --spacing-1: 0.25rem;
-  --spacing-2: 0.5rem;
-  --spacing-3: 0.75rem;
-  --spacing-4: 1rem;
-  --spacing-5: 1.25rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
-  --spacing-10: 2.5rem;
-  --spacing-12: 3rem;
-  --spacing-16: 4rem;
-  --spacing-20: 5rem;
-  --spacing-24: 6rem;
-  --radius-none: 0rem;
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-full: 62.4375rem;
-  --border-width: 0.0625rem;
-  --border-focus-width: 0.125rem;
-  --size-touch: 2.75rem;
-  --size-control-sm: 2.25rem;
-  --size-control-md: 2.75rem;
-  --size-control-lg: 3.25rem;
-  --size-avatar-sm: 2rem;
-  --size-avatar-md: 3rem;
-  --size-avatar-lg: 5rem;
-  --layout-viewport: 90rem;
-  --layout-container: 75rem;
-  --layout-gutter: 1.5rem;
-  --layout-columns: 12;
-  --type-display-lg: 3.5rem;
-  --type-display-md: 2.75rem;
-  --type-heading-h1: 2.25rem;
-  --type-heading-h2: 1.75rem;
-  --type-heading-h3: 1.5rem;
-  --type-heading-h4: 1.25rem;
-  --line-height-display-lg: 4rem;
-  --line-height-display-md: 3.25rem;
-  --line-height-heading-h1: 2.75rem;
-  --line-height-heading-h2: 2.25rem;
-  --line-height-heading-h3: 2rem;
-  --line-height-heading-h4: 1.75rem;
-  --type-body-lg: 1.125rem;
-  --line-height-body-lg: 1.75rem;
-  --type-body-md: 1rem;
-  --line-height-body-md: 1.5rem;
-  --type-body-sm: 0.875rem;
-  --line-height-body-sm: 1.25rem;
-  --type-label-lg: 1rem;
-  --line-height-label-lg: 1.5rem;
-  --type-label-md: 0.875rem;
-  --line-height-label-md: 1.25rem;
-  --type-label-sm: 0.75rem;
-  --line-height-label-sm: 1rem;
-  --type-caption: 0.75rem;
-  --line-height-caption: 1.125rem;
-  --icon-stroke-width: 0.09375rem;
-  --elevation-sm-opacity: 6;
-  --elevation-sm-offset-y: 0.125rem;
-  --elevation-sm-blur: 0.25rem;
-  --elevation-md-opacity: 8;
-  --elevation-md-offset-y: 0.375rem;
-  --elevation-md-blur: 1rem;
-  --elevation-lg-opacity: 12;
-  --elevation-lg-offset-y: 0.75rem;
-  --elevation-lg-blur: 2rem;
-  --layout-margin: 7.5rem;
-  --icon-size: 1.25rem;
-  --brand-primary: #2f371f;
-  --brand-primary-hover: #252c18;
-  --brand-primary-pressed: #1c2212;
-  --brand-primary-subtle: var(--brand-accent-lime);
-  --surface-base: #fcfdf8;
-  --surface-subtle: #f2f5e9;
+  /* The one fluid quantity: 16px at 390px viewport -> 18px at 1440px. Everything below is a multiple of it. */
+  --u: clamp(1rem, 0.94rem + 0.2vw, 1.125rem);
+
+  --spacing-1: calc(var(--u) * 0.25);
+  --spacing-2: calc(var(--u) * 0.5);
+  --spacing-3: calc(var(--u) * 0.75);
+  --spacing-4: calc(var(--u) * 1);
+  --spacing-6: calc(var(--u) * 1.5);
+  --radius-sm: calc(var(--u) * 0.25);
+  --radius-md: calc(var(--u) * 0.5);
+  --border-width: 1px;
+  --border-focus-width: 2px;
+  --size-control-sm: calc(var(--u) * 2.25);
+  --size-control-md: calc(var(--u) * 2.75);
+  --size-control-lg: calc(var(--u) * 3.25);
+
+  --layout-margin: calc(var(--u) * 1);
+  --layout-gutter: calc(var(--u) * 1.25);
+  --layout-container: min(calc(var(--u) * 75), 100% - 2 * var(--layout-margin));
+
+  --type-display-lg: calc(var(--u) * 3);
+  --type-display-md: calc(var(--u) * 2.5);
+  --type-heading-h1: calc(var(--u) * 2.25);
+  --type-heading-h2: calc(var(--u) * 1.75);
+  --type-heading-h3: calc(var(--u) * 1.5);
+  --type-heading-h4: calc(var(--u) * 1.25);
+  --type-body-lg: calc(var(--u) * 1.125);
+  --type-body-md: calc(var(--u) * 1);
+  --type-body-sm: calc(var(--u) * 0.875);
+  --type-label-lg: calc(var(--u) * 1);
+  --type-label-md: calc(var(--u) * 0.875);
+  --type-label-sm: calc(var(--u) * 0.75);
+  --type-caption: calc(var(--u) * 0.75);
+
+  --line-height-display-lg: 1.15;
+  --line-height-display-md: 1.18;
+  --line-height-heading-h1: 1.22;
+  --line-height-heading-h2: 1.29;
+  --line-height-heading-h3: 1.33;
+  --line-height-heading-h4: 1.4;
+  --line-height-body-lg: 1.55;
+  --line-height-body-md: 1.5;
+  --line-height-body-sm: 1.45;
+  --line-height-label-lg: 1.5;
+  --line-height-label-md: 1.45;
+  --line-height-label-sm: 1.35;
+  --line-height-caption: 1.5;
+
+  --brand-primary: #35664c;
+  --brand-primary-hover: #294f3b;
+  --brand-primary-pressed: #203e2f;
+  --brand-primary-subtle: #e8f0e5;
+  --surface-base: #fdfcfa;
+  --surface-subtle: #f4f3ee;
   --surface-elevated: #ffffff;
-  --surface-interactive: #e8eddb;
-  --text-primary: var(--brand-primary);
-  --text-secondary: #566047;
-  --text-tertiary: #69745a;
-  --text-disabled: #9da68e;
+  --surface-interactive: #ecefe8;
+  --text-primary: #202d26;
+  --text-secondary: #54645a;
+  --text-tertiary: #6d786f;
+  --text-disabled: #9ba399;
   --text-inverse: #ffffff;
-  --border-subtle: #e3e8d7;
-  --border-default: #cbd5bb;
-  --border-strong: #879574;
-  --status-success: #3e5b29;
-  --status-success-subtle: #eff8dd;
-  --status-warning: #805715;
-  --status-warning-subtle: #fff2d6;
-  --status-error: #933b45;
-  --status-error-subtle: #ffe9e9;
-  --status-info: #365b70;
-  --status-info-subtle: #eaf2f6;
-  --brand-accent-lime: #dbf799;
-  --brand-accent-pink: #ffc4c5;
-  --shadow-sm: 0 0.125rem 0.25rem rgb(47 55 31 / 6%);
-  --shadow-md: 0 0.375rem 1rem rgb(47 55 31 / 8%);
-  --shadow-lg: 0 0.75rem 2rem rgb(47 55 31 / 12%);
+  --border-subtle: #ebede6;
+  --border-default: #dde3d9;
+  --border-strong: #a2b29f;
+  --status-success: #35664c;
+  --status-success-subtle: #e8f0e5;
+  --status-warning: #946018;
+  --status-warning-subtle: #faf0da;
+  --status-error: #ad3e35;
+  --status-error-subtle: #fbeae6;
+  --status-info: #346a88;
+  --status-info-subtle: #e8f1f5;
+  --shadow-sm: 0 2px 4px rgb(32 45 38 / 6%);
+  --shadow-md: 0 6px 16px rgb(32 45 38 / 8%);
+  --shadow-lg: 0 12px 32px rgb(32 45 38 / 12%);
 }
 
-@media (max-width: 64em) {
-  :root {
-    --layout-viewport: 48rem;
-    --layout-container: 44rem;
-    --layout-gutter: 1.5rem;
-    --layout-columns: 8;
-    --type-display-lg: 2.75rem;
-    --type-display-md: 2.25rem;
-    --type-heading-h1: 2rem;
-    --type-heading-h2: 1.625rem;
-    --type-heading-h3: 1.375rem;
-    --type-heading-h4: 1.25rem;
-    --line-height-display-lg: 3.25rem;
-    --line-height-display-md: 2.75rem;
-    --line-height-heading-h1: 2.5rem;
-    --line-height-heading-h2: 2.125rem;
-    --line-height-heading-h3: 1.875rem;
-    --line-height-heading-h4: 1.75rem;
-    --type-body-lg: 1.125rem;
-    --line-height-body-lg: 1.75rem;
-    --type-body-md: 1rem;
-    --line-height-body-md: 1.5rem;
-    --type-body-sm: 0.875rem;
-    --line-height-body-sm: 1.25rem;
-    --type-label-lg: 1rem;
-    --line-height-label-lg: 1.5rem;
-    --type-label-md: 0.875rem;
-    --line-height-label-md: 1.25rem;
-    --type-label-sm: 0.75rem;
-    --line-height-label-sm: 1rem;
-    --type-caption: 0.75rem;
-    --line-height-caption: 1.125rem;
-    --layout-margin: 2rem;
-  }
-}
-
-@media (max-width: 40em) {
-  :root {
-    --layout-viewport: 24.375rem;
-    --layout-container: 22.375rem;
-    --layout-gutter: 1rem;
-    --layout-columns: 4;
-    --type-display-lg: 2.25rem;
-    --type-display-md: 1.875rem;
-    --type-heading-h1: 1.75rem;
-    --type-heading-h2: 1.5rem;
-    --type-heading-h3: 1.25rem;
-    --type-heading-h4: 1.125rem;
-    --line-height-display-lg: 2.75rem;
-    --line-height-display-md: 2.375rem;
-    --line-height-heading-h1: 2.25rem;
-    --line-height-heading-h2: 2rem;
-    --line-height-heading-h3: 1.75rem;
-    --line-height-heading-h4: 1.625rem;
-    --type-body-lg: 1.125rem;
-    --line-height-body-lg: 1.75rem;
-    --type-body-md: 1rem;
-    --line-height-body-md: 1.5rem;
-    --type-body-sm: 0.875rem;
-    --line-height-body-sm: 1.25rem;
-    --type-label-lg: 1rem;
-    --line-height-label-lg: 1.5rem;
-    --type-label-md: 0.875rem;
-    --line-height-label-md: 1.25rem;
-    --type-label-sm: 0.75rem;
-    --line-height-label-sm: 1rem;
-    --type-caption: 0.75rem;
-    --line-height-caption: 1.125rem;
-    --layout-margin: 1rem;
-  }
-}
-
-.type-display-lg {
-  font-size: var(--type-display-lg);
-  line-height: var(--line-height-display-lg);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.type-display-md {
-  font-size: var(--type-display-md);
-  line-height: var(--line-height-display-md);
-  font-weight: 700;
-  letter-spacing: -0.015em;
-}
-
-.type-heading-h1 {
-  font-size: var(--type-heading-h1);
-  line-height: var(--line-height-heading-h1);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.type-heading-h2 {
-  font-size: var(--type-heading-h2);
-  line-height: var(--line-height-heading-h2);
-  font-weight: 600;
-  letter-spacing: -0.00699999988079071em;
-}
-
-.type-heading-h3 {
-  font-size: var(--type-heading-h3);
-  line-height: var(--line-height-heading-h3);
-  font-weight: 600;
-  letter-spacing: -0.005em;
-}
-
-.type-heading-h4 {
-  font-size: var(--type-heading-h4);
-  line-height: var(--line-height-heading-h4);
-  font-weight: 600;
-  letter-spacing: -0.0030000001192092896em;
-}
-
-.type-body-lg {
-  font-size: var(--type-body-lg);
-  line-height: var(--line-height-body-lg);
-  font-weight: 400;
-  letter-spacing: 0em;
-}
-
-.type-body-md {
-  font-size: var(--type-body-md);
-  line-height: var(--line-height-body-md);
-  font-weight: 400;
-  letter-spacing: 0em;
-}
-
-.type-body-sm {
-  font-size: var(--type-body-sm);
-  line-height: var(--line-height-body-sm);
-  font-weight: 400;
-  letter-spacing: 0em;
-}
-
-.type-label-lg {
-  font-size: var(--type-label-lg);
-  line-height: var(--line-height-label-lg);
-  font-weight: 600;
-  letter-spacing: 0em;
-}
-
-.type-label-md {
-  font-size: var(--type-label-md);
-  line-height: var(--line-height-label-md);
-  font-weight: 600;
-  letter-spacing: 0em;
-}
-
-.type-label-sm {
-  font-size: var(--type-label-sm);
-  line-height: var(--line-height-label-sm);
-  font-weight: 600;
-  letter-spacing: 0.0020000000298023225em;
-}
-
-.type-caption {
-  font-size: var(--type-caption);
-  line-height: var(--line-height-caption);
-  font-weight: 400;
-  letter-spacing: 0em;
-}
+.type-display-lg { font: 700 var(--type-display-lg)/var(--line-height-display-lg) var(--font-sans); letter-spacing: -0.02em; }
+.type-display-md { font: 700 var(--type-display-md)/var(--line-height-display-md) var(--font-sans); letter-spacing: -0.015em; }
+.type-heading-h1 { font: 600 var(--type-heading-h1)/var(--line-height-heading-h1) var(--font-sans); letter-spacing: -0.01em; }
+.type-heading-h2 { font: 600 var(--type-heading-h2)/var(--line-height-heading-h2) var(--font-sans); letter-spacing: -0.007em; }
+.type-heading-h3 { font: 600 var(--type-heading-h3)/var(--line-height-heading-h3) var(--font-sans); letter-spacing: -0.005em; }
+.type-heading-h4 { font: 600 var(--type-heading-h4)/var(--line-height-heading-h4) var(--font-sans); letter-spacing: -0.003em; }
+.type-body-lg { font: 400 var(--type-body-lg)/var(--line-height-body-lg) var(--font-sans); }
+.type-body-md { font: 400 var(--type-body-md)/var(--line-height-body-md) var(--font-sans); }
+.type-body-sm { font: 400 var(--type-body-sm)/var(--line-height-body-sm) var(--font-sans); }
+.type-label-lg { font: 600 var(--type-label-lg)/var(--line-height-label-lg) var(--font-sans); }
+.type-label-md { font: 600 var(--type-label-md)/var(--line-height-label-md) var(--font-sans); }
+.type-label-sm { font: 600 var(--type-label-sm)/var(--line-height-label-sm) var(--font-sans); letter-spacing: 0.002em; }
+.type-caption { font: 400 var(--type-caption)/var(--line-height-caption) var(--font-sans); }
