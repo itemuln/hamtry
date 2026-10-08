@@ -1,0 +1,38 @@
+[      93ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:15804
+[   31958ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:15804
+[  103528ms] [LOG] [vite] server connection lost. Polling for restart... @ http://127.0.0.1:5173/@vite/client:1030
+[  104848ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:15804
+[  135294ms] [LOG] [vite] server connection lost. Polling for restart... @ http://127.0.0.1:5173/@vite/client:1030
+[  135528ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:15804
+[  179731ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:15804
+[  179815ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:5173/api/theme:0
+[  282221ms] [LOG] [vite] server connection lost. Polling for restart... @ http://127.0.0.1:5173/@vite/client:1030
+[  282522ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:15804
+[  283455ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:15804
+[  524606ms] [ERROR] React has detected a change in the order of Hooks called by %s. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://react.dev/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+%s   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ App 1. useState                   useState
+2. useRef                     useRef
+3. useRef                     useRef
+4. useRef                     useRef
+5. useState                   useRef
+ @ http://127.0.0.1:5173/@vite/client:298
+[  524612ms] Error: Should have a queue. You are likely calling Hooks conditionally, which is not allowed. (https://react.dev/link/invalid-hook-call)
+    at updateReducerImpl (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:4612:30)
+    at updateReducer (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:4608:11)
+    at Object.useState (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:14576:13)
+    at exports.useState (http://127.0.0.1:5173/node_modules/.vite/deps/react.js?v=6f6c5d4c:769:31)
+    at useTheme (http://127.0.0.1:5173/src/design-system/useTheme.ts?t=1791442435577:10:34)
+    at App (http://127.0.0.1:5173/src/App.tsx?t=1791442435577:118:16)
+    at Object.react_stack_bottom_frame (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:14142:12)
+    at renderWithHooks (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:4400:19)
+    at updateFunctionComponent (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:5775:16)
+    at beginWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:6391:20)
+[  524609ms] [WARNING] %s
+
+%s
+ An error occurred in the <App> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:5173/@vite/client:298

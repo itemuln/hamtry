@@ -4,3 +4,32 @@
 [  328713ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=13684902:15804
 [  472328ms] [LOG] [vite] server connection lost. Polling for restart... @ http://127.0.0.1:5173/@vite/client:1030
 [  472587ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=13684902:15804
+[ 1213932ms] [LOG] [vite] server connection lost. Polling for restart... @ http://127.0.0.1:5173/@vite/client:1030
+[ 1214472ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=bc186b9f:15804
+[ 1252789ms] [ERROR] React has detected a change in the order of Hooks called by %s. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://react.dev/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+%s   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ App 1. useState                   useState
+2. useRef                     useRef
+3. useState                   useRef
+ @ http://127.0.0.1:5173/@vite/client:298
+[ 1252800ms] Error: Rendered more hooks than during the previous render.
+    at updateWorkInProgressHook (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=bc186b9f:4516:12)
+    at updateReducer (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=bc186b9f:4608:29)
+    at Object.useState (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=bc186b9f:14576:13)
+    at exports.useState (http://127.0.0.1:5173/node_modules/.vite/deps/react.js?v=a0efee9b:769:31)
+    at App (http://127.0.0.1:5173/src/App.tsx?t=1791441868266:119:24)
+    at Object.react_stack_bottom_frame (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=bc186b9f:14142:12)
+    at renderWithHooks (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=bc186b9f:4400:19)
+    at updateFunctionComponent (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=bc186b9f:5775:16)
+    at beginWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=bc186b9f:6391:20)
+    at runWithFiberInDEV (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=bc186b9f:944:66)
+[ 1252796ms] [WARNING] %s
+
+%s
+ An error occurred in the <App> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:5173/@vite/client:298
+[ 1281580ms] [LOG] [vite] server connection lost. Polling for restart... @ http://127.0.0.1:5173/@vite/client:1030
+[ 1282057ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=6f6c5d4c:15804

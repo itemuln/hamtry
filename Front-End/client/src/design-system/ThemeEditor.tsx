@@ -1,10 +1,7 @@
 import { useRef, useState } from 'react'
 import {
   emptyOverrides,
-  exportTheme,
-  parseOverrides,
   resolvedColor,
-  themeCss,
   themeTokens,
   tokenValue,
   type ThemeMode,
@@ -12,24 +9,20 @@ import {
 import { useTheme } from './useTheme'
 import './theme-editor.css'
 
-function download(name: string, text: string, type: string) {
-  const url = URL.createObjectURL(new Blob([text], { type }))
-  const link = document.createElement('a')
-  link.href = url
-  link.download = name
-  link.click()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
 export function ThemeEditor({
   overrides,
   setOverrides,
-  storageError,
+  saveStatus,
+  ready,
+  retryLoad,
+  saveChanges,
+  hasChanges,
+  isSaving,
 }: ReturnType<typeof useTheme>) {
   const dialog = useRef<HTMLDialogElement>(null)
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('colors')
   const [mode, setMode] = useState<ThemeMode>('base')
-  const [message, setMessage] = useState('')
   const categories = [
     'colors',
     'spacing',
@@ -61,10 +54,16 @@ export function ThemeEditor({
       <button
         className="theme-launch"
         type="button"
+        disabled={!ready}
         onClick={() => dialog.current?.showModal()}
       >
         Edit variables
       </button>
+      {!ready && saveStatus.startsWith('Shared theme unavailable:') && (
+        <button type="button" onClick={retryLoad}>
+          Retry loading shared theme
+        </button>
+      )}
       <dialog
         ref={dialog}
         className="theme-editor"
@@ -84,8 +83,8 @@ export function ThemeEditor({
           </button>
         </header>
         <p className="theme-intro">
-          Edit once. Every component updates. Changes stay in this browser;
-          export them for your component library.
+          Preview your edits here, then click Save changes to apply them across
+          Hamtry. Dimensions use rem and scale with the reader’s text size.
         </p>
         <div className="theme-filters">
           <label>
@@ -109,8 +108,8 @@ export function ThemeEditor({
               onChange={(event) => setMode(event.target.value as ThemeMode)}
             >
               <option value="base">Shared / desktop</option>
-              <option value="tablet">Tablet ≤ 1024px</option>
-              <option value="mobile">Mobile ≤ 640px</option>
+              <option value="tablet">Tablet ≤ 64em</option>
+              <option value="mobile">Mobile ≤ 40em</option>
             </select>
           </label>
           <label className="theme-search">
@@ -198,63 +197,23 @@ export function ThemeEditor({
           })}
         </div>
         <footer>
-          <div className="theme-export">
-            <button
-              type="button"
-              onClick={() =>
-                download('hamtry-theme.css', themeCss(overrides), 'text/css')
-              }
-            >
-              Export CSS
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                download(
-                  'hamtry-theme.json',
-                  JSON.stringify(exportTheme(overrides), null, 2),
-                  'application/json',
-                )
-              }
-            >
-              Export JSON
-            </button>
-            <label className="theme-import">
-              Import JSON
-              <input
-                type="file"
-                accept=".json,application/json"
-                onChange={async (event) => {
-                  const file = event.target.files?.[0]
-                  if (!file) return
-                  try {
-                    setOverrides(parseOverrides(JSON.parse(await file.text())))
-                    setMessage('Theme imported.')
-                  } catch (error) {
-                    setMessage(
-                      error instanceof Error
-                        ? error.message
-                        : 'Could not import theme.',
-                    )
-                  }
-                  event.target.value = ''
-                }}
-              />
-            </label>
-          </div>
+          <button
+            className="theme-save"
+            type="button"
+            disabled={!hasChanges || isSaving}
+            onClick={() => void saveChanges()}
+          >
+            {isSaving ? 'Saving…' : 'Save changes'}
+          </button>
           <button
             className="theme-reset"
             type="button"
-            onClick={() => {
-              setOverrides(emptyOverrides())
-              setMessage('Original Hamtry palette restored.')
-            }}
+            disabled={isSaving}
+            onClick={() => setOverrides(emptyOverrides())}
           >
             Reset all variables
           </button>
-          <p role="status">
-            {storageError || message || 'Saved automatically in this browser.'}
-          </p>
+          <p role="status">{saveStatus}</p>
         </footer>
       </dialog>
     </>

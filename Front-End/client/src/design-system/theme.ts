@@ -1,4 +1,4 @@
-import source from './tokens.json'
+import source from './tokens.json' with { type: 'json' }
 
 export type ThemeMode = 'base' | 'tablet' | 'mobile'
 export type ThemeOverrides = Record<ThemeMode, Record<string, string>>
@@ -19,7 +19,7 @@ function format(
   unit: string,
 ) {
   return typeof value === 'number'
-    ? `${value}${unit}`
+    ? `${unit === 'rem' ? value / 16 : value}${unit}`
     : '#' +
         [value.r, value.g, value.b]
           .map((channel) =>
@@ -34,7 +34,7 @@ export const themeTokens: ThemeToken[] = source.tokens.map((token) => {
   const unit =
     color || token.name.endsWith('/opacity') || token.name === 'layout/columns'
       ? ''
-      : 'px'
+      : 'rem'
   const defaults: ThemeToken['defaults'] = {
     base: aliases[token.name]
       ? `var(--${aliases[token.name].replaceAll('/', '-')})`
@@ -88,17 +88,17 @@ export function themeCss(overrides: ThemeOverrides) {
       .filter((token) => mode === 'base' || token.defaults[mode] !== undefined)
       .map((token) => `  ${token.css}: ${tokenValue(token, mode, overrides)};`)
       .join('\n')
-  return `/* Hamtry shared variables. Inherited by custom elements and Shadow DOM. */\n:root {\n${block('base')}\n  --shadow-sm: 0 var(--elevation-sm-offset-y) var(--elevation-sm-blur) rgb(47 55 31 / calc(var(--elevation-sm-opacity) * 1%));\n  --shadow-md: 0 var(--elevation-md-offset-y) var(--elevation-md-blur) rgb(47 55 31 / calc(var(--elevation-md-opacity) * 1%));\n  --shadow-lg: 0 var(--elevation-lg-offset-y) var(--elevation-lg-blur) rgb(47 55 31 / calc(var(--elevation-lg-opacity) * 1%));\n}\n@media (max-width: 1024px) {\n:root {\n${block('tablet')}\n}\n}\n@media (max-width: 640px) {\n:root {\n${block('mobile')}\n}\n}\n`
+  return `/* Hamtry shared variables. Inherited by custom elements and Shadow DOM. */\n:root {\n  --font-sans: 'Inter', system-ui, sans-serif;\n${block('base')}\n  --shadow-sm: 0 var(--elevation-sm-offset-y) var(--elevation-sm-blur) rgb(47 55 31 / calc(var(--elevation-sm-opacity) * 1%));\n  --shadow-md: 0 var(--elevation-md-offset-y) var(--elevation-md-blur) rgb(47 55 31 / calc(var(--elevation-md-opacity) * 1%));\n  --shadow-lg: 0 var(--elevation-lg-offset-y) var(--elevation-lg-blur) rgb(47 55 31 / calc(var(--elevation-lg-opacity) * 1%));\n}\n@media (max-width: 64em) {\n:root {\n${block('tablet')}\n}\n}\n@media (max-width: 40em) {\n:root {\n${block('mobile')}\n}\n}\n`
 }
 export function parseOverrides(value: unknown): ThemeOverrides {
   if (
     !value ||
     typeof value !== 'object' ||
     !('version' in value) ||
-    value.version !== 1 ||
+    value.version !== 2 ||
     !('overrides' in value)
   )
-    throw new Error('Expected a Hamtry theme JSON file (version 1).')
+    throw new Error('Expected a Hamtry theme JSON file (version 2).')
   const data = value.overrides
   if (!data || typeof data !== 'object')
     throw new Error('Theme overrides are missing.')
@@ -129,7 +129,7 @@ export function parseOverrides(value: unknown): ThemeOverrides {
 }
 export function exportTheme(overrides: ThemeOverrides) {
   return {
-    version: 1,
+    version: 2,
     overrides,
     tokens: themeTokens.map((token) => ({
       name: token.name,

@@ -20,22 +20,28 @@ Use `.type-heading-h1`, `.type-body-md`, `.type-label-md`, etc. for typography.
 
 ## Editable shared theme
 
-Click **Edit variables** in the showcase header. Change colors, spacing, radii,
-type sizes, line heights, dimensions, or elevations; components update live.
-Tablet and mobile values apply at 1024px and 640px respectively. Tokens with
-responsive defaults can be edited separately for those breakpoints.
+Click **Edit variables**. Click **Save changes** to persist edits to the authoritative
+`Front-End/client/theme/hamtry-theme.json` file through `PUT /api/theme`.
+The showcase loads that file through `GET /api/theme`, and other open pages
+refresh within two seconds. Edits preview locally until saved; other pages keep the saved theme.
+The server serializes writes and atomically replaces the file. Failed saves are
+shown in the editor; click **Save changes** to retry. A failed initial load blocks editing.
+Reset creates a draft that also requires **Save changes**.
 
-Changes save in this browser under `hamtry.theme.v1`. Reset an individual token
-with its arrow, or use **Reset all variables**. **Export CSS** produces a complete
-framework-independent theme; **Export JSON** preserves editable overrides and
-token values. **Import JSON** restores an exported theme and validates its values.
-The editor does not overwrite source files or sync changes to Figma.
+`GET /hamtry-theme.css` generates the complete stylesheet from the saved theme.
+The default token names stay stable for your future component library. The persisted JSON uses version 2 and dimensions
+in `rem`. Figma's source numbers in `tokens.json` are design references; the token
+model converts them to relative units. All application/component CSS dimensions
+use relative units, with fluid grids and image aspect ratios. Breakpoints use
+`em`; tablet and mobile values apply at 64em and 40em. Browser text preferences
+scale `rem` values without a fixed root font size.
 
-Load the exported CSS once after any default theme stylesheet in the consuming
-app. Your custom elements inherit its properties, including inside Shadow DOM:
+For live updates in any Hamtry page, load this framework-independent module
+once. It obtains the same server stylesheet and updates it every two seconds.
+Custom elements inherit the variables through Shadow DOM:
 
 ```html
-<link rel="stylesheet" href="/hamtry-theme.css" />
+<script type="module" src="/hamtry-theme.js"></script>
 <hamtry-button>Хадгалах</hamtry-button>
 ```
 
@@ -49,12 +55,20 @@ button {
 }
 ```
 
-Keep shared defaults at the app root; component shadow styles should consume
-them. Set properties on a custom element or its parent to theme only that area.
-For example, `hamtry-button { --brand-primary: #2f371f; }`. `theme.ts` owns
-serialization and validation without React; `useTheme.ts` connects it to the
-showcase. Component behavior can later move to your Web Component library while
-keeping these CSS variable names.
+Keep shared defaults at the app root; shadow styles consume them. Load the theme
+from the same Hamtry server instead of copying values into components. For a
+snapshot that only refreshes on navigation, use
+`<link rel="stylesheet" href="/hamtry-theme.css">` instead of the module.
+The module dispatches `hamtry-theme-change` after an update and
+`hamtry-theme-error` if loading fails, retaining the last successfully loaded theme.
+
+`npm run dev` and `npm run preview` both provide the theme routes. To serve the
+built app with persistence, run `npm run build` then `npm start` (Node 22.18+;
+default `127.0.0.1:4173`). `PORT` and `HOST` configure the server;
+`HAMTRY_THEME_FILE` can point to a persistent absolute file path. This is a local
+authoring server; a public deployment needs authenticated edit access and
+persistent writable storage. A static-only host cannot save theme edits.
+The editor does not sync changes to Figma.
 
 ## Components
 
@@ -125,5 +139,10 @@ state, arrow/End tab navigation, card save state, alert dismissal, image loading
 and no document overflow at 320, 390, 768, 1024, and 1440px. Desktop and mobile
 screenshots are in the repository's `output/playwright/` directory.
 Theme checks cover live color/radius updates, Shadow DOM inheritance, reload
-persistence, CSS/JSON export, JSON restore, invalid import rejection, reset, and
+persistence, explicit save, unsaved draft isolation, reset, and
 mobile-specific type overrides without editor overflow at 390px.
+
+Shared persistence checks also cover a separate browser context, live plain-JS
+Shadow DOM consumers, rem scaling with increased root text size, disk persistence,
+invalid server writes, and the built authoring server. Run `npm test` for theme
+store and value validation tests.

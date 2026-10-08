@@ -207,7 +207,7 @@ function App() {
               <span>Type styles</span>
             </div>
             <div>
-              <strong>4px</strong>
+              <strong>0.25rem</strong>
               <span>Spacing rhythm</span>
             </div>
             <div>
@@ -235,11 +235,11 @@ function App() {
             </div>
             <div className="foundation-details">
               <div>
-                <h3>Spacing / 4px base</h3>
+                <h3>Spacing / relative scale</h3>
                 <div className="spacing-scale">
-                  {[4, 8, 12, 16, 24, 32, 48, 64].map((size) => (
+                  {['1', '2', '3', '4', '6', '8', '12', '16'].map((size) => (
                     <div key={size}>
-                      <span style={{ height: size }} />
+                      <span style={{ height: `var(--spacing-${size})` }} />
                       <small>{size}</small>
                     </div>
                   ))}
@@ -248,8 +248,11 @@ function App() {
               <div>
                 <h3>Corner radius</h3>
                 <div className="radius-scale">
-                  {[4, 8, 12, 16].map((radius) => (
-                    <div key={radius} style={{ borderRadius: radius }}>
+                  {['sm', 'md', 'lg', 'xl'].map((radius) => (
+                    <div
+                      key={radius}
+                      style={{ borderRadius: `var(--radius-${radius})` }}
+                    >
                       {radius}
                     </div>
                   ))}

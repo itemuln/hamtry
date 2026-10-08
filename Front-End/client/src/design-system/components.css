@@ -67,8 +67,8 @@
   cursor: wait;
 }
 .ht-spinner {
-  width: 24px;
-  height: 20px;
+  width: 1.5rem;
+  height: 1.25rem;
   display: grid;
   place-items: center;
   animation: ht-spin 0.8s linear infinite;
@@ -80,7 +80,7 @@
 }
 :where(button, input, textarea, select, [tabindex]):focus-visible {
   outline: var(--border-focus-width) solid var(--brand-primary);
-  outline-offset: 3px;
+  outline-offset: 0.1875rem;
 }
 .ht-field {
   display: flex;
@@ -145,12 +145,12 @@
 }
 .ht-select select {
   appearance: none;
-  padding-right: 48px;
+  padding-right: 3rem;
 }
 .ht-select .ht-icon {
   position: absolute;
-  right: 18px;
-  top: 21px;
+  right: 1.125rem;
+  top: 1.3125rem;
   pointer-events: none;
 }
 .ht-choice {
@@ -182,8 +182,8 @@
 }
 .ht-checkbox-visual,
 .ht-radio-visual {
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
   border: var(--border-width) solid var(--border-default);
   background: var(--surface-elevated);
   border-radius: var(--radius-sm);
@@ -205,8 +205,8 @@
 }
 .ht-choice input:indeterminate + .ht-checkbox-visual::after {
   content: '';
-  width: 10px;
-  height: 2px;
+  width: 0.625rem;
+  height: 0.125rem;
   background: var(--text-inverse);
 }
 .ht-choice input:indeterminate + .ht-checkbox-visual img {
@@ -220,14 +220,14 @@
 }
 .ht-choice input:checked + .ht-radio-visual::after {
   content: '';
-  width: 10px;
-  height: 10px;
+  width: 0.625rem;
+  height: 0.625rem;
   background: var(--brand-primary);
   border-radius: 50%;
 }
 .ht-choice input:focus-visible + span {
-  outline: 2px solid var(--brand-primary);
-  outline-offset: 4px;
+  outline: 0.125rem solid var(--brand-primary);
+  outline-offset: 0.25rem;
 }
 .ht-choice:has(input:disabled),
 .ht-switch:disabled {
@@ -243,7 +243,7 @@
 .ht-switch-target {
   display: grid;
   place-items: center;
-  width: 68px;
+  width: 4.25rem;
   height: var(--size-touch);
   flex-shrink: 0;
 }
@@ -301,8 +301,8 @@
   color: var(--text-secondary);
 }
 .ht-icon-slot {
-  width: 24px;
-  height: 21px;
+  width: 1.5rem;
+  height: 1.3125rem;
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -326,9 +326,9 @@
 }
 .ht-tabs button {
   flex-shrink: 0;
-  min-height: 54px;
-  min-width: 104px;
-  padding: 12px;
+  min-height: 3.375rem;
+  min-width: 6.5rem;
+  padding: 0.75rem;
   background: transparent;
   border: 0;
   color: var(--text-secondary);
@@ -344,9 +344,9 @@
   content: '';
   position: absolute;
   bottom: 0;
-  left: 12px;
-  right: 12px;
-  height: 2px;
+  left: 0.75rem;
+  right: 0.75rem;
+  height: 0.125rem;
   background: var(--brand-primary);
   border-radius: var(--radius-sm);
 }
@@ -357,7 +357,7 @@
   display: none;
 }
 .ht-listing {
-  width: 384px;
+  width: 24rem;
   max-width: 100%;
   overflow: hidden;
   border-radius: var(--radius-card);
@@ -370,10 +370,10 @@
 }
 .ht-listing-image {
   position: relative;
-  height: 280px;
+  aspect-ratio: 48 / 35;
 }
 .ht-property .ht-listing-image {
-  height: 248px;
+  aspect-ratio: 48 / 31;
 }
 .ht-listing-image > img {
   display: block;
@@ -383,21 +383,21 @@
 }
 .ht-save {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 1rem;
+  right: 1rem;
   width: var(--size-touch);
   height: var(--size-touch);
   border: 0;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
   background: var(--surface-elevated);
-  font-size: 27px;
-  line-height: 33px;
+  font-size: 1.6875rem;
+  line-height: 2.0625rem;
   color: var(--text-primary);
   cursor: pointer;
 }
 .ht-save[aria-pressed='true'] {
   color: var(--brand-primary);
-  font-size: 23px;
+  font-size: 1.4375rem;
 }
 .ht-listing-content {
   display: flex;
@@ -416,17 +416,17 @@
 .ht-listing h3 {
   flex: 1;
   margin: 0;
-  font-size: 22px;
-  line-height: 28px;
+  font-size: 1.375rem;
+  line-height: 1.75rem;
   font-weight: 600;
 }
 .ht-property h3 {
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 1.5rem;
+  line-height: 1.875rem;
 }
 .ht-verified {
-  font-size: 11px;
-  line-height: 16px;
+  font-size: 0.6875rem;
+  line-height: 1rem;
   color: var(--brand-primary);
   white-space: nowrap;
 }
@@ -442,29 +442,29 @@
   font-weight: 600;
 }
 .ht-listing .ht-budget {
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
 }
 .ht-listing .ht-availability {
-  font-size: 13px;
-  line-height: 19px;
+  font-size: 0.8125rem;
+  line-height: 1.1875rem;
 }
 .ht-compatibility {
-  padding: 6px 10px;
+  padding: 0.375rem 0.625rem;
   border-radius: var(--radius-md);
   background: var(--brand-primary-subtle);
   color: var(--brand-primary);
-  font-size: 13px;
-  line-height: 19px;
+  font-size: 0.8125rem;
+  line-height: 1.1875rem;
   font-weight: 600;
 }
 .ht-traits {
   display: flex;
-  gap: 6px;
+  gap: 0.375rem;
   flex-wrap: wrap;
 }
 .ht-traits span {
-  padding: 6px 10px;
+  padding: 0.375rem 0.625rem;
   border-radius: var(--radius-tag);
   background: var(--surface-subtle);
   color: var(--text-secondary);
@@ -490,8 +490,8 @@
 /* Themeable controls inherit the shared palette even inside custom elements. */
 .ht-switch-track {
   position: relative;
-  width: 44px;
-  height: 24px;
+  width: 2.75rem;
+  height: 1.5rem;
   border: var(--border-width) solid var(--border-default);
   border-radius: var(--radius-full);
   background: var(--surface-elevated);
@@ -499,10 +499,10 @@
 .ht-switch-track::after {
   content: '';
   position: absolute;
-  top: 3px;
-  left: 4px;
-  width: 16px;
-  height: 16px;
+  top: 0.1875rem;
+  left: 0.25rem;
+  width: 1rem;
+  height: 1rem;
   border-radius: var(--radius-full);
   background: var(--text-secondary);
 }
@@ -510,7 +510,7 @@
   background: var(--brand-primary);
 }
 .ht-switch[aria-checked='true'] .ht-switch-track::after {
-  left: 22px;
+  left: 1.375rem;
   background: var(--surface-elevated);
 }
 
@@ -523,17 +523,17 @@
   flex-shrink: 0;
 }
 .ht-icon--info {
-  width: 17.5px;
-  height: 17.5px;
+  width: 1.09375rem;
+  height: 1.09375rem;
   mask-image: url('./assets/info.svg');
 }
 .ht-icon--close {
-  width: 13.5px;
-  height: 13.5px;
+  width: 0.84375rem;
+  height: 0.84375rem;
   mask-image: url('./assets/close.svg');
 }
 .ht-icon--chevron {
-  width: 11.5px;
-  height: 6.5px;
+  width: 0.71875rem;
+  height: 0.40625rem;
   mask-image: url('./assets/chevron.svg');
 }
