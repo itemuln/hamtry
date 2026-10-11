@@ -10,11 +10,12 @@ Three.js нь үндсэн чиглэл хэвээр байна.
 - `/` дээр responsive Монгол нүүр, тусдаа `/components.html`, бүрэн `/editor.html`.
 - Байршил/төсөв/түлхүүр үг/амьтны filter → detail → save → reload зам.
 - Native dialog, empty/reset feedback, mobile navigation, local role/dashboard.
-- Мэдээлэл → preview → засах → хөтөчид хадгалах туршилтын зар.
+- Байршлын цэг + өрөө бүрийн утасны зураг → preview → засах → хөтөчид хадгалах зар.
+- Газрын зурагтай шүүсэн үр дүн, өрөө/зураг шилжих photo tour, IndexedDB зураг.
 - Raw Three.js furnished apartment, орон зай сонгох, drag, pause, SVG fallback.
 - Lazy module, offscreen/reduced-motion pause, resource disposal/reconnect.
 
-[Нүүр ба scene-ийн заавар](homepage.md) бодит файл, API, хязгаарлалтыг тайлбарлана.
+[Газрын зураг ба photo tour](photo-tours.md), [нүүр ба scene-ийн заавар](homepage.md) бодит файл, API, хязгаарлалтыг тайлбарлана.
 Жишээ зар, role, хадгалалт нь хичээлийн local prototype; бодит backend биш.
 
 ## 1. Хэрэглэгчээр UX-ээ шалгах
@@ -34,14 +35,16 @@ Local demo role-ийг серверийн эрх гэж тооцохгүй. Load
 
 ## 3. Жинхэнэ зарын замыг гүйцээх
 
-Бодит зураг upload, нүүх хугацаа, хэмжээ, хэрэглээний зардал, тавилга,
+Хөтөчийн зураг нэмэх урсгалыг бодит серверийн upload/save-тэй холбоно. Нүүх хугацаа, хэмжээ, хэрэглээний зардал, тавилга,
 амьдралын нөхцөлийн талбар; preview, засах/устгах, server save.
 Хамтрагчийн profile, холбоо барих хүсэлт, зөвшөөрөл ба хувийн мэдээллийн
 харагдах хүрээг нэг бүтэн UX замаар хийнэ.
 
 ## 4. Дүрслэлээ сайжруулах
 
-Одоогийн furnished model нь illustrative. Бодит зарын floorplan/3D asset байгаа
+Энгийн зургуудын linked tour эхний хувилбар болсон. Жинхэнэ 3D-д олон өнцгөөс
+давхцалтай зураг авах заавар, reconstruction үйлчилгээ, чанар шалгах шат хэрэгтэй.
+Three.js нь бэлэн model дүрслэх үүрэгтэй. Одоогийн furnished model нь illustrative. Бодит зарын floorplan/3D asset байгаа
 тохиолдолд model loading, ownership, texture disposal, progress/failure UX-ийг
 тодорхойлж нэмнэ. Эхлээд scene-ийн lazy bundle/GPU budget-ийг бодит төхөөрөмж
 дээр хэмжээд shadow/resolution/geometry-гаа тохируул. UI үйлдлийг чимэглэлээс

@@ -16,8 +16,8 @@ Front-End/client/
 │   ├── app/                    # Сангаа хэрэглэдэг native web app
 │   │   ├── main.js             # Эхлэл: style/theme/tag бүртгэл
 │   │   ├── pages/              # home.js, component-demo.js
-│   │   ├── components/         # counter, hero-scene, apartment-scene
-│   │   ├── state/              # App signals, search/route/restore rules
+│   │   ├── components/         # counter, Three scene, apartment-map, room-editor, photo-tour
+│   │   ├── state/              # App signals, search/route/restore, IndexedDB media
 │   │   ├── data/               # Тодорхой тэмдэглэсэн жишээ зар
 │   │   ├── home.css            # Нүүрийн layout
 │   │   ├── demo.js             # Компонентын туршилтын entry

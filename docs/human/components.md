@@ -158,7 +158,7 @@ Custom event-үүд Shadow DOM-ийн хилээр гарна. Энгийн үй
 
 Өнгө, radius, spacing-ийг [design system-ийн токеноор](design-system.md)
 өөрчилнө. Тусгай override үнэхээр хэрэгтэй бол component-ийн нээсэн
-`::part(button)`, `::part(control)`, `::part(card)`, `::part(alert)`,
+`::part(button)`, `::part(control)`, `::part(card)`, `::part(media)` (картын зураг), `::part(alert)`,
 `::part(badge)`-ийг ашиглаж болно. Page нь компонентын private shadow selector
 эсвэл дотоод DOM бүтэц дээр бизнес логик байгуулахгүй.
 

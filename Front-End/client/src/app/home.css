@@ -56,7 +56,7 @@ hamtry-home h1, hamtry-home h2, hamtry-home h3 { font-family: var(--font-display
 hamtry-home[data-page]:not([data-page="home"]) .listing-section { padding-top: 10rem; }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: var(--spacing-6); margin-bottom: 2rem; }
 .section-heading .eyebrow { margin-bottom: var(--spacing-3); color: var(--home-quiet); }
-.section-heading h2 { font-size: clamp(2.2rem, 3.15vw, 3.35rem); line-height: 1.2; margin: 0; font-weight: 800; }
+.section-heading :is(h1,h2) { font-size: clamp(2.2rem, 3.15vw, 3.35rem); line-height: 1.2; margin: 0; font-weight: 800; }
 .heading-dot { color: var(--brand-accent-pink); }
 .all-listings { padding: .7rem 0; border-bottom: 1px solid var(--home-line); white-space: nowrap; font-size: var(--type-body-sm); }
 .browse-types { display: flex; align-items: center; gap: .5rem; margin-bottom: var(--spacing-5); }
@@ -82,20 +82,11 @@ hamtry-home[data-page]:not([data-page="home"]) .listing-section { padding-top: 1
 .empty-state > span { display: block; font-size: 3rem; }
 .empty-state h3 { font-size: 1.7rem; }
 .empty-state p { color: var(--home-quiet); margin-bottom: 2rem; }
-.how-section { padding-block: 1rem 5.5rem; }
-.how-symbol { color: var(--brand-primary); font-size: 4.5rem; line-height: 1; }
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-8); padding-top: var(--spacing-6); border-top: 1px solid var(--home-line); }
-.step-number { font-size: var(--type-caption); color: var(--home-quiet); letter-spacing: .1em; }
-.steps h3 { font-size: clamp(1.4rem, 1.7vw, 1.8rem); margin: var(--spacing-6) 0 var(--spacing-3); }
-.steps p { font-size: var(--type-body-sm); color: var(--home-quiet); max-width: 22rem; }
-.provider-section { background: var(--brand-accent-pink); border-radius: 2.3rem; padding: 4.5rem 6%; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; overflow: hidden; }
-.provider-section h2 { font-size: clamp(3rem, 4.8vw, 5rem); line-height: 1.05; margin: 0 0 var(--spacing-6); font-weight: 800; }
-.provider-section p { margin-bottom: var(--spacing-6); }
+.provider-section { background: var(--brand-accent-pink); border-radius: var(--radius-xl); padding: var(--spacing-8); display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-6); }
+.provider-section h2 { font-size: clamp(2rem, 3vw, 3rem); line-height: 1.15; margin: 0; }
+.provider-section p { margin-bottom: var(--spacing-4); max-width: 38rem; }
+.provider-section hamtry-button { flex-shrink: 0; }
 .provider-section hamtry-button::part(button) { border-radius: 4rem; }
-.provider-art { min-height: 20rem; display: grid; place-items: center; position: relative; }
-.door { position: relative; width: 13rem; height: 20rem; background: var(--brand-primary); border: .75rem solid color-mix(in srgb, var(--brand-primary) 80%, var(--brand-accent-pink)); border-radius: 7rem 7rem 0 0; color: var(--brand-accent-lime); transform: rotate(9deg); box-shadow: 1.8rem 1.5rem 0 color-mix(in srgb, var(--brand-primary) 13%, transparent); padding: 6rem 1.5rem 0; font: 800 2.6rem/1 var(--font-display); letter-spacing: -.07em; }
-.door i { position: absolute; width: .75rem; height: .75rem; border-radius: 50%; background: var(--brand-accent-lime); right: .8rem; bottom: 6rem; }
-.door-star { position: absolute; top: 0; right: 5%; color: var(--home-paper); font-size: 6rem; transform: rotate(10deg); }
 hamtry-home footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-6); padding-block: 4rem 2rem; }
 hamtry-home footer p { color: var(--home-quiet); font-size: var(--type-body-sm); }
 hamtry-home footer div { margin-left: auto; display: flex; gap: var(--spacing-6); font-size: var(--type-caption); }
@@ -150,20 +141,11 @@ hamtry-home dd { margin: 0; font-size: var(--type-body-sm); }
   .hero-search hamtry-button::part(button) { width: 100%; min-height: 3.1rem; justify-content: space-between; }
   .listing-section { padding-block: 3.5rem; }
   .section-heading { align-items: start; flex-direction: column; gap: var(--spacing-4); }
-  .section-heading h2 { font-size: 2.1rem; }
+  .section-heading :is(h1,h2) { font-size: 2.1rem; }
   .filter-bar { grid-template-columns: 1fr 1fr; gap: var(--spacing-3); }
   .filter-bar hamtry-input { grid-column: 1/-1; }
   .listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .how-section { padding-bottom: 3.5rem; }
-  .how-symbol { display: none; }
-  .steps { grid-template-columns: 1fr; gap: var(--spacing-6); }
-  .steps article + article { border-top: 1px solid var(--home-line); padding-top: var(--spacing-6); }
-  .steps h3 { margin-top: var(--spacing-3); font-size: 1.5rem; }
-  .steps p { max-width: 100%; }
-  .provider-section { grid-template-columns: 1fr; padding: 2.5rem 7%; border-radius: 1.5rem; gap: 2rem; }
-  .provider-art { min-height: 16rem; }
-  .door { width: 10rem; height: 15rem; padding: 4rem 1rem 0; font-size: 2rem; }
-  .door-star { right: 12%; font-size: 4rem; }
+  .provider-section { flex-direction: column; align-items: start; padding: var(--spacing-6); }
   hamtry-home footer { gap: var(--spacing-4); padding-top: 3rem; }
   hamtry-home footer p { flex-basis: 70%; font-size: .7rem; }
   hamtry-home footer div { margin-left: 0; }
@@ -184,3 +166,27 @@ hamtry-home dd { margin: 0; font-size: var(--type-body-sm); }
   hamtry-home :is(.profile-button,.browse-types button,.role-choices button,.hero-link) { transition: background .2s, color .2s, transform .2s; }
   .profile-button:hover { transform: translateY(-.1rem); }
 }
+
+/* Газрын зураг + үр дүн нь нэг хайлттай, mobile дээр нэг багана болно. */
+.browse-layout { display: grid; gap: var(--spacing-6); }
+.listing-results { min-width: 0; }
+hamtry-home[data-page="map"] .browse-layout { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+hamtry-home[data-page="map"] .listing-grid { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-5); }
+hamtry-home[data-page="map"] hamtry-property-card::part(card) { width: 100%; }
+@media (min-width: 48.01rem) {
+  hamtry-home[data-page="map"] hamtry-property-card::part(media) { width: 100%; height: 12rem; aspect-ratio: auto; }
+}
+hamtry-home[data-page="map"] .listing-results { max-height: 36rem; overflow-y: auto; padding: .2rem .5rem; scrollbar-color: var(--brand-primary) var(--home-paper); }
+.location-fields { border: 1px solid var(--home-line); border-radius: var(--radius-lg); padding: var(--spacing-4); min-width: 0; }
+.location-fields legend { font-weight: 600; padding-inline: var(--spacing-2); }
+.location-fields p { margin-top: 0; color: var(--home-quiet); font-size: var(--type-caption); }
+.coordinates { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-4); margin-top: var(--spacing-4); }
+@media (max-width: 65rem) {
+  .site-header nav { gap: var(--spacing-3); }
+  .site-header nav a { font-size: var(--type-caption); }
+}
+@media (max-width: 48rem) {
+  hamtry-home[data-page="map"] .browse-layout { grid-template-columns: minmax(0, 1fr); }
+  hamtry-home[data-page="map"] .listing-results { max-height: none; overflow: visible; padding: 0; }
+}
+@media (max-width: 34rem) { .coordinates { grid-template-columns: minmax(0, 1fr); } }

@@ -14,22 +14,18 @@ Read [architecture](architecture.md) and [API contract](api-contract.md) first.
 
 ## Navigation and data
 
-Hash routes: `#home`, `#rooms`, `#roommates`, `#saved`, `#dashboard`,
+Hash routes: `#home`, `#map`, `#rooms`, `#roommates`, `#saved`, `#dashboard`,
 `#listing/<id>`. Unknown routes fall back to home. Missing detail IDs go to rooms
 with feedback. Closing the detail modal returns to the previous browse page;
 direct detail entry defaults to home behind the modal. Browser Back follows hash
 history. Filters are in-memory and survive same-page modal navigation, not reload.
 Saved page currently applies the shared filters to both listing kinds.
 
-Fixtures are explicitly identified as classroom examples. Prices/profile descriptions
-are sample content. `hamtry-demo-v1` localStorage schema: `{version:1,saved:string[],
-role:'seeker'|'provider',published:{id,title,district,price,description}[]}`. Restored
-records are validated/bounded and images/type are chosen by the app, not storage.
-Only explicit UI actions write. Storage failures keep current UI state and show
-feedback. Demo role controls navigation only; it grants no backend authority.
-Publishing is form validation → preview → edit or confirm → browser-local list;
-max 20 records, example room image. Untrusted text uses textContent/attributes,
-never templated HTML. Real authentication, contact, uploads and persistence are absent.
+Fixtures and their map coordinates are explicitly classroom examples. Browser-local
+phone-photo tours, extended validated metadata and IndexedDB media are documented
+in [photo tours](photo-tours.md). Role controls navigation only. Real authentication,
+contact, shared publication and backend persistence are absent. Save uses explicit
+UI actions; publish failure rolls back the new listing and media, retaining its draft.
 
 ## App scene (not a library export)
 
@@ -72,3 +68,4 @@ simulated unavailable WebGL2. See screenshots in `output/playwright/` from repo 
 Safari/Firefox, low-end physical-device performance, backend and production acceptance
 remain unverified. Three's lazy bundle is approximately 565 kB minified / 141 kB gzip;
 Vite emits the standard >500 kB chunk warning. No deploy/push or theme Save performed.
+Additional map/upload/media verification and bundle sizes: [photo tour contract](photo-tours.md).

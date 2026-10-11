@@ -27,7 +27,7 @@ export class HamtryRoommateCard extends HamtryElement {
   render() {
     style(this.root)
     this.root.innerHTML =
-      '<article class="ht-listing" part="card"><div class="ht-listing-image"><img><button class="ht-save" type="button"></button></div><div class="ht-listing-content"><h3></h3><p class="location"></p><strong class="ht-budget"></strong><p class="description"></p><slot></slot></div></article>'
+      '<article class="ht-listing" part="card"><div class="ht-listing-image" part="media"><img><button class="ht-save" type="button"></button></div><div class="ht-listing-content"><h3></h3><p class="location"></p><strong class="ht-budget"></strong><p class="description"></p><slot></slot></div></article>'
     required('article', this.root).classList.toggle(
       'ht-property',
       this.property,

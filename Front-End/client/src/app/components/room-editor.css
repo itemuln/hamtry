@@ -1,0 +1,21 @@
+:host { display:block; color:var(--text-primary); font-family:var(--font-sans); }
+* { box-sizing:border-box; }
+.intro { display:grid; gap:var(--spacing-2); margin-block:var(--spacing-4); }
+.intro span,.message { font-size:var(--type-caption); line-height:1.6; color:var(--text-secondary); }
+.rooms { display:grid; gap:var(--spacing-4); }
+section { border:var(--border-width) solid var(--border-default); border-radius:var(--radius-lg); padding:var(--spacing-4); min-width:0; }
+.room-heading { display:flex; gap:var(--spacing-3); align-items:end; }
+label { font-size:var(--type-label-md); display:grid; gap:var(--spacing-2); flex:1; }
+input[type=text] { font:inherit; color:inherit; min-height:var(--size-field); width:100%; border:1px solid var(--border-default); border-radius:var(--radius-md); background:var(--surface-elevated); padding:var(--spacing-3); }
+button { font:inherit; color:inherit; border:1px solid var(--border-default); border-radius:var(--radius-md); background:transparent; cursor:pointer; padding:var(--spacing-2) var(--spacing-3); min-height:var(--size-touch); }
+button:disabled { opacity:.5; cursor:not-allowed; }
+.photos { display:flex; flex-wrap:wrap; gap:var(--spacing-2); margin-block:var(--spacing-3); }
+.photos div { position:relative; width:6rem; }
+img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--radius-md); }
+.photos button { position:absolute; top:0; right:0; border-radius:var(--radius-full); background:var(--surface-elevated); padding:0; width:var(--size-touch); }
+.upload { padding:var(--spacing-3); background:var(--surface-interactive); border-radius:var(--radius-md); }
+input[type=file] { font:inherit; width:100%; }
+input::file-selector-button { border:0; background:var(--brand-primary); color:var(--text-inverse); border-radius:var(--radius-md); padding:var(--spacing-2); margin-right:var(--spacing-2); cursor:pointer; }
+.add-room { margin-top:var(--spacing-3); }
+:where(button,input):focus-visible { outline:var(--border-focus-width) solid var(--brand-primary); outline-offset:.15rem; }
+@media(max-width:30rem) { .room-heading { align-items:start; flex-direction:column; } .room-heading label { width:100%; } }

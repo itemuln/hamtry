@@ -108,6 +108,6 @@ Dialog uses native top-layer/focus/Escape, closes on backdrop/close button and e
 its returnValue. Programmatic close() also emits the native close event; consumers
 should guard route changes. Dialog content is slotted light DOM.
 
-Exposed parts: button, control, badge, alert, card, dialog. Page code should consume host
+Exposed parts: button, control, badge, alert, card, media (card image wrapper), dialog. Page code should consume host
 APIs/events rather than private shadow selectors. Test-only shadow inspection is
 appropriate. Always render untrusted text via textContent/properties.
