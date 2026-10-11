@@ -91,3 +91,5 @@ Safari/Firefox, low-end physical-device performance, backend and production acce
 remain unverified. Three's lazy bundle is approximately 565 kB minified / 141 kB gzip;
 Vite emits the standard >500 kB chunk warning. No deploy/push or theme Save performed.
 Additional map/upload/media verification and bundle sizes: [photo tour contract](photo-tours.md).
+
+The accepted homepage hero places the interactive Three.js room first on desktop, with the headline beside it and centered room/roommate actions below. On phones the copy and actions precede the room; scene height and heading scale remain bounded. No image download or extra renderer is required.

@@ -126,3 +126,5 @@ Reduced motion үед өөрөө хөвөхгүй, хэрэглэгчийн со
 сольсон. Танилцуулгын хаалга 3D өрөөнд, «Хотыг тойрох» товч 3D хотод орно.
 Чийдэн зөвхөн танилцуулгын хэсгийн гэрлийг солино. Өрөө, газрын зураг,
 хамтрагчийн хайлтын хуудас болон хадгалсан сонголтууд хэвээр ажиллана.
+
+The accepted homepage hero places the interactive Three.js room first on desktop, with the headline beside it and centered room/roommate actions below. On phones the copy and actions precede the room; scene height and heading scale remain bounded. No image download or extra renderer is required.
