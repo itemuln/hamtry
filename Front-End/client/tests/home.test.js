@@ -51,3 +51,16 @@ test('local demo restore rejects malformed records and bounds user content', () 
   assert.equal(restored.published[0].kind, undefined)
   assert.deepEqual(parseDemo({ version: 2, saved: ['r1'] }), { role: 'seeker', saved: [], published: [] })
 })
+
+test('condition checkboxes require every selected condition with budget for both kinds', () => {
+  const samples = [
+    { ...fixtures[0], traits: ['Тамхи татдаггүй', 'Тавилгатай'] },
+    { ...fixtures[1], traits: ['Тамхи татдаггүй'] },
+    { ...fixtures[2], traits: ['Тамхи татдаггүй', 'Цэвэрч'] },
+  ]
+  const filter = { ...initialFilters, maxPrice: 800000, conditions: ['Тамхи татдаггүй', 'Тавилгатай'] }
+  assert.deepEqual(findListings(samples, filter, 'rooms').map(item => item.id), ['r1'])
+  assert.deepEqual(findListings(samples, { ...filter, conditions: ['Тамхи татдаггүй', 'Цэвэрч'] }, 'roommates').map(item => item.id), ['p1'])
+  assert.deepEqual(findListings(samples, { ...filter, conditions: ['Тамхи татдаггүй', 'Амьтан зөвшөөрнө'] }, 'rooms').map(item => item.id), ['r1'])
+  assert.equal(findListings(samples, { ...filter, maxPrice: 699999 }, 'rooms').length, 0)
+})

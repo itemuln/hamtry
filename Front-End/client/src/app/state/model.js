@@ -1,5 +1,5 @@
 // Browser-оос хамааралгүй хайлтын дүрэм. Тест нь зөвхөн бодит filter/route behavior шалгана.
-export const initialFilters = { district: 'all', maxPrice: 0, query: '', pets: false }
+export const initialFilters = { district: 'all', maxPrice: 0, query: '', pets: false, conditions: [] }
 export const money = value => new Intl.NumberFormat('mn-MN').format(value) + ' ₮'
 export function findListings(items, filters, kind, saved = null) {
   const words = filters.query.trim().toLocaleLowerCase('mn').split(/\s+/).filter(Boolean)
@@ -8,6 +8,7 @@ export function findListings(items, filters, kind, saved = null) {
     && (filters.district === 'all' || item.district === filters.district)
     && (!filters.maxPrice || item.price <= filters.maxPrice)
     && (!filters.pets || item.pets)
+    && (filters.conditions || []).every(condition => condition === 'Амьтан зөвшөөрнө' ? item.pets : item.traits.includes(condition))
     && words.every(word => `${item.title} ${item.district} ${item.area} ${item.traits.join(' ')}`.toLocaleLowerCase('mn').includes(word)))
 }
 export function readRoute(hash) {

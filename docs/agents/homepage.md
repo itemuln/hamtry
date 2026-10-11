@@ -93,3 +93,13 @@ Vite emits the standard >500 kB chunk warning. No deploy/push or theme Save perf
 Additional map/upload/media verification and bundle sizes: [photo tour contract](photo-tours.md).
 
 The accepted homepage hero places the interactive Three.js room first on desktop, with the headline beside it and centered room/roommate actions below. On phones the copy and actions precede the room; scene height and heading scale remain bounded. No image download or extra renderer is required.
+
+Rooms and the map now share one navigation entry, “Өрөөнүүд.” Room results offer “Жагсаалт” and “Газрын зураг нээх”; both reuse the same filters and listings. The Rooms navigation stays current in either view.
+
+Room browsing opens the room list first, with a map-icon tab to switch to a full-width map. Search filters are budget and a native “Нөхцөл” checkbox dropdown, shared with roommate browsing. Keyword and district search inputs are removed. Selected conditions use AND matching against known listing traits; pets use the existing pets flag. Map markers still open detail dialogs.
+
+The search controls use a flat white band with thin horizontal rules. The native condition dropdown retains labeled checkboxes, outside-click dismissal, and Escape returning focus to its summary.
+
+The selected view controls pair an “Өрөөнүүд” list tab with a compact map-icon tab labeled “Газрын зураг” for assistive technology and tooltips. Filters persist across both views. The map view does not render apartment cards alongside the map.
+
+The redundant room/roommate category selector inside results is removed. The header and homepage choices navigate to those categories; the rooms list/map tabs remain.

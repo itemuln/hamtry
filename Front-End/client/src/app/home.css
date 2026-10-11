@@ -84,9 +84,6 @@ hamtry-home[data-page]:not([data-page="home"]) .listing-section { padding-top: 1
 .section-heading :is(h1,h2) { font-size: clamp(2.2rem, 3.15vw, 3.35rem); line-height: 1.2; margin: 0; font-weight: 600; }
 .heading-dot { color: var(--brand-accent-pink); }
 .all-listings { padding: .7rem 0; border-bottom: 1px solid var(--home-line); white-space: nowrap; font-size: var(--type-body-sm); }
-.browse-types { display: flex; align-items: center; gap: .5rem; margin-bottom: var(--spacing-5); }
-.browse-types button { border: 1px solid var(--home-line); background: none; color: inherit; border-radius: 3rem; padding: .75rem 1.35rem; font-weight: 600; }
-.browse-types button[aria-pressed="true"] { background: var(--brand-primary); color: var(--text-inverse); border-color: var(--brand-primary); }
 .filter-bar { display: grid; grid-template-columns: 1.3fr 1fr 1fr auto auto; gap: var(--spacing-4); align-items: end; padding-block: var(--spacing-4) var(--spacing-6); }
 .filter-bar :is(hamtry-input,hamtry-select), .publish-form { --surface-base: var(--home-paper); --border-default: var(--home-line); }
 .filter-bar .pet-filter { margin-bottom: .2rem; }
@@ -188,7 +185,7 @@ hamtry-home dd { margin: 0; font-size: var(--type-body-sm); }
   .hero-copy h1 { font-size: clamp(2.5rem, 10vw, 3.1rem); }
 }
 @media (prefers-reduced-motion: no-preference) {
-  hamtry-home :is(.profile-button,.browse-types button,.role-choices button,.hero-link) { transition: background .2s, color .2s, transform .2s; }
+  hamtry-home :is(.profile-button,.role-choices button,.hero-link) { transition: background .2s, color .2s, transform .2s; }
   .profile-button:hover { transform: translateY(-.1rem); }
 }
 
@@ -285,3 +282,46 @@ hamtry-home[data-page="map"] .listing-results { max-height: 36rem; overflow-y: a
  .home-hero .hero-description { color:color-mix(in srgb,var(--text-inverse) 85%,var(--brand-primary)); }
  @media(max-width:65rem) { .home-hero .hero-inner { gap:1.5rem; } }
  @media(max-width:48rem) { .home-hero .hero-copy h1 { font-size:clamp(2.5rem,calc(9vw * 1),4.8rem); } .home-hero hamtry-hero-scene { --scene-height:clamp(22rem,calc(65vw * 1),30rem); } }
+
+/* List and map are two views of the same room search. */
+.browse-views { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin-bottom:var(--spacing-6); }
+.browse-views a { display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1rem; min-height:2.75rem; color:var(--brand-primary); border-radius:var(--radius-action); background:var(--home-paper); font-weight:600; }
+.browse-views a[aria-current="page"] { background:var(--brand-accent-lime); }
+.browse-views a:hover { background:var(--surface-interactive); }
+.browse-views svg { width:1.25rem; height:1.25rem; }
+
+/* Combined Rooms navigation. */
+ .site-header .main-nav { gap:calc(var(--spacing-6) * 1); }
+ .site-header .main-nav .rooms-entry { display:inline-flex; align-items:center; gap:.5rem; min-height:2.75rem; }
+ .site-header .main-nav .rooms-entry svg { width:1.25rem; height:1.25rem; flex:none; }
+ @media(max-width:60rem) { .site-header .main-nav { gap:calc(var(--spacing-2) * 1); } }
+ .site-header .main-nav .rooms-entry { font-weight:700; }
+
+/* Budget and conditions for map-first room browsing. */
+ hamtry-home #results .filter-bar { display:flex; flex-wrap:wrap; align-items:end; gap:calc(var(--spacing-4) * 1); }
+ hamtry-home #results .filter-bar hamtry-select { width:min(16rem,100%); }
+ hamtry-home #results .browse-layout { display:block; }
+ hamtry-home #results .condition-filter { position:relative; min-width:10rem; }
+ hamtry-home #results .condition-filter summary { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.75rem 1rem; min-height:3rem; cursor:pointer; list-style:none; border-radius:var(--radius-action); border:1px solid var(--home-line); background:var(--home-paper); }
+ hamtry-home #results .condition-filter summary::-webkit-details-marker { display:none; }
+ hamtry-home #results .condition-filter svg { width:1.25rem; height:1.25rem; }
+ hamtry-home #results .condition-filter fieldset { position:absolute; top:calc(100% + .5rem); left:0; z-index:5; width:19rem; max-width:calc(100vw - 3rem); padding:1rem; border:1px solid var(--home-line); border-radius:var(--radius-action); background:var(--home-paper); margin:0; }
+ hamtry-home #results .condition-filter legend { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+ hamtry-home #results .condition-filter label { display:flex; align-items:center; gap:.75rem; padding:.65rem 0; cursor:pointer; }
+ hamtry-home #results .condition-filter input { width:1.25rem; height:1.25rem; accent-color:var(--brand-primary); }
+ @media(max-width:40rem) { hamtry-home #results .filter-bar { align-items:stretch; } hamtry-home #results .filter-bar hamtry-select { width:100%; } hamtry-home #results .condition-filter { flex:1; } }
+ hamtry-home #results .filter-bar { padding:1rem; background:var(--surface-interactive); border-radius:var(--radius-xl); }
+hamtry-home[data-page="rooms"] .browse-layout, hamtry-home[data-page="map"] .browse-layout { grid-template-columns:minmax(0,1fr); }
+
+/* Accepted white filter band. */
+ hamtry-home #results .filter-bar { background:#fff; padding:calc(1rem * 1); }
+ hamtry-home #results .filter-bar { border:0; border-block:1px solid var(--home-line); border-radius:0; padding-inline:0; }
+
+/* Rooms list with a map-icon view tab. */
+ .browse-choice { margin:0 0 var(--spacing-6); }
+ .browse-choice .browse-mode { display:flex; align-items:center; gap:calc(.5rem * 1); flex-wrap:wrap; }
+ .browse-choice .browse-mode a { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:3rem; padding:.75rem 1rem; border-radius:var(--radius-action); color:var(--brand-primary); font-weight:600; }
+ .browse-choice .browse-mode svg { width:1.25rem; height:1.25rem; flex:none; }
+ .browse-choice .browse-mode a:hover { background:var(--surface-interactive); }
+ .browse-choice .map-label { font:inherit; }
+ .browse-choice .browse-mode { width:fit-content; padding:.25rem; background:var(--surface-interactive); border-radius:var(--radius-action); } .browse-choice .browse-mode a[aria-current="page"] { background:var(--home-paper); } .browse-choice .map-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); } .browse-choice .browse-mode a[data-browse-view="map"] { min-width:3rem; }
