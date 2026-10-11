@@ -1,4 +1,4 @@
-// Framework independent: load once in any Hamtry page, before your components.
+// Framework-ээс хамаарахгүй: Hamtry хуудас бүрд нэг удаа ачаална.
 const endpoint = new URL('./hamtry-theme.css', import.meta.url)
 const style = document.createElement('style')
 style.dataset.hamtrySharedTheme = 'true'

@@ -1,0 +1,53 @@
+/* Theme declarations come from theme.js and /hamtry-theme.css. */
+.type-display-lg {
+  font: 700 var(--type-display-lg)/var(--line-height-display-lg)
+    var(--font-sans);
+  letter-spacing: -0.02em;
+}
+.type-display-md {
+  font: 700 var(--type-display-md)/var(--line-height-display-md)
+    var(--font-sans);
+  letter-spacing: -0.015em;
+}
+.type-heading-h1 {
+  font: 600 var(--type-heading-h1)/var(--line-height-heading-h1)
+    var(--font-sans);
+  letter-spacing: -0.01em;
+}
+.type-heading-h2 {
+  font: 600 var(--type-heading-h2)/var(--line-height-heading-h2)
+    var(--font-sans);
+  letter-spacing: -0.007em;
+}
+.type-heading-h3 {
+  font: 600 var(--type-heading-h3)/var(--line-height-heading-h3)
+    var(--font-sans);
+  letter-spacing: -0.005em;
+}
+.type-heading-h4 {
+  font: 600 var(--type-heading-h4)/var(--line-height-heading-h4)
+    var(--font-sans);
+  letter-spacing: -0.003em;
+}
+.type-body-lg {
+  font: 400 var(--type-body-lg)/var(--line-height-body-lg) var(--font-sans);
+}
+.type-body-md {
+  font: 400 var(--type-body-md)/var(--line-height-body-md) var(--font-sans);
+}
+.type-body-sm {
+  font: 400 var(--type-body-sm)/var(--line-height-body-sm) var(--font-sans);
+}
+.type-label-lg {
+  font: 600 var(--type-label-lg)/var(--line-height-label-lg) var(--font-sans);
+}
+.type-label-md {
+  font: 600 var(--type-label-md)/var(--line-height-label-md) var(--font-sans);
+}
+.type-label-sm {
+  font: 600 var(--type-label-sm)/var(--line-height-label-sm) var(--font-sans);
+  letter-spacing: 0.002em;
+}
+.type-caption {
+  font: 400 var(--type-caption)/var(--line-height-caption) var(--font-sans);
+}

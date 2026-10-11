@@ -1,7 +1,12 @@
 {
   "version": 2,
   "overrides": {
-    "base": {},
+    "base": {
+      "brand/primary-subtle": "#e6902d",
+      "surface/base": "#ffeae0",
+      "surface/subtle": "#f42f2f",
+      "surface/elevated": "#eb1414"
+    },
     "tablet": {},
     "mobile": {}
   },
@@ -657,7 +662,7 @@
       "cssVariable": "--brand-primary-subtle",
       "type": "color",
       "values": {
-        "base": "var(--brand-accent-lime)"
+        "base": "#e6902d"
       }
     },
     {
@@ -665,7 +670,7 @@
       "cssVariable": "--surface-base",
       "type": "color",
       "values": {
-        "base": "#fcfdf8"
+        "base": "#ffeae0"
       }
     },
     {
@@ -673,7 +678,7 @@
       "cssVariable": "--surface-subtle",
       "type": "color",
       "values": {
-        "base": "#f2f5e9"
+        "base": "#f42f2f"
       }
     },
     {
@@ -681,7 +686,7 @@
       "cssVariable": "--surface-elevated",
       "type": "color",
       "values": {
-        "base": "#ffffff"
+        "base": "#eb1414"
       }
     },
     {
