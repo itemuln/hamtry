@@ -14,6 +14,7 @@ export default defineConfig({
     rolldownOptions: {
       input: {
         app: resolve(import.meta.dirname, 'index.html'),
+        explore: resolve(import.meta.dirname, 'explore.html'),
         components: resolve(import.meta.dirname, 'components.html'),
         editor: resolve(import.meta.dirname, 'editor.html'),
       },

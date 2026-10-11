@@ -14,6 +14,24 @@ Read [architecture](architecture.md) and [API contract](api-contract.md) first.
 
 ## Navigation and data
 
+The homepage hero search uses two large SVG choices on a centered cream surface (max-width 40rem),
+with centered icon-label groups:
+`Өрөөнүүдийг үзэх` resets filters and routes directly to `#rooms`;
+`Хамтрагч хайх` reveals the location/budget form and updates `aria-expanded`.
+The form has a stable `roommate-search` id and is hidden outside roommate mode.
+Submit is delegated from the page, uses native FormData and routes to `#roommates`.
+
+The hero map action is a cream button-like anchor with an authored SVG map icon,
+labeled `Газрын зургаас харах`, navigating to the existing `#map` route.
+
+On `#home`, `.experience-intro` replaces the repeated listing teaser: an authored
+CSS door anchor opens `/explore.html#inside/home`, the city action opens
+`/explore.html#city/home`, and the lamp toggles only its introduction panel's
+`data-lights-off` state with an accessible pressed state and updated action label.
+It adds no second WebGL renderer. The original `#results` remains in the page and
+appears on browse, saved and provider routes. The skip link focuses the visible
+introduction heading on home and the result heading on other routes.
+
 Hash routes: `#home`, `#map`, `#rooms`, `#roommates`, `#saved`, `#dashboard`,
 `#listing/<id>`. Unknown routes fall back to home. Missing detail IDs go to rooms
 with feedback. Closing the detail modal returns to the previous browse page;
@@ -54,7 +72,11 @@ are native buttons outside it. Three is lazy and separate from initial app and R
 
 Original Hamtry content inspired by https://3destate.pl/en/ spatial presentation
 and https://montempz.mn/ typography/navigation/section pacing. Token-derived warm
-paper, brand dark/lime/pink, `--font-display` Manrope. Page mixes surface/base with
+paper, brand dark/lime/pink, homepage-scoped Literata headings and Source Sans 3 body/controls. Fonts are self-hosted,
+with only used weights and Latin/Cyrillic/Cyrillic-extended subsets. Controls use a
+1rem floor; supporting metadata uses .9375rem. Overrides inherit into our Shadow
+DOM components without changing saved shared theme values. Navigation collapses
+at 60rem to accommodate readable labels. Page mixes surface/base with
 white; it does not rewrite saved overrides. Do not replace authoritative theme
 values merely to make a screenshot match defaults.
 

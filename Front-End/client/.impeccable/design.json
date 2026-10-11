@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T09:52:58.071141+00:00",
+  "title": "Design System: Hamtry Explore",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "destination",
+        "value": "0 .5rem 2rem #294b400a",
+        "purpose": "Observed diffuse destination overlay; flatter depth preferred."
+      },
+      {
+        "name": "marker",
+        "value": "0 .2rem .8rem #294b4012",
+        "purpose": "Observed low-opacity marker separation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-transition",
+        "value": "150ms",
+        "purpose": "Existing hover state transitions; disabled for reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "explore-tablet",
+        "value": "65em"
+      },
+      {
+        "name": "explore-mobile",
+        "value": "42em"
+      }
+    ],
+    "colorMeta": {
+      "pine": {
+        "role": "primary",
+        "displayName": "Pine",
+        "tonalRamp": [
+          "oklch(15% 0.0444 171.09)",
+          "oklch(25% 0.0444 171.09)",
+          "oklch(35% 0.0444 171.09)",
+          "oklch(45% 0.0444 171.09)",
+          "oklch(55% 0.0444 171.09)",
+          "oklch(65% 0.0444 171.09)",
+          "oklch(80% 0.0444 171.09)",
+          "oklch(95% 0.0444 171.09)"
+        ]
+      },
+      "cream": {
+        "role": "neutral",
+        "displayName": "Warm cream",
+        "tonalRamp": [
+          "oklch(15% 0.0131 82.40)",
+          "oklch(25% 0.0131 82.40)",
+          "oklch(35% 0.0131 82.40)",
+          "oklch(45% 0.0131 82.40)",
+          "oklch(55% 0.0131 82.40)",
+          "oklch(65% 0.0131 82.40)",
+          "oklch(80% 0.0131 82.40)",
+          "oklch(95% 0.0131 82.40)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0073 80.72)",
+          "oklch(25% 0.0073 80.72)",
+          "oklch(35% 0.0073 80.72)",
+          "oklch(45% 0.0073 80.72)",
+          "oklch(55% 0.0073 80.72)",
+          "oklch(65% 0.0073 80.72)",
+          "oklch(80% 0.0073 80.72)",
+          "oklch(95% 0.0073 80.72)"
+        ]
+      },
+      "terracotta": {
+        "role": "secondary",
+        "displayName": "Terracotta",
+        "tonalRamp": [
+          "oklch(15% 0.1200 40.23)",
+          "oklch(25% 0.1200 40.23)",
+          "oklch(35% 0.1200 40.23)",
+          "oklch(45% 0.1200 40.23)",
+          "oklch(55% 0.1200 40.23)",
+          "oklch(65% 0.1200 40.23)",
+          "oklch(80% 0.1200 40.23)",
+          "oklch(95% 0.1200 40.23)"
+        ]
+      },
+      "pine-hover": {
+        "role": "primary",
+        "displayName": "Pine hover",
+        "tonalRamp": [
+          "oklch(15% 0.0389 171.82)",
+          "oklch(25% 0.0389 171.82)",
+          "oklch(35% 0.0389 171.82)",
+          "oklch(45% 0.0389 171.82)",
+          "oklch(55% 0.0389 171.82)",
+          "oklch(65% 0.0389 171.82)",
+          "oklch(80% 0.0389 171.82)",
+          "oklch(95% 0.0389 171.82)"
+        ]
+      },
+      "pine-pressed": {
+        "role": "primary",
+        "displayName": "Pine pressed",
+        "tonalRamp": [
+          "oklch(15% 0.0356 168.59)",
+          "oklch(25% 0.0356 168.59)",
+          "oklch(35% 0.0356 168.59)",
+          "oklch(45% 0.0356 168.59)",
+          "oklch(55% 0.0356 168.59)",
+          "oklch(65% 0.0356 168.59)",
+          "oklch(80% 0.0356 168.59)",
+          "oklch(95% 0.0356 168.59)"
+        ]
+      },
+      "interactive": {
+        "role": "neutral",
+        "displayName": "Interactive",
+        "tonalRamp": [
+          "oklch(15% 0.0137 92.99)",
+          "oklch(25% 0.0137 92.99)",
+          "oklch(35% 0.0137 92.99)",
+          "oklch(45% 0.0137 92.99)",
+          "oklch(55% 0.0137 92.99)",
+          "oklch(65% 0.0137 92.99)",
+          "oklch(80% 0.0137 92.99)",
+          "oklch(95% 0.0137 92.99)"
+        ]
+      },
+      "secondary-text": {
+        "role": "neutral",
+        "displayName": "Secondary text",
+        "tonalRamp": [
+          "oklch(15% 0.0204 147.87)",
+          "oklch(25% 0.0204 147.87)",
+          "oklch(35% 0.0204 147.87)",
+          "oklch(45% 0.0204 147.87)",
+          "oklch(55% 0.0204 147.87)",
+          "oklch(65% 0.0204 147.87)",
+          "oklch(80% 0.0204 147.87)",
+          "oklch(95% 0.0204 147.87)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border",
+        "tonalRamp": [
+          "oklch(15% 0.0192 130.21)",
+          "oklch(25% 0.0192 130.21)",
+          "oklch(35% 0.0192 130.21)",
+          "oklch(45% 0.0192 130.21)",
+          "oklch(55% 0.0192 130.21)",
+          "oklch(65% 0.0192 130.21)",
+          "oklch(80% 0.0192 130.21)",
+          "oklch(95% 0.0192 130.21)"
+        ]
+      },
+      "clay-label": {
+        "role": "secondary",
+        "displayName": "Clay label",
+        "tonalRamp": [
+          "oklch(15% 0.0974 41.44)",
+          "oklch(25% 0.0974 41.44)",
+          "oklch(35% 0.0974 41.44)",
+          "oklch(45% 0.0974 41.44)",
+          "oklch(55% 0.0974 41.44)",
+          "oklch(65% 0.0974 41.44)",
+          "oklch(80% 0.0974 41.44)",
+          "oklch(95% 0.0974 41.44)"
+        ]
+      },
+      "soft-green": {
+        "role": "neutral",
+        "displayName": "Soft green",
+        "tonalRamp": [
+          "oklch(15% 0.0170 137.03)",
+          "oklch(25% 0.0170 137.03)",
+          "oklch(35% 0.0170 137.03)",
+          "oklch(45% 0.0170 137.03)",
+          "oklch(55% 0.0170 137.03)",
+          "oklch(65% 0.0170 137.03)",
+          "oklch(80% 0.0170 137.03)",
+          "oklch(95% 0.0170 137.03)"
+        ]
+      },
+      "lime": {
+        "role": "secondary",
+        "displayName": "Lime",
+        "tonalRamp": [
+          "oklch(15% 0.0556 124.24)",
+          "oklch(25% 0.0556 124.24)",
+          "oklch(35% 0.0556 124.24)",
+          "oklch(45% 0.0556 124.24)",
+          "oklch(55% 0.0556 124.24)",
+          "oklch(65% 0.0556 124.24)",
+          "oklch(80% 0.0556 124.24)",
+          "oklch(95% 0.0556 124.24)"
+        ]
+      },
+      "pink": {
+        "role": "secondary",
+        "displayName": "Pink",
+        "tonalRamp": [
+          "oklch(15% 0.0716 42.81)",
+          "oklch(25% 0.0716 42.81)",
+          "oklch(35% 0.0716 42.81)",
+          "oklch(45% 0.0716 42.81)",
+          "oklch(55% 0.0716 42.81)",
+          "oklch(65% 0.0716 42.81)",
+          "oklch(80% 0.0716 42.81)",
+          "oklch(95% 0.0716 42.81)"
+        ]
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Travel button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary scene destination action.",
+      "html": "<button class=\"ds-primary\">Энд очъё</button>",
+      "css": ".ds-primary{font-family:var(--font-sans,Inter,system-ui,sans-serif);color:#294b40;background:#294b40;color:#fffcf7;border:0;border-radius:2rem;min-height:2.75rem;padding:0 1.1rem;font-size:.75rem;font-weight:600;cursor:pointer;transition:background .15s}.ds-primary:hover{background:#1f3c33}.ds-primary:active{background:#183128}.ds-primary:focus-visible{outline:.18rem solid #b85832;outline-offset:.3rem}"
+    },
+    {
+      "name": "Outline button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary furniture and settings actions.",
+      "html": "<button class=\"ds-outline\">Тохиргоо</button>",
+      "css": ".ds-outline{font-family:var(--font-sans,Inter,system-ui,sans-serif);color:#294b40;background:transparent;border:.0625rem solid #cbd2c5;border-radius:.5rem;min-height:2.75rem;padding:0 1rem;font-weight:600;cursor:pointer}.ds-outline:hover{background:#ebe8de}.ds-outline:focus-visible{outline:.18rem solid #b85832;outline-offset:.3rem}"
+    },
+    {
+      "name": "Text field",
+      "kind": "input",
+      "description": "Shared labeled native input styling under Explore tokens.",
+      "html": "<label class=\"ds-field\">Байршил<input placeholder=\"Байршил оруулах\" /></label>",
+      "css": ".ds-field{font-family:var(--font-sans,Inter,system-ui,sans-serif);color:#294b40;display:flex;flex-direction:column;gap:.5rem;font-size:.875rem;font-weight:600}.ds-field input{font:inherit;font-weight:400;background:#fffcf7;color:#294b40;border:.0625rem solid #cbd2c5;border-radius:.5rem;height:3rem;padding:.75rem}.ds-field input:hover{border-color:#879574}.ds-field input:focus-visible{outline:.18rem solid #b85832;outline-offset:.3rem}"
+    },
+    {
+      "name": "Place marker",
+      "kind": "chip",
+      "description": "Projected place selection with selected and default states.",
+      "html": "<button class=\"ds-marker\" aria-pressed=\"true\">Таны орон зай</button>",
+      "css": ".ds-marker{font-family:var(--font-sans,Inter,system-ui,sans-serif);color:#294b40;background:#fffcf7;border:.0625rem solid #cbd2c5;border-radius:2rem;min-height:2.75rem;padding:.6rem .85rem;font-size:.7rem;font-weight:600;cursor:pointer}.ds-marker:hover,.ds-marker[aria-pressed=\"true\"]{background:#294b40;color:#fffcf7;border-color:#294b40}.ds-marker:focus-visible{outline:.18rem solid #b85832;outline-offset:.3rem}"
+    },
+    {
+      "name": "Destination panel",
+      "kind": "card",
+      "refersTo": "destination-panel",
+      "description": "Quiet description overlay beside the spatial world.",
+      "html": "<article class=\"ds-destination\"><h2>Таны орон зай</h2><p>Өөрийн булангаа ол.</p></article>",
+      "css": ".ds-destination{font-family:var(--font-sans,Inter,system-ui,sans-serif);color:#294b40;background:#fffcf7;border-radius:1rem;padding:1.4rem 1.5rem}.ds-destination h2{font-size:1.4rem;margin:0 0 .5rem;letter-spacing:-.03em}.ds-destination p{color:#626d63;font-size:.875rem;line-height:1.9;margin:0}"
+    },
+    {
+      "name": "Quiet navigation",
+      "kind": "nav",
+      "description": "Existing desktop text navigation.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">Хот доторх таны булан</a><a href=\"#\">Бүх өрөө</a></nav>",
+      "css": ".ds-nav{font-family:var(--font-sans,Inter,system-ui,sans-serif);color:#294b40;display:flex;gap:2.5rem;font-size:.8rem}.ds-nav a{color:inherit;text-decoration:none}.ds-nav a[aria-current]{color:#626d63}.ds-nav a:hover{text-decoration:underline}.ds-nav a:focus-visible{outline:.18rem solid #b85832;outline-offset:.3rem}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A small city, a shared home",
+    "overview": "Calm, warm and playful, confirmed by the user on 2026-10-11. The Three.js\nworld provides the spatial character; the HTML interface uses quiet surfaces,\nclear text and approachable rounded controls. The user's confirmed preference\nis flatter depth and restrained controls. Existing diffuse overlay shadows are\nrecorded as implementation evidence, not a mandate to amplify elevation.\n\nThis record describes the Explore surface and its use of the shared native\ncomponent library. Explore's host-scoped palette overrides the shared theme.\nIt does not replace the separately saved homepage/editor palette. Source truth:\n`src/app/explore.css`, `src/library/design-system/components.css`, and\n`src/library/design-system/theme.js`.",
+    "keyCharacteristics": [
+      "A spatial artifact with a restrained HTML interface.",
+      "Warm cream surfaces, pine actions, and a terracotta headline accent.",
+      "Rounded controls and subtle borders, with flat depth preferred.",
+      "Mongolian copy and visible keyboard controls alongside scene interactions."
+    ],
+    "rules": [
+      {
+        "name": "The Scope Rule",
+        "body": "Apply this palette inside Explore; preserve the user's saved shared theme and other page scopes.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do keep scene actions available through labeled HTML controls.",
+      "Do use native components and preserve keyboard focus and reduced motion.",
+      "Do prefer flatter depth and restrained controls, as the user requested.",
+      "Do preserve Explore's palette scope and the separate saved shared theme."
+    ],
+    "donts": [
+      "Don't turn this surface's palette into an unapproved site-wide theme change.",
+      "Don't replace native control behavior with canvas-only interactions.",
+      "Don't add permanent decorative animation or continuous idle rendering."
+    ]
+  }
+}

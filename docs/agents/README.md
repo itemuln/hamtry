@@ -18,6 +18,7 @@ the human teaching guides are in [../human](../human/README.md).
 - `/` is the interactive Hamtry homepage; component demo is `/components.html`.
 - [Homepage contract](homepage.md) covers routes, local storage, UX and Three lifecycle.
 - [Map and phone-photo tour contract](photo-tours.md) covers owner uploads and browser-local media.
+- [Three.js Explore contract](explore.md) covers the city, travel, furniture navigation and GPU budgets.
 - Complete React showcase/theme editor remains separately at `/editor.html`.
 - Fourteen components are implemented. Navigation/search/detail/save and browser-local
   provider previews work with explicit fixtures. Real accounts/contact/marketplace APIs are absent.

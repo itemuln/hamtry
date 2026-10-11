@@ -7,6 +7,11 @@ real accounts/contact/backend persistence are not connected.
 Component development is `/components.html`. The complete React showcase and theme
 editor live separately at `/editor.html`.
 
+`/explore.html` is the native Three.js city/furniture experience: select a destination,
+travel by car, enter through a door, and open Hamtry fixture selections through
+furniture. Accessible HTML controls mirror scene interactions. See the
+[Explore guide](../../docs/human/explore.md) and [renderer contract](../../docs/agents/explore.md).
+
 ```sh
 npm install
 npm run dev

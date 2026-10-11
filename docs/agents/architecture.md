@@ -18,10 +18,11 @@ Paths below are relative to `Front-End/client`, unless explicitly noted.
 | Live stylesheet loader | `public/hamtry-theme.js` | Poll saved CSS, retain last successful theme, notify page |
 | Native homepage | `src/app/main.js`, `pages/home.js`, `home.css`, `state/`, `data/`, `index.html` | Consumer composition, hash navigation, local UX/state/data |
 | App scene | `src/app/components/hero-scene.js`, `hero-scene.css`, `apartment-scene.js` | Native Shadow DOM scene owner; lazy raw Three renderer |
+| 3D world | `explore.html`, `src/app/explore.js`, `pages/explore.js`, `explore.css`, `components/explore-scene.js`, `data/places.js` | City travel, furniture navigation, on-demand raw Three renderer |
 | Apartment map and photo tour | `src/app/components/{apartment-map,map-renderer,room-editor,photo-tour}.js`, `state/media-store.js` | Product map, grouped phone photos and browser-local Blob storage |
 | Component demo | `src/app/demo.js`, `pages/component-demo.js`, `components/counter.js`, `styles.css`, `components.html` | Isolated component/engine playground |
 | React authoring UI | `src/editor/main.jsx`, `src/editor/App.jsx`, sibling editor modules, `editor.html` | Complete separate showcase and explicit draft/save editor |
-| Tooling | `vite.config.js`, `jsconfig.json`, `eslint.config.js` | Alias resolution, three page builds, React rules restricted to editor JSX |
+| Tooling | `vite.config.js`, `jsconfig.json`, `eslint.config.js` | Alias resolution, four page builds, React rules restricted to editor JSX |
 
 ## Dependency direction
 

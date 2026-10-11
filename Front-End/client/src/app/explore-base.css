@@ -1,0 +1,2 @@
+/* This entry's canvas and native controls use their own local palette. */
+body { background: #f4efe6; min-height: 100svh; }
