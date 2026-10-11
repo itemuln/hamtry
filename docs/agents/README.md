@@ -34,3 +34,5 @@ passing local checks as production acceptance, deployment, or publication.
 ## Next work
 
 - [Ordered implementation plan](roadmap.md)
+
+- [VPS deployment](deployment.md)

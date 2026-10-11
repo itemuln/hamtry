@@ -35,3 +35,5 @@ theme editor харагдана. [Нүүр ба scene-ийн гарын авла
 
 - [UX/UI ба Three.js roadmap](roadmap.md)
 - [JavaScript folder structure](folder-structure.md)
+
+- [VPS deployment](deployment.md)

@@ -1,0 +1,25 @@
+[Unit]
+Description=Hamtry frontend and shared theme server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hamtry
+Group=hamtry
+EnvironmentFile=/etc/hamtry/hamtry.env
+WorkingDirectory=/opt/hamtry/frontend/current
+ExecStart=/opt/hamtry/runtime/node/bin/node /opt/hamtry/frontend/current/server/index.js
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=30s
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/hamtry/theme
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.target

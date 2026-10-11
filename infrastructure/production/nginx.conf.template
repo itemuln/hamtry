@@ -1,0 +1,45 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name __SERVER_NAME__;
+    location ^~ /.well-known/acme-challenge/ { root /var/www/certbot; }
+    location / { return 301 https://$host$request_uri; }
+}
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name __SERVER_NAME__;
+    ssl_certificate /etc/letsencrypt/live/__SERVER_NAME__/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/__SERVER_NAME__/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    client_max_body_size 64k;
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    # The local editor has no account authentication. Public deployment is read-only.
+    location = /api/theme {
+        limit_except GET { deny all; }
+        proxy_pass http://127.0.0.1:__FRONTEND_PORT__;
+        add_header Cache-Control "no-store" always;
+    }
+    location = /hamtry-theme.css {
+        limit_except GET { deny all; }
+        proxy_pass http://127.0.0.1:__FRONTEND_PORT__;
+        add_header Cache-Control "no-store" always;
+    }
+    location = /editor.html { return 404; }
+    location = /actuator/health {
+        proxy_pass http://127.0.0.1:__BACKEND_PORT__;
+        add_header Cache-Control "no-store" always;
+    }
+    location /actuator { return 404; }
+    location /api/ { proxy_pass http://127.0.0.1:__BACKEND_PORT__; }
+    location / {
+        limit_except GET { deny all; }
+        proxy_pass http://127.0.0.1:__FRONTEND_PORT__;
+        add_header Cache-Control "no-cache" always;
+    }
+}
