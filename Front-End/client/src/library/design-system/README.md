@@ -13,12 +13,14 @@ user palette: lime `#DBF799`, pink `#FFC4C5`, and dark green `#2F371F`. `theme.j
 `brand/primary` → `var(--brand-primary)`. It includes 26 semantic colors,
 dimension tokens, responsive layout/type tokens, 13 typography classes, and
 three shadow levels. Inter 400/600/700 is bundled locally, including Cyrillic.
+`--font-display` uses Manrope in the native homepage; its 600/800 Cyrillic fonts
+are bundled by the app. The editor retains its existing Inter typography.
 The theme is light because that is the supplied Hamtry semantic mode.
 
 The single token model in `theme.js` generates declarations. `tokens.css` now
 contains the typography classes. Saved rem values render through the fluid
 `--u` unit, so live theme loading no longer replaces fluid values with fixed
-defaults. The native library at `/` uses the same generated stylesheet; see
+defaults. The native homepage at `/` and component demo at `/components.html` use the same generated stylesheet; see
 `../core/README.md` for its API.
 
 Import `tokens.css` once at the application root. Component styles are imported
@@ -153,3 +155,11 @@ Shared persistence checks also cover a separate browser context, live plain-JS
 Shadow DOM consumers, rem scaling with increased root text size, disk persistence,
 invalid server writes, and the built authoring server. Run `npm test` for theme
 store and value validation tests.
+
+## Native additions
+
+The native library also includes token-styled `hamtry-chip` (pressed selection)
+and `hamtry-dialog` (native modal focus/Escape/top layer). They are app-driven
+additions and are not claimed as existing Figma nodes or React exports. See the
+[human component guide](../../../../../docs/human/components.md) and
+[homepage contract](../../../../../docs/agents/homepage.md).

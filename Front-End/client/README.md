@@ -1,8 +1,11 @@
 # Hamtry native app and separate design editor
 
-Our own signal framework and 12 native Web Components share Hamtry CSS variables.
-The component development page is `/`. The complete React showcase and theme
-editor live separately at `/editor.html`. Homepage visuals are deferred.
+Our own JavaScript signal framework and 14 native Web Components share Hamtry CSS variables.
+The interactive homepage is `/`: raw Three.js apartment, search, filters, details,
+saved choices and browser-local room-posting previews. Example data is labeled;
+real accounts/contact/backend persistence are not connected.
+Component development is `/components.html`. The complete React showcase and theme
+editor live separately at `/editor.html`.
 
 ```sh
 npm install
@@ -39,10 +42,11 @@ registerComponents()
 ```
 
 This alias resolves to `src/library/index.js`; it is not a published npm package.
-All twelve native components use open Shadow DOM and shared design tokens.
+All fourteen native components use open Shadow DOM and shared design tokens.
 
 - [Human guides (Mongolian)](../../docs/human/README.md): architecture, class/lifecycle lessons, state, component examples, and theme usage.
 - [Agent guides](../../docs/agents/README.md): file ownership, API contracts, and validation workflow.
+- [Homepage and scene guide](../../docs/human/homepage.md): UX routes, class/signals, local data, and GPU cleanup.
 
 Consume variables such as `var(--brand-primary)` and `var(--spacing-4)` inside
 component styles, including Shadow DOM. See [the design system documentation](src/library/design-system/README.md)

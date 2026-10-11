@@ -15,10 +15,11 @@ the human teaching guides are in [../human](../human/README.md).
 - This is a local source library, not a published/installable npm package.
 - Native library: custom signal engine, class-based Web Components, Shadow DOM,
   token-driven styles. No React/Svelte runtime dependency in native code.
-- `/` is a component development demo. Homepage visuals remain deferred.
+- `/` is the interactive Hamtry homepage; component demo is `/components.html`.
+- [Homepage contract](homepage.md) covers routes, local storage, UX and Three lifecycle.
 - Complete React showcase/theme editor remains separately at `/editor.html`.
-- Twelve components are implemented. Marketplace data and save actions are examples;
-  account/listing persistence and product navigation are not implemented.
+- Fourteen components are implemented. Navigation/search/detail/save and browser-local
+  provider previews work with explicit fixtures. Real accounts/contact/marketplace APIs are absent.
 - Spring backend is separate; do not infer feature APIs from its scaffold.
 
 ## Immediate rules

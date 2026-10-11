@@ -64,7 +64,7 @@ loads `src/styles/base.css` and `/hamtry-theme.js` separately.
 
 ## Components and public state
 
-`registerComponents()` registers all 12 elements, skipping existing names.
+`registerComponents()` registers all 14 elements, skipping existing names.
 Instances expose native events and the contracts below. Attribute names do not
 automatically become JS properties. Boolean attributes use presence semantics.
 
@@ -82,6 +82,8 @@ automatically become JS properties. Boolean attributes use presence semantics.
 | `hamtry-tabs` | selected attribute; direct panel children with label | numeric selected; hamtry-tab-change `{ selected }` |
 | `hamtry-roommate-card` | heading/image/image-alt/location/price/description/saved; slotted extras | saved; hamtry-save `{ saved }` |
 | `hamtry-property-card` | Same card API, different image proportions | saved; hamtry-save `{ saved }` |
+| `hamtry-chip` | selected/disabled presence attributes, slotted label | selected; hamtry-toggle `{ selected }`; focus() |
+| `hamtry-dialog` | heading attribute, slotted content | open readonly; showModal(), close(value=""); hamtry-dialog-close `{ value }` |
 
 Form controls use `ElementInternals` for `FormData`, validity, reset, state
 restore, and disabled fieldsets. Fields expose form, validity, validationMessage,
@@ -101,6 +103,11 @@ Tabs use ArrowLeft/Right, Home/End and clamp selected index. Direct child list
 changes rebuild the tabs. Label-only attribute mutation is not observed.
 Cards toggle local state and emit intent; they do not persist listings.
 
-Exposed parts: button, control, badge, alert, card. Page code should consume host
+Chip toggles native button aria-pressed and emits selection. Disabled prevents toggle.
+Dialog uses native top-layer/focus/Escape, closes on backdrop/close button and emits
+its returnValue. Programmatic close() also emits the native close event; consumers
+should guard route changes. Dialog content is slotted light DOM.
+
+Exposed parts: button, control, badge, alert, card, dialog. Page code should consume host
 APIs/events rather than private shadow selectors. Test-only shadow inspection is
 appropriate. Always render untrusted text via textContent/properties.

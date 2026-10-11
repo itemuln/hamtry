@@ -16,9 +16,11 @@ Paths below are relative to `Front-End/client`, unless explicitly noted.
 | Saved theme | `theme/hamtry-theme.json` | Validated persisted override data; preserve user edits |
 | Theme routes | `server/theme-store.js` | GET/PUT theme, generated CSS, serialized atomic file writes |
 | Live stylesheet loader | `public/hamtry-theme.js` | Poll saved CSS, retain last successful theme, notify page |
-| Native app/demo | `src/app/main.js`, `src/app/pages/component-demo.js`, `src/app/components/counter.js`, `src/app/styles.css`, `index.html` | Consumer of library; example data and page-level event handling |
+| Native homepage | `src/app/main.js`, `pages/home.js`, `home.css`, `state/`, `data/`, `index.html` | Consumer composition, hash navigation, local UX/state/data |
+| App scene | `src/app/components/hero-scene.js`, `hero-scene.css`, `apartment-scene.js` | Native Shadow DOM scene owner; lazy raw Three renderer |
+| Component demo | `src/app/demo.js`, `pages/component-demo.js`, `components/counter.js`, `styles.css`, `components.html` | Isolated component/engine playground |
 | React authoring UI | `src/editor/main.jsx`, `src/editor/App.jsx`, sibling editor modules, `editor.html` | Complete separate showcase and explicit draft/save editor |
-| Tooling | `vite.config.js`, `jsconfig.json`, `eslint.config.js` | Alias resolution, two page builds, React rules restricted to editor JSX |
+| Tooling | `vite.config.js`, `jsconfig.json`, `eslint.config.js` | Alias resolution, three page builds, React rules restricted to editor JSX |
 
 ## Dependency direction
 
@@ -59,6 +61,6 @@ the shared file. `HAMTRY_THEME_FILE` selects a persistent or isolated test file.
 
 Hamtry aims to be a Mongolian roommate/room marketplace. Product context says
 room providers get an additional dashboard menu; seekers retain shared
-navigation/profile features. Those pages are not implemented by the component
-demo. Build product behavior above the library rather than embedding account,
+navigation/profile features. Those journeys are browser-local prototypes; see [homepage contract](homepage.md).
+Build product behavior above the library rather than embedding account,
 fetch, authorization, or routing logic in reusable controls.

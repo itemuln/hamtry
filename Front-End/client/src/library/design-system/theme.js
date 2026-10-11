@@ -73,7 +73,7 @@ export function themeCss(overrides) {
       .filter((token) => mode === 'base' || token.defaults[mode] !== undefined)
       .map((token) => `  ${token.css}: ${cssValue(token, mode)};`)
       .join('\n')
-  return `/* Hamtry shared variables. Inherited by custom elements and Shadow DOM. */\n:root {\n  --font-sans: 'Inter', system-ui, sans-serif;\n  --u: clamp(1rem, 0.94rem + 0.2vw, 1.125rem);\n${block('base')}\n  --shadow-sm: 0 var(--elevation-sm-offset-y) var(--elevation-sm-blur) rgb(47 55 31 / calc(var(--elevation-sm-opacity) * 1%));\n  --shadow-md: 0 var(--elevation-md-offset-y) var(--elevation-md-blur) rgb(47 55 31 / calc(var(--elevation-md-opacity) * 1%));\n  --shadow-lg: 0 var(--elevation-lg-offset-y) var(--elevation-lg-blur) rgb(47 55 31 / calc(var(--elevation-lg-opacity) * 1%));\n}\n@media (max-width: 64em) {\n:root {\n${block('tablet')}\n}\n}\n@media (max-width: 40em) {\n:root {\n${block('mobile')}\n}\n}\n`
+  return `/* Hamtry shared variables. Inherited by custom elements and Shadow DOM. */\n:root {\n  --font-sans: 'Inter', system-ui, sans-serif;\n  --font-display: 'Manrope', 'Inter', system-ui, sans-serif;\n  --u: clamp(1rem, 0.94rem + 0.2vw, 1.125rem);\n${block('base')}\n  --shadow-sm: 0 var(--elevation-sm-offset-y) var(--elevation-sm-blur) rgb(47 55 31 / calc(var(--elevation-sm-opacity) * 1%));\n  --shadow-md: 0 var(--elevation-md-offset-y) var(--elevation-md-blur) rgb(47 55 31 / calc(var(--elevation-md-opacity) * 1%));\n  --shadow-lg: 0 var(--elevation-lg-offset-y) var(--elevation-lg-blur) rgb(47 55 31 / calc(var(--elevation-lg-opacity) * 1%));\n}\n@media (max-width: 64em) {\n:root {\n${block('tablet')}\n}\n}\n@media (max-width: 40em) {\n:root {\n${block('mobile')}\n}\n}\n`
 }
 export function parseOverrides(value) {
   if (

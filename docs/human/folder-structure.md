@@ -12,12 +12,16 @@ Front-End/client/
 │   │   ├── theme.js            # Default theme bootstrap
 │   │   ├── core/               # signal, effect, scope, DOM helper, base class
 │   │   ├── design-system/      # tokens, theme generator, CSS, system SVG
-│   │   └── components/         # 12 native Web Components
+│   │   └── components/         # 14 native Web Components
 │   ├── app/                    # Сангаа хэрэглэдэг native web app
 │   │   ├── main.js             # Эхлэл: style/theme/tag бүртгэл
-│   │   ├── pages/              # Одоогоор component-demo.js
-│   │   ├── components/         # Зөвхөн app-д хэрэгтэй counter.js
-│   │   └── styles.css          # App layout
+│   │   ├── pages/              # home.js, component-demo.js
+│   │   ├── components/         # counter, hero-scene, apartment-scene
+│   │   ├── state/              # App signals, search/route/restore rules
+│   │   ├── data/               # Тодорхой тэмдэглэсэн жишээ зар
+│   │   ├── home.css            # Нүүрийн layout
+│   │   ├── demo.js             # Компонентын туршилтын entry
+│   │   └── styles.css          # Demo layout
 │   ├── editor/                 # Тусдаа бүрэн React showcase/theme editor
 │   ├── assets/                 # Хуудас, editor-ийн жишээ зураг
 │   └── styles/base.css         # Хуудасны fonts, reset, typography
@@ -26,6 +30,7 @@ Front-End/client/
 ├── public/                     # Shared theme loader, logo
 ├── tests/                      # Энгийн JS runtime/theme тест
 ├── index.html                  # Native page
+├── components.html             # Компонент туршилтын page
 ├── editor.html                 # Editor page
 ├── vite.config.js              # Build/dev болон public alias
 └── jsconfig.json               # Editor import mapping
@@ -40,7 +45,7 @@ docs/
 - Өөр ямар ч page ашиглаж болох control бол `src/library/components/`.
 - Өнгө, typography, radius, spacing-ийн shared утга бол `src/library/design-system/`.
 - Signal/scope зэрэг ерөнхий runtime бол `src/library/core/`.
-- Нүүр хуудас бол `src/app/pages/home.js`; энэ нь дараагийн ажил, одоогоор байхгүй.
+- Нүүр хуудас `src/app/pages/home.js`; төлөв `state/`, жишээ өгөгдөл `data/` дотор.
 - Header/search зэрэг Hamtry app-ийн агуулгатай хэсэг бол `src/app/components/`.
 - Нэг page-ийн Three.js scene бол эхлээд app component дотор. Хоёр ба түүнээс
   олон хэрэглэгч үнэхээр хэрэгтэй бол сан руу ерөнхий API-тай шилжүүлнэ.

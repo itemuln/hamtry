@@ -161,3 +161,36 @@ Custom event-үүд Shadow DOM-ийн хилээр гарна. Энгийн үй
 `::part(button)`, `::part(control)`, `::part(card)`, `::part(alert)`,
 `::part(badge)`-ийг ашиглаж болно. Page нь компонентын private shadow selector
 эсвэл дотоод DOM бүтэц дээр бизнес логик байгуулахгүй.
+
+## Сонголтын chip ба native dialog
+
+```html
+<hamtry-chip selected>Амьтан зөвшөөрнө</hamtry-chip>
+<hamtry-dialog heading="Өрөөний мэдээлэл">
+  <p>Page-ийн агуулга slot-оор орно.</p>
+</hamtry-dialog>
+```
+
+```js
+import { Scope, listen, required } from '@hamtry/library'
+const scope = new Scope()
+scope.run(() => {
+  const chip = required('hamtry-chip', document)
+  listen(chip, 'hamtry-toggle', event => console.log(event.detail.selected))
+  const dialog = required('hamtry-dialog', document)
+  dialog.showModal()
+  listen(dialog, 'hamtry-dialog-close', event => console.log(event.detail.value))
+  // dialog.close('done') гэж programmatic хааж болно.
+})
+```
+
+Chip-ийн `.selected`, `.disabled` property нь boolean, native button
+`aria-pressed`-тэй. `hamtry-toggle` detail `{ selected }` байна. Энэ нь өөрөө
+FormData-д орохгүй; page filter state-даа холбоно. Dialog-ийн `.open` readonly;
+`.showModal()`, `.close(value = '')` хэрэглэнэ. `heading` attribute нь гарчиг;
+`::part(dialog)` нь panel style. Escape, focus trap/return, top layer нь browser
+native behavior. Backdrop болон хаах товч мөн хаана. `close()` өөрөө close event
+гаргах тул route handler төлөвөө шалгаж loop үүсгэхгүй.
+
+Нүүр дээрх бодит хэрэглээг [homepage guide](homepage.md)-аас үзээрэй. Effect дотор
+field property бичихдээ setter-ийн дотоод signal уншилтыг `untrack()`-аар тусгаарлана.

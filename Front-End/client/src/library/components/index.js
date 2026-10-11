@@ -1,3 +1,5 @@
+import { HamtryChip } from './chip.js'
+import { HamtryDialog } from './dialog.js'
 import { HamtryButton, HamtryBadge, HamtryAlert } from './primitives.js'
 import {
   HamtryInput,
@@ -12,6 +14,8 @@ import { HamtryRoommateCard, HamtryPropertyCard } from './cards.js'
 export function registerComponents() {
   // Нэг tag-ийг browser дээр хоёр бүртгэж болохгүй тул өмнө бүртгэсэн эсэхийг шалгана.
   const elements = {
+    'hamtry-chip': HamtryChip,
+    'hamtry-dialog': HamtryDialog,
     'hamtry-button': HamtryButton,
     'hamtry-input': HamtryInput,
     'hamtry-textarea': HamtryTextarea,
@@ -30,6 +34,8 @@ export function registerComponents() {
   }
 }
 export {
+  HamtryChip,
+  HamtryDialog,
   HamtryButton,
   HamtryBadge,
   HamtryAlert,

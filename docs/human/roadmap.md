@@ -1,99 +1,54 @@
-# Дараагийн ажлын төлөвлөгөө: UX, UI, Three.js
+# Дараагийн ажил: ажиллах prototype-оос бодит үйлчилгээ рүү
 
-Бидний зорилго бол Монгол хэрэглэгч хамтрагч эсвэл өрөө хайж, сонголтоо ойлгож,
-итгэлтэй дараагийн алхам хийхэд туслах Hamtry web app. Дүрслэл, хөдөлгөөн нь
-энэ үйлдлийг ойлгомжтой болгоно. Бүх шинэ app код JavaScript, манай framework,
-native Web Components, shared design system дээр ажиллана.
+Бидний зорилго бол Монгол хэрэглэгч өрөө, хамтрагчаа сонгоход туслах Hamtry.
+UI/UX, манай JavaScript framework, native компонент, shared design system ба
+Three.js нь үндсэн чиглэл хэвээр байна.
 
-Энэ файл нь төлөвлөгөө. Доорх шинэ page, search, scene, API нь хараахан
-хэрэгжээгүй. Одоогийн `/` бол component demo; editor `/editor.html` дээр тусдаа.
+## Хийсэн зүйл
 
-## 0. Сууриа цэгцлэх — хийсэн
+- 14 native library компонент, public import, class/state/Shadow DOM гарын авлага.
+- `/` дээр responsive Монгол нүүр, тусдаа `/components.html`, бүрэн `/editor.html`.
+- Байршил/төсөв/түлхүүр үг/амьтны filter → detail → save → reload зам.
+- Native dialog, empty/reset feedback, mobile navigation, local role/dashboard.
+- Мэдээлэл → preview → засах → хөтөчид хадгалах туршилтын зар.
+- Raw Three.js furnished apartment, орон зай сонгох, drag, pause, SVG fallback.
+- Lazy module, offscreen/reduced-motion pause, resource disposal/reconnect.
 
-JavaScript migration, [хавтасны бүтэц](folder-structure.md), public library
-import, Mongolian comments, human/agent guide-ууд бэлэн. 12 компонент,
-state/effect/scope, Shadow DOM ба shared theme-ийн үндэс байна. Editor-ийн
-Save workflow хадгалагдана. Framework-ийг цааш томруулахдаа бодит UX хэрэгцээ
-гарсан үед л API нэмнэ.
+[Нүүр ба scene-ийн заавар](homepage.md) бодит файл, API, хязгаарлалтыг тайлбарлана.
+Жишээ зар, role, хадгалалт нь хичээлийн local prototype; бодит backend биш.
 
-## 1. Гол UX замуудаа тодорхойлох — дараагийн эхний ажил
+## 1. Хэрэглэгчээр UX-ээ шалгах
 
-| Хэрэглэгч | Гол зам | Хэрэглэгч юу ойлгох ёстой вэ? |
-| --- | --- | --- |
-| Хамтрагч хайгч | Нүүр → хамтрагч хайх → filter → profile → холбоо барих | Байршил, төсөв, амьдралын хэв маяг, нүүх хугацаа |
-| Өрөө хайгч | Нүүр → өрөө хайх → filter → room detail → холбоо барих | Үнэ, нөхцөл, зураг, байршил, боломжтой хугацаа |
-| Өрөө санал болгогч | Нүүр → өрөө нийтлэх → мэдээлэл/зураг → preview → нийтлэх | Ямар мэдээлэл хэрэгтэй, засах ба нийтлэх ялгаа |
+3–5 суралцагчид mobile дээр “төсөвтөө таарах өрөө ол”, “дараа үзэхээр хадгал”,
+“өрөөгөө бэлдээд preview хар” гэсэн даалгавар өг. Аль label, алхам дээр
+төөрснийг тэмдэглээд мэдээллийн дараалал, filter, detail copy-г сайжруул.
+Safari/Firefox болон бодит удаан утсан дээр scene-ийн ажиллагааг хэмж.
 
-Навигацийн эхний санал: **Хамтрагчид**, **Өрөөнүүд**, **Хадгалсан**, **Профайл**.
-Өрөө санал болгогчид dashboard нэмэгдэнэ. Бодит role/session API байхгүй үед
-role-ийн UI-г жишээ төлөвөөр үзүүлж, authorization хийсэн гэж тооцохгүй.
+## 2. Backend contract-аа бодитоор тогтоох
 
-Энэ шатны гаралт: mobile/desktop wireframe, page map, CTA нэр ба чиглэл,
-Mongolian copy, loading/empty/error/success төлөвийн жижиг жагсаалт. Зөвхөн
-өнгө үзүүлэхээс өмнө хэрэглэгчийн үндсэн үйлдлийг энэ зураг дээр шалгана.
+Spring backend-ийн одоогийн session, role, listing, save endpoint-ийг эхлээд
+шалгана. Нэвтрэх, authorization, profile-ийн нийтэд харагдах мэдээлэл,
+provider-ийн эрх ба алдааны contract-ийг тодорхойлсны дараа холбоно.
+Local demo role-ийг серверийн эрх гэж тооцохгүй. Loading/error/retry нь зөвхөн
+бодит asynchronous request гарсан үед нэмэгдэнэ.
 
-## 2. Нүүр хуудасны UI ба шаардлагатай компонентууд
+## 3. Жинхэнэ зарын замыг гүйцээх
 
-Эхний бүтэн page: header/navigation → hero → хайлтын сонголт → жишээ зарууд
-→ хэрхэн ажилладаг тайлбар → footer. Header, hero, search bar, listing grid
-нь app composition; button/input/card нь одоогийн сангийн компонент.
+Бодит зураг upload, нүүх хугацаа, хэмжээ, хэрэглээний зардал, тавилга,
+амьдралын нөхцөлийн талбар; preview, засах/устгах, server save.
+Хамтрагчийн profile, холбоо барих хүсэлт, зөвшөөрөл ба хувийн мэдээллийн
+харагдах хүрээг нэг бүтэн UX замаар хийнэ.
 
-Одоогийн design token-уудын өнгө, typography, spacing-ийг ашиглаж, хэрэгтэй
-тохиолдолд л шинэ shared token нэмнэ. Layout нь mobile дээр CTA, хайлт,
-зураг, үнэ гэсэн ойлгомжтой дараалалтай. Card дээр төсөв/түрээс, байршил,
-боломжтой хугацаа тод харагдана. Жишээ мэдээллийг бодит зар эсвэл баталгаажсан
-хэрэглэгч гэж сурталчлахгүй.
+## 4. Дүрслэлээ сайжруулах
 
-Хайлтын interaction шаардмагц filter chip, mobile filter dialog/drawer,
-loading/empty result зэрэг дутагдсан UX хэсгийг нэмнэ. Тэдгээрийн state,
-keyboard focus, event API-г эхлээд тодорхойлно. Зөвхөн үзэмжийн төлөө
-том component inventory шинээр үүсгэхгүй.
+Одоогийн furnished model нь illustrative. Бодит зарын floorplan/3D asset байгаа
+тохиолдолд model loading, ownership, texture disposal, progress/failure UX-ийг
+тодорхойлж нэмнэ. Эхлээд scene-ийн lazy bundle/GPU budget-ийг бодит төхөөрөмж
+дээр хэмжээд shadow/resolution/geometry-гаа тохируул. UI үйлдлийг чимэглэлээс
+үргэлж хүртээмжтэй HTML controls-оор хүргэнэ.
 
-Гаралт: static visual direction бүхий responsive homepage, ажиллах local
-navigation/search prototype, keyboard ашиглаж болох controls. Component demo-г
-тусдаа dev page болгон шилжүүлж, `/`-д homepage байрлуулах нь энэ шатны ажил.
+## 5. Санг түгээх шаардлагатай бол
 
-## 3. Three.js hero ба жижиг хөдөлгөөн
-
-Hero-ийн эхний санал: тайван хөвж, аажмаар эргэдэг glass geometric shape.
-Энэ нь одоогоор санал; хэрэгжүүлэх үед brand direction-тай нь тохируулна.
-Text, хайлт, CTA нь HTML дээр хэвээр байж, canvas нь чимэглэл байна.
-
-- Raw `three`-г app-ийн native `hamtry-hero-scene` component дотор ашиглана.
-- Rotation speed, pause, pointer response нь манай `signal`-аар удирдагдана.
-- Scene-ийн palette нь design system-ээс уншигдана; theme өөрчлөгдвөл шинэчилнэ.
-- Шаардлагатай үед Three module-ийг ачаалж, hidden/offscreen үед animation-ийг
-  түр зогсооно. Resize үед canvas зөв хэмжээнд байна; render resolution-ийг хязгаарлана.
-- Reduced motion эсвэл WebGL unavailable үед static visual үзүүлнэ; хайлт,
-  CTA хэвийн ажиллана. Reduced motion нь хэрэглэгчийн nonessential хөдөлгөөн
-  багасгах хүсэлт юм. [MDN тайлбар](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion).
-- Remove/reconnect үед loop, observer, renderer болон scene-owned GPU resource-ийг
-  цэвэрлэнэ. Geometry/material/texture өөрөө автоматаар чөлөөлөгдөхгүй.
-  [Three.js disposal guide](https://threejs.org/manual/pages/how-to-dispose-of-objects.html).
-
-UI motion: товчны feedback, card save, filter өөрчлөлт, dialog нээгдэх/хаагдах
-зэрэг үйлдлийн үр дүнг харуулна. Эхний хувилбарт нэг hero scene хангалттай.
-
-Гаралт: интерактив hero, static fallback, reduced-motion хувилбар, lifecycle
-cleanup ба mobile performance-ийн browser шалгалт.
-
-## 4. Нүүрээс цааш нэг бүтэн хэрэглэгчийн зам
-
-Эхлээд **хайх → filter → detail → хадгалах** замыг бүрэн prototype болгоно.
-Дараа нь профайл/холбоо барих, provider-ийн нийтлэх flow ба dashboard нэмнэ.
-Local state, sample data-г demo гэж тодорхой байлгана. Backend contract,
-session/role authority тохирсны дараа real persistence холбоно. Profile,
-contact flow-д ямар мэдээлэл нийтэд харагдахыг UX specification-д тодорхойлно.
-
-## 5. Хичээлийн үзүүлэн ба чанар
-
-- Mobile/desktop layout, Mongolian текст, image crop, font болон token consistency.
-- Keyboard/tab focus, form label/error, dialog focus return, reduced motion.
-- Scene offscreen pause, remove/reconnect, image loading, document overflow.
-- Search-ийн empty/loading/error, filter reset, save feedback, back navigation.
-- Runtime/theme tests, lint, build; actual browser-ууд дээр шалгасан хүрээг тэмдэглэнэ.
-- Human guide-д class/state/scene lifecycle-ийн жишээ; agent guide-д API/file map.
-
-Дараагийн concrete deliverable: **homepage-ийн UX map + static UI prototype**.
-Үүний дараа Three.js scene нэмнэ. Нэг дор бүх page, бүх animation хийхгүй;
-нэг бүрэн, ойлгомжтой flow-г үзүүлээд дараагийн flow-д шилжинэ.
+Хоёр дахь app үнэхээр санг ашиглах үед npm package-ийн exports, CSS/fonts,
+versioning ба build contract-ийг гаргана. Одоогийн `@hamtry/library` нь checkout
+доторх alias. Зөвхөн folder харагдуулахын тулд олон package шинээр үүсгэхгүй.

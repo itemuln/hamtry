@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   Tokens["Design system: tokens.json + theme.js"] --> Theme["Shared CSS variables"]
-  Theme --> Components["12 native Web Components"]
+  Theme --> Components["14 native Web Components"]
   Framework["Signal + Effect + Scope + DOM helpers"] --> Components
   Components --> Library["@hamtry/library"]
   Library --> Pages["App pages: өгөгдөл, үйлдэл, navigation"]
@@ -23,7 +23,8 @@ flowchart TD
 | Components | Товч, талбар, tab, card-ийн DOM ба зан төлөв | `Front-End/client/src/library/components/` |
 | Public library | Дээрх боломжуудыг нэг import-оор гаргах | `Front-End/client/src/library/index.js` |
 
-Одоогийн туршилтын хуудас `src/app/main.js` дотор байна. Энэ хуудас сангаас
+Нүүрийн эхлэл `src/app/main.js`, page нь `src/app/pages/home.js` дотор байна.
+[Нүүр ба scene-ийн заавар](homepage.md) бодит урсгалыг тайлбарлана. Энэ хуудас сангаас
 импортлоод ямар текст, зураг, жишээ өгөгдөл үзүүлэхээ шийддэг.
 
 ## Сан өөрөө юу хийхгүй вэ?
@@ -31,7 +32,7 @@ flowchart TD
 Компонентын сан нь зарын API, хэрэглэгчийн session, navigation, төлбөрийн
 логик мэдэхгүй. Жишээ нь card зүрхээ өөрчилж `hamtry-save` event гаргана.
 Хуудас тэр event-ийг сонсоод backend-д хадгалах хүсэлт хийх эсэхээ шийднэ.
-Одоогийн demo-ийн зүрх нь local төлөв бөгөөд backend хадгалалт биш.
+Нүүр дээрх save нь хөтөчийн localStorage-д хадгалагдана; backend хадгалалт биш.
 
 `@hamtry/library` нь энэ checkout-ийн Vite alias ба jsconfig editor mapping.
 Өөр repository-д `npm install @hamtry/library` гэж одоохондоо суулгах боломж
@@ -50,7 +51,7 @@ Browser native DOM дээр шаардлагатай өөрчлөлтийг хи
 
 ## Shadow DOM хаана байна вэ?
 
-Сангийн 12 компонент `HamtryElement`-ээс удамшиж тус бүр shadow root үүсгэнэ.
+Сангийн 14 компонент `HamtryElement`-ээс удамшиж тус бүр shadow root үүсгэнэ.
 Туршилтын хуудасны контейнер, React editor-ийн page DOM нь энгийн light DOM.
 Ингэснээр page layout ердийн CSS-ээр, компонентын доторх layout өөрийн CSS-ээр
 удирдагдана. Shadow DOM нь style тусгаарлалт болохоос нууцлалын хамгаалалт биш.

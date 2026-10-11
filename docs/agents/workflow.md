@@ -27,9 +27,9 @@ Explain decisions in Mongolian code comments without translating API names.
 Form controls must keep native input semantics plus form association. Validate
 FormData, reset/defaults, disabled fieldsets, and keyboard interaction when
 changing them. Do not replace their DOM on every state update or lose focus.
-Future Three.js resources belong to owned mount cleanup: cancel frame loops and
-dispose renderer/materials/geometries on removal. No 3D feature is currently
-implemented.
+Three.js resources belong to owned cleanup: cancel frame loops and dispose
+renderer/materials/geometries/shadows on removal. Preserve asynchronous cancellation
+and new-canvas reconnect behavior; see [homepage contract](homepage.md).
 
 ## Validation commands
 
@@ -43,7 +43,8 @@ rtk git diff --check
 ```
 
 Tests currently cover signal equality, batching, conditional dependencies,
-nested effects, disposal/errors/cycles, and theme persistence/validation.
+nested effects, disposal/errors/cycles, theme persistence/validation, and homepage
+filtering/routing/local-data validation.
 Match additional validation to the change. Documentation-only edits need link,
 path, example, and factual review; public alias changes need lint/build and a
 browser import smoke check. Do not add tests that merely repeat comments.
@@ -61,7 +62,7 @@ cases, rather than only checking that HTML loads:
 - Responsive overflow at 320/390/768/1440; shadow inheritance; root text scaling.
 - Editor drafts isolated; explicit save shared; reload persistence; initial/error
   behavior when a theme-related change requires it.
-- Built `/` and `/editor.html` served by the authoring server; native page stays
+- Built `/`, `/components.html` and `/editor.html` served by the authoring server; native page stays
   independent of the React editor entry.
 
 Theme-save tests must use an isolated temporary `HAMTRY_THEME_FILE`, not the

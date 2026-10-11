@@ -18,15 +18,15 @@ Terminal-ийн working directory нь `Front-End/client` байна.
 rtk npm run dev
 ```
 
-Terminal-д гарсан хаягаар ороход `/` дээр native компонентын туршилт,
-`/editor.html` дээр бүрэн React showcase болон theme editor харагдана.
-Одоогоор энэ нь эцсийн нүүр хуудас биш.
+Terminal-д гарсан хаягаар ороход `/` дээр интерактив нүүр, `/components.html`
+дээр native компонентын туршилт, `/editor.html` дээр бүрэн React showcase ба
+theme editor харагдана. [Нүүр ба scene-ийн гарын авлага](homepage.md)-ыг уншаарай.
 
 Бидний сан энгийн JavaScript ES module-уудаас бүтнэ; React/Svelte runtime
 импортлохгүй. Vite нь module, CSS, asset-уудыг dev болон build үед холбоно. `useState` нэр төстэй боловч React hook-той яг
 ижил API биш: төлөвөө `count()` гэж уншина.
 
-Эхний дасгал: хоёр тоолуурын зөвхөн нэгийг нь нэмээд үз. Нөгөө нь өөрчлөгдөхгүй
+Эхний дасгал: `/components.html` дээрх хоёр тоолуурын зөвхөн нэгийг нь нэмээд үз. Нөгөө нь өөрчлөгдөхгүй
 байгаа нь class-ийн instance бүр өөрийн төлөвтэйг харуулна.
 
 ## Дараагийн ажил
