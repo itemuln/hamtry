@@ -1,12 +1,7 @@
 {
   "version": 2,
   "overrides": {
-    "base": {
-      "brand/primary-subtle": "#e6902d",
-      "surface/base": "#ffeae0",
-      "surface/subtle": "#f42f2f",
-      "surface/elevated": "#eb1414"
-    },
+    "base": {},
     "tablet": {},
     "mobile": {}
   },

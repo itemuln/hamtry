@@ -34,6 +34,9 @@ hamtry-home {
   display: block; background: var(--home-paper); color: var(--brand-primary); min-height: 100dvh;
 }
 hamtry-home [hidden] { display: none !important; }
+hamtry-home .gradient-journey { display: block; }
+hamtry-home[data-page="home"] .site-header { display: none; }
+hamtry-home[data-page="home"] .home-hero { display: none; }
 hamtry-home button, hamtry-home a { touch-action: manipulation; }
 hamtry-home a { text-decoration: none; }
 hamtry-home button { cursor: pointer; }
@@ -314,7 +317,7 @@ hamtry-home[data-page="map"] .listing-results { max-height: 36rem; overflow-y: a
 hamtry-home[data-page="rooms"] .browse-layout, hamtry-home[data-page="map"] .browse-layout { grid-template-columns:minmax(0,1fr); }
 
 /* Accepted white filter band. */
- hamtry-home #results .filter-bar { background:#fff; padding:calc(1rem * 1); }
+ hamtry-home #results .filter-bar { background:var(--surface-elevated); padding:calc(1rem * 1); }
  hamtry-home #results .filter-bar { border:0; border-block:1px solid var(--home-line); border-radius:0; padding-inline:0; }
 
 /* Rooms list with a map-icon view tab. */

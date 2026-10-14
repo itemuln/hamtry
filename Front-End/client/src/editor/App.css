@@ -249,7 +249,7 @@ main > section:not(.intro) {
 .color-token > div {
   height: 4rem;
   border-radius: 0.5rem;
-  border: 0.0625rem solid rgb(47 55 31 / 6%);
+  border: 0.0625rem solid color-mix(in srgb, var(--brand-primary) 6%, transparent);
   margin-bottom: 0.25rem;
 }
 .color-token strong {

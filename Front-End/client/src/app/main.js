@@ -6,6 +6,7 @@ import { HamtryHome } from './pages/home.js'
 import { HamtryApartmentMap } from './components/apartment-map.js'
 import { HamtryRoomEditor } from './components/room-editor.js'
 import { HamtryPhotoTour } from './components/photo-tour.js'
+import { HamtryGradientJourney } from './components/gradient-journey.js'
 
 // App нь сангаа public entry-ээр импортлоно. React editor тусдаа entry-тэй.
 applyDefaultTheme()
@@ -14,4 +15,5 @@ for (const [name, component] of [['hamtry-apartment-map', HamtryApartmentMap], [
   if (!customElements.get(name)) customElements.define(name, component)
 }
 if (!customElements.get('hamtry-hero-scene')) customElements.define('hamtry-hero-scene', HamtryHeroScene)
+if (!customElements.get('hamtry-gradient-journey')) customElements.define('hamtry-gradient-journey', HamtryGradientJourney)
 if (!customElements.get('hamtry-home')) customElements.define('hamtry-home', HamtryHome)

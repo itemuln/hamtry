@@ -4,6 +4,33 @@ const aliases = {
   'brand/primary-subtle': 'brand/accent-lime',
   'text/primary': 'brand/primary',
 }
+const palette = {
+  'brand/primary': '#18213f',
+  'brand/primary-hover': '#10182f',
+  'brand/primary-pressed': '#090f22',
+  'brand/primary-subtle': '#e5e9ff',
+  'surface/base': '#f7f5ff',
+  'surface/subtle': '#eef0ff',
+  'surface/elevated': '#ffffff',
+  'surface/interactive': '#e4e8ff',
+  'text/secondary': '#58627e',
+  'text/tertiary': '#7a849f',
+  'text/disabled': '#a8b0c4',
+  'text/inverse': '#ffffff',
+  'border/subtle': '#e1e4f0',
+  'border/default': '#c8cee2',
+  'border/strong': '#9aa5c3',
+  'status/success': '#304cbd',
+  'status/success-subtle': '#e5e9ff',
+  'status/warning': '#ff4d6d',
+  'status/warning-subtle': '#ffe7ed',
+  'status/error': '#c4274a',
+  'status/error-subtle': '#ffe7ed',
+  'status/info': '#304cbd',
+  'status/info-subtle': '#e5e9ff',
+  'brand/accent-lime': '#ffb78c',
+  'brand/accent-pink': '#ff4d6d',
+}
 function format(value, unit) {
   return typeof value === 'number'
     ? `${unit === 'rem' ? value / 16 : value}${unit}`
@@ -23,9 +50,9 @@ export const themeTokens = source.tokens.map((token) => {
       ? ''
       : 'rem'
   const defaults = {
-    base: aliases[token.name]
+    base: palette[token.name] ?? (aliases[token.name]
       ? `var(--${aliases[token.name].replaceAll('/', '-')})`
-      : format(token.value, unit),
+      : format(token.value, unit)),
   }
   for (const [mode, id] of Object.entries(modeIds)) {
     const value = token.modes[id]

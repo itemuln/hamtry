@@ -29,6 +29,7 @@ export class HamtryHome extends HTMLElement {
         <button type="button" class="profile-button" data-action="profile"><span aria-hidden="true">◎</span> Миний орон зай</button>
       </header>
       <main id="main-content">
+                  <hamtry-gradient-journey class="gradient-journey" tabindex="-1"></hamtry-gradient-journey>
                   <section class="home-hero" aria-labelledby="hero-title">
                         <div class="hero-inner"><div class="hero-copy">
                           <h1 id="hero-title">Нэг орон зай.<br><span>Шинэ эхлэл.</span></h1>
@@ -111,7 +112,7 @@ export class HamtryHome extends HTMLElement {
         // Page солиход keyboard хэрэглэгч шинэ гарчигт очно; modal хаахад native focus return үлдэнэ.
         queueMicrotask(() => {
           if (!this.isConnected) return
-          const heading = required(route.page === 'home' ? '#hero-title' : '#results-title', this)
+          const heading = required(route.page === 'home' ? '.gradient-journey' : '#results-title', this)
           heading.tabIndex = -1; heading.focus({ preventScroll: true })
         })
       }
