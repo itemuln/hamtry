@@ -36,6 +36,7 @@ export class HamtryApartmentMap extends HamtryElement {
           onLocation: location => { this.location = location; emit(this, 'hamtry-location-pick', { location }) },
           onReady: () => { clearTimeout(timer); this.status.set('ready'); if (!pick) controller?.fit(this.listings) },
           onError: () => { if (this.status.get() !== 'ready') this.status.set('error') },
+          showListingDetails: this.hasAttribute('show-listing-details'),
         })
         this.controller = controller
         controller.update(this.listings, this.selectedId, this.location)

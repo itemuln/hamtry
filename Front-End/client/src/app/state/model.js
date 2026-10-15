@@ -1,6 +1,11 @@
 // Browser-оос хамааралгүй хайлтын дүрэм. Тест нь зөвхөн бодит filter/route behavior шалгана.
 export const initialFilters = { district: 'all', maxPrice: 0, query: '', pets: false, conditions: [] }
 export const money = value => new Intl.NumberFormat('mn-MN').format(value) + ' ₮'
+export function calendarGrid(year, month) {
+  const blanks = (new Date(year, month, 1).getDay() + 6) % 7
+  const days = new Date(year, month + 1, 0).getDate()
+  return [...Array(blanks).fill(null), ...Array.from({ length: days }, (_, index) => index + 1)]
+}
 export function findListings(items, filters, kind, saved = null) {
   const words = filters.query.trim().toLocaleLowerCase('mn').split(/\s+/).filter(Boolean)
   return items.filter(item => (!kind || item.kind === kind)

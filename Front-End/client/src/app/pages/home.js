@@ -3,6 +3,7 @@ import { districts, listings, roomImage } from '../data/listings.js'
 import { findListings, initialFilters, money, readRoute, validLocation } from '../state/model.js'
 import { createAppState } from '../state/store.js'
 import { savePhotos, deletePhotos } from '../state/media-store.js'
+import { dashboardMarkup, setupDashboard, updateDashboard } from './dashboard.js'
 
 const budgets = '<option value="0">Төсөв сонгох</option><option value="700000">700,000 ₮ хүртэл</option><option value="1000000">1,000,000 ₮ хүртэл</option><option value="1500000">1,500,000 ₮ хүртэл</option>'
 const text = (root, selector, value) => { required(selector, root).textContent = value }
@@ -40,6 +41,7 @@ export class HamtryHome extends HTMLElement {
                       </section>
                   <section class="experience-intro page-width intro-door" aria-labelledby="experience-title"><div class="intro-heading"><h2 id="experience-title">Хаалганы цаана<br>өөрийн орон зай.</h2><p>Хот дундуур машинаар явж газраа сонго. Хаалгаар нь ор. Буйдангаас өрөөнүүдээ, кафены цэснээс хамтрагчаа нээ.</p><a class="intro-action" href="/explore.html#city/home">Хотыг тойрох <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 19 19 5M5 5h14v14"/></svg></a></div><div class="intro-room"><a class="intro-doorway" href="/explore.html#inside/home" aria-label="3D өрөөнд орох"><span class="intro-door-panel"><span class="intro-door-label">Ороорой</span></span></a><button class="intro-lamp" type="button" data-intro-lamp aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 9-9 25h42L44 9ZM32 34v20M19 54h26M46 34v10"/><circle cx="46" cy="47" r="3"/></svg><span class="lamp-label">Гэрэл унтраах</span></button><span class="intro-room-note">Хаалга дээр дарж 3D өрөөнд орно.</span></div></section>
           
+          ${dashboardMarkup()}
           <section class="listing-section page-width" id="results" aria-labelledby="results-title">
                         <div class="section-heading"><div><h2 id="results-title">Тухтай булангаа олоорой<span class="heading-dot">.</span></h2></div><a class="all-listings" href="#map">Газрын зургаар үзэх <span aria-hidden="true">↗</span></a><hamtry-button class="new-listing" data-action="publish" hidden>Өрөө нэмэх +</hamtry-button></div>
 <section class="browse-choice" aria-label="Өрөөнүүдийг харах хэлбэр"><nav class="browse-mode" aria-label="Жагсаалт эсвэл газрын зураг"><a href="#rooms" data-browse-view="rooms"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h12M9 12h12M9 18h12M3 6h1M3 12h1M3 18h1"/></svg>Өрөөнүүд</a><a href="#map" data-browse-view="map" aria-label="Газрын зураг" title="Газрын зураг"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg><span class="map-label">Газрын зураг</span></a></nav></section>
@@ -85,6 +87,7 @@ export class HamtryHome extends HTMLElement {
       required('.publish-form', this).hidden = false; required('.publish-preview', this).hidden = true
       publish.showModal()
     }
+    setupDashboard(this, { showPublish, toast, listen })
     for (const node of $('[data-action]', this)) listen(node, 'click', () => node.dataset.action === 'profile' ? profile.showModal() : showPublish())
     // Танилцуулгын чийдэн зөвхөн өөрийн хэсгийн гэрлийг солино.
     listen(this, 'click', event => {
@@ -112,7 +115,7 @@ export class HamtryHome extends HTMLElement {
         // Page солиход keyboard хэрэглэгч шинэ гарчигт очно; modal хаахад native focus return үлдэнэ.
         queueMicrotask(() => {
           if (!this.isConnected) return
-          const heading = required(route.page === 'home' ? '.gradient-journey' : '#results-title', this)
+          const heading = required(route.page === 'home' ? '.gradient-journey' : route.page === 'dashboard' ? '#dashboard-title' : '#results-title', this)
           heading.tabIndex = -1; heading.focus({ preventScroll: true })
         })
       }
@@ -227,6 +230,8 @@ export class HamtryHome extends HTMLElement {
       const page = route.page === 'detail' ? this.previousPage : route.page
       const kind = page === 'map' ? 'rooms' : page === 'rooms' || page === 'roommates' ? page : state.kind.get()
       const home = page === 'home', savedPage = page === 'saved', dashboard = page === 'dashboard'
+      required('.provider-dashboard', this).hidden = !dashboard
+      updateDashboard(this, state.published.get())
       const heading = required('#results-title', this), tag = home ? 'H2' : 'H1'
       if (heading.tagName !== tag) {
         const next = document.createElement(tag); next.id = 'results-title'
@@ -238,7 +243,7 @@ export class HamtryHome extends HTMLElement {
       required('.provider-section', this).hidden = !home
       const introductions = $('.experience-intro', this)
       for (const introduction of introductions) introduction.hidden = !home
-      required('#results', this).hidden = home && introductions.length > 0
+      required('#results', this).hidden = dashboard || home && introductions.length > 0
       for (const form of filters) form.hidden = home || dashboard
       const roomMap = page === 'map'
       required('.browse-map', this).hidden = !roomMap

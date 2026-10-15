@@ -2,6 +2,7 @@ import { createServer } from 'node:http'
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { dirname, extname, resolve, sep } from 'node:path'
+import { livenessRoute } from './liveness-proxy.js'
 import { themeRoute } from './theme-store.js'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../dist')
 const types = {
@@ -14,8 +15,10 @@ const types = {
   '.jpg': 'image/jpeg',
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
+  '.wasm': 'application/wasm',
 }
 createServer(async (req, res) => {
+  if (livenessRoute(req, res)) return
   if (await themeRoute(req, res)) return
   if (req.method !== 'GET') {
     res.writeHead(405).end()

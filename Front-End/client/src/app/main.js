@@ -1,5 +1,6 @@
 import '../styles/base.css'
 import './home.css'
+import './dashboard.css'
 import { registerComponents, applyDefaultTheme } from '@hamtry/library'
 import { HamtryHeroScene } from './components/hero-scene.js'
 import { HamtryHome } from './pages/home.js'
