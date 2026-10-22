@@ -1,8 +1,6 @@
-name: Deploy Hamtry production
+name: VPS maintenance deployment
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -90,8 +88,12 @@ jobs:
           artifact_directory="${RUNNER_TEMP}/hamtry-${GITHUB_SHA}"
           install -d -m 0700 "$artifact_directory"
           tar -C Front-End/client -czf "$artifact_directory/frontend.tar.gz" \
-            dist server package.json src/library/design-system/theme.js src/library/design-system/tokens.json
+            dist server package.json theme/hamtry-theme.json src/library/design-system/theme.js src/library/design-system/tokens.json
+          tar -C Back-End/liveness -czf "$artifact_directory/liveness.tar.gz" app.py requirements.txt
           cp Front-End/client/theme/hamtry-theme.json "$artifact_directory/theme-seed.json"
+          production_host=$(node -e 'console.log(new URL(process.argv[1]).hostname)' "$PRODUCTION_URL")
+          sed -e "s/__SERVER_NAME__/${production_host}/g" -e 's/__BACKEND_PORT__/8082/g' -e 's/__FRONTEND_PORT__/4173/g' \
+            infrastructure/production/nginx.conf.template > "$artifact_directory/nginx.conf"
 
           mapfile -t backend_jars < <(
             find Back-End/hamtry/target -maxdepth 1 -type f -name '*.jar' ! -name '*.original' -print
@@ -103,7 +105,7 @@ jobs:
           install -m 0600 "${backend_jars[0]}" "$artifact_directory/hamtry-backend.jar"
           (
             cd "$artifact_directory"
-            sha256sum frontend.tar.gz hamtry-backend.jar theme-seed.json > SHA256SUMS
+            sha256sum frontend.tar.gz hamtry-backend.jar liveness.tar.gz nginx.conf theme-seed.json > SHA256SUMS
           )
 
       - name: Configure pinned SSH connection
@@ -145,6 +147,8 @@ jobs:
             -P "$VPS_PORT" \
             "$artifact_directory/frontend.tar.gz" \
             "$artifact_directory/hamtry-backend.jar" \
+            "$artifact_directory/liveness.tar.gz" \
+            "$artifact_directory/nginx.conf" \
             "$artifact_directory/theme-seed.json" \
             "$artifact_directory/SHA256SUMS" \
             "hamtry-deploy@${VPS_HOST}:${remote_directory}/"
@@ -166,6 +170,8 @@ jobs:
             "${production_origin}/" >/dev/null
           curl --fail --silent --show-error --retry 5 --retry-delay 2 --retry-all-errors \
             "${production_origin}/actuator/health" >/dev/null
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 --retry-all-errors \
+            -X POST "${production_origin}/api/liveness/sessions" >/dev/null
           # shellcheck disable=SC2016 # Markdown backticks are literal.
           printf 'Deployed `%s` to [%s](%s).\n' \
             "$GITHUB_SHA" "$production_origin" "$production_origin" >> "$GITHUB_STEP_SUMMARY"

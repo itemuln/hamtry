@@ -1,5 +1,6 @@
 import '../styles/base.css'
 import './home.css'
+import './dashboard.css'
 import { registerComponents, applyDefaultTheme } from '@hamtry/library'
 import { HamtryHome } from './pages/home.js'
 import { HamtryApartmentMap } from './components/apartment-map.js'

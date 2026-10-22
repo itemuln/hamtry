@@ -18,7 +18,7 @@
 @import '@fontsource/literata/cyrillic-ext-700-italic.css';
 
 /* Хуудасны palette нь shared token-оос гарна; хадгалсан editor theme-ийг дарж бичихгүй. */
-hamtry-home {
+hamtry-home:not([data-page="dashboard"]) {
   /* Уншигдах хэмжээ нь хуудасны хүрээнд үйлчилнэ; shared theme хадгалалтыг өөрчлөхгүй. */
   --font-sans: 'Source Sans 3', sans-serif;
   --font-display: 'Literata', Georgia, serif;

@@ -17,6 +17,31 @@ npm install
 npm run dev
 ```
 
+`npm run dev` starts the local selfie backend on port 8001, waits for its models,
+then starts Vite. If the backend is already ready, it reuses that server.
+Ctrl+C stops only servers started by this command. Open `/#dashboard` for Selfie check.
+
+### Selfie backend setup
+
+The existing local `.venv` and `.models` are reused. On a fresh checkout, run from
+the repository root (Python 3.11 required):
+
+```sh
+python3.11 -m venv Back-End/liveness/.venv
+Back-End/liveness/.venv/bin/python -m pip install -r Back-End/liveness/requirements.txt
+cd Back-End/liveness
+.venv/bin/python -m uvicorn app:app --host 127.0.0.1 --port 8001
+```
+
+The first backend startup downloads DeepFace models into `.models`; let it finish,
+then stop it with Ctrl+C and use `npm run dev` from `Front-End/client`.
+The backend checks three JPEG images for one live face, front/turn/front movement,
+and matching faces. Images stay in memory. Sessions expire after 180 seconds and
+are single-use. This local demo does not verify account ownership or prevent
+replay of a previously recorded sequence; it must not grant production privileges.
+Camera access needs localhost or HTTPS. `npm start` serves the built frontend;
+for that command, run the Python backend separately with the command above.
+
 Open `/editor.html` and choose **Edit variables**. Click **Save changes** to save edits to
 `theme/hamtry-theme.json` and update other pages using the shared theme.
 Stored dimensions use `rem`; generated styles scale them using the fluid `--u`
@@ -27,8 +52,9 @@ npm run build
 npm start
 ```
 
-The built authoring server runs at `http://127.0.0.1:4173` and keeps theme edits
-on disk. Node 22.18+ is required. `npm run preview` also supports the theme API.
+The built server runs at `http://127.0.0.1:4173` and reads the theme committed
+with the release; theme writes are disabled. Edit with `npm run dev` or
+`npm run preview`, then commit the theme file and deploy. Node 22.18+ is required.
 Run `npm test` and `npm run lint` for checks.
 
 Future pages/components load the shared theme once:

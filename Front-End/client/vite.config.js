@@ -1,6 +1,7 @@
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import { defineConfig } from 'vite'
+import { livenessRoute } from './server/liveness-proxy.js'
 import { themeRoute } from './server/theme-store.js'
 import { resolve } from 'node:path'
 // https://vite.dev/config/
@@ -25,6 +26,7 @@ export default defineConfig({
       name: 'hamtry-shared-theme',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
+          if (livenessRoute(req, res)) return
           void themeRoute(req, res).then((handled) => {
             if (!handled) next()
           })
@@ -32,6 +34,7 @@ export default defineConfig({
       },
       configurePreviewServer(server) {
         server.middlewares.use((req, res, next) => {
+          if (livenessRoute(req, res)) return
           void themeRoute(req, res).then((handled) => {
             if (!handled) next()
           })

@@ -4,7 +4,8 @@ set -euo pipefail
 [[ -f /.dockerenv && $EUID -eq 0 ]] || { echo "Requires a disposable Docker container." >&2; exit 1; }
 script_directory=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../production" && pwd)
 useradd --system hamtry
-mkdir -p /opt/hamtry/{frontend,backend}/releases /opt/hamtry/operations /var/lib/hamtry/theme /etc/hamtry /tmp/mocks
+mkdir -p /opt/hamtry/{frontend,backend}/releases /opt/hamtry/operations /var/lib/hamtry/theme /etc/hamtry /etc/nginx/sites-available /tmp/mocks
+echo 'old nginx config' >/etc/nginx/sites-available/hamtry
 cat >/etc/hamtry/hamtry.env <<EOF
 SERVER_PORT=8082
 PORT=4173
@@ -20,10 +21,16 @@ cat >/tmp/mocks/curl <<'EOF'
 url=${!#}
 if [[ -f /tmp/fail-backend && "$url" == */actuator/health ]]; then exit 22; fi
 if [[ -f /tmp/fail-frontend && "$(readlink /opt/hamtry/frontend/current)" == releases/b* && "$url" != */actuator/health ]]; then exit 22; fi
-printf '{"status":"UP"}\n'
+  if [[ "$url" == */api/liveness/health ]]; then printf '{"status":"ready"}\n'; else printf '{"status":"UP"}\n'; fi
 EOF
 printf '#!/bin/bash\nexit 0\n' >/tmp/mocks/nginx
 printf '#!/bin/bash\nexit 0\n' >/tmp/mocks/sleep
+cat >/tmp/mocks/python3 <<'EOF'
+#!/bin/bash
+mkdir -p /opt/hamtry/liveness/.venv/bin
+printf '#!/bin/bash\nexit 0\n' >/opt/hamtry/liveness/.venv/bin/python
+chmod +x /opt/hamtry/liveness/.venv/bin/python
+EOF
 chmod +x /tmp/mocks/*
 export PATH="/tmp/mocks:$PATH"
 first=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -35,9 +42,13 @@ make_release() {
   mkdir -p "$incoming" /tmp/site/dist
   echo '<html>Hamtry</html>' >/tmp/site/dist/index.html
   tar -C /tmp/site -czf "$incoming/frontend.tar.gz" .
+  echo 'from fastapi import FastAPI' >"/tmp/site/app.py"
+  echo 'fastapi==0.143.1' >/tmp/site/requirements.txt
+  tar -C /tmp/site -czf "$incoming/liveness.tar.gz" app.py requirements.txt
   echo jar >"$incoming/hamtry-backend.jar"
+  echo 'server {}' >"$incoming/nginx.conf"
   echo '{"base":{},"tablet":{},"mobile":{}}' >"$incoming/theme-seed.json"
-  (cd "$incoming"; sha256sum frontend.tar.gz hamtry-backend.jar theme-seed.json >SHA256SUMS)
+  (cd "$incoming"; sha256sum frontend.tar.gz hamtry-backend.jar liveness.tar.gz nginx.conf theme-seed.json >SHA256SUMS)
 }
 make_release "$first"
 touch /tmp/fail-backend
@@ -67,7 +78,7 @@ make_release "$third"
 ln -s /etc/passwd /tmp/site/dist/unsafe
 incoming="/var/lib/hamtry-deploy/incoming/$third"
 tar -C /tmp/site -czf "$incoming/frontend.tar.gz" .
-(cd "$incoming"; sha256sum frontend.tar.gz hamtry-backend.jar theme-seed.json >SHA256SUMS)
+(cd "$incoming"; sha256sum frontend.tar.gz hamtry-backend.jar liveness.tar.gz nginx.conf theme-seed.json >SHA256SUMS)
 if bash "$script_directory/deploy-release.sh" "$third"; then echo "Accepted archive symlink" >&2; exit 1; fi
 [[ "$(readlink /opt/hamtry/backend/current)" == "releases/$second" ]]
 [[ -z "$(find /opt/hamtry/operations -name '.release.*' -print)" ]]

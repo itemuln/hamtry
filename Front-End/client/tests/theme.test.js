@@ -60,6 +60,17 @@ test('shared store persists edits and serves the same CSS to every consumer', as
   const css = await fetch(url + '/hamtry-theme.css')
   assert.equal(css.headers.get('Cache-Control'), 'no-store')
   assert.equal(await css.text(), themeCss(overrides))
+  const production = createServer((req, res) => { void themeRoute(req, res, true) })
+  await new Promise(resolve => production.listen(0, '127.0.0.1', resolve))
+  t.after(() => new Promise(resolve => production.close(resolve)))
+  const productionUrl = `http://127.0.0.1:${production.address().port}`
+  const committed = parseOverrides(JSON.parse(await readFile(new URL('../theme/hamtry-theme.json', import.meta.url), 'utf8')))
+  assert.deepEqual((await (await fetch(productionUrl + '/api/theme')).json()).overrides, committed)
+  assert.equal(await (await fetch(productionUrl + '/hamtry-theme.css')).text(), themeCss(committed))
+  assert.equal((await fetch(productionUrl + '/api/theme', {
+    method: 'PUT', body: JSON.stringify(exportTheme(overrides)),
+  })).status, 403)
+  assert.deepEqual(JSON.parse(await readFile(process.env.HAMTRY_THEME_FILE, 'utf8')).overrides, overrides)
   overrides.base['brand/primary'] = 'url(unsafe)'
   assert.equal(
     (

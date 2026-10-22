@@ -1,0 +1,58 @@
+name: Deploy Hamtry to Cloudflare
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hamtry-cloudflare-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment:
+      name: cloudflare-production
+      url: https://hamtry.23b1num3285.workers.dev
+    defaults:
+      run:
+        working-directory: Front-End/client
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: Front-End/client/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - name: Deploy Worker and assets
+        run: npm run deploy
+        env:
+          CLOUDFLARE_ACCOUNT_ID: d16cb0e8898a64f55a4e1fc8924fed03
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - name: Verify public routes and protection
+        run: |
+          set -euo pipefail
+          origin=https://hamtry.23b1num3285.workers.dev
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 --retry-all-errors "$origin/healthz"
+          curl --fail --silent --show-error "$origin/" > /dev/null
+          curl --fail --silent --show-error "$origin/api/theme" > /dev/null
+          curl --fail --silent --show-error "$origin/hamtry-theme.css" > /dev/null
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "$origin/editor.html")" = 404
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -X PUT "$origin/api/theme")" = 403
+          printf 'Deployed to %s\n' "$origin" >> "$GITHUB_STEP_SUMMARY"
+      - name: Report selfie backend availability
+        run: |
+          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -X POST https://hamtry.23b1num3285.workers.dev/api/liveness/sessions) || status=unreachable
+          if [ "$status" != 200 ]; then
+            echo "::warning::Selfie backend is unavailable (HTTP $status). It remains hosted on the VPS."
+          fi
+          printf 'Selfie backend session endpoint: %s\n' "$status" >> "$GITHUB_STEP_SUMMARY"

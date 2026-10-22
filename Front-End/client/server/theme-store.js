@@ -13,21 +13,21 @@ const root = dirname(dirname(fileURLToPath(import.meta.url)))
 export const themeFile =
   process.env.HAMTRY_THEME_FILE || join(root, 'theme/hamtry-theme.json')
 let queue = Promise.resolve()
-export async function readTheme() {
+export async function readTheme(file = themeFile) {
   try {
-    return parseOverrides(JSON.parse(await readFile(themeFile, 'utf8')))
+    return parseOverrides(JSON.parse(await readFile(file, 'utf8')))
   } catch (error) {
     if (error.code === 'ENOENT') return emptyOverrides()
     throw error
   }
 }
-export async function themeRoute(req, res) {
+export async function themeRoute(req, res, readOnly = false) {
   const path = req.url?.split('?')[0]
   if (path !== '/api/theme' && path !== '/hamtry-theme.css') return false
   res.setHeader('Cache-Control', 'no-store')
   try {
     if (req.method === 'GET') {
-      const theme = await readTheme()
+      const theme = await readTheme(readOnly ? join(root, 'theme/hamtry-theme.json') : themeFile)
       res.setHeader(
         'Content-Type',
         path === '/api/theme' ? 'application/json' : 'text/css',
@@ -38,6 +38,10 @@ export async function themeRoute(req, res) {
           : themeCss(theme),
       )
     } else if (req.method === 'PUT' && path === '/api/theme') {
+      if (readOnly) {
+        res.writeHead(403).end('Edit the theme locally and deploy it through Git.')
+        return true
+      }
       // Энэ нь local theme editor-ийн server; өөр origin-оос бичихийг зөвшөөрөхгүй.
       const origin = req.headers.origin
       if (origin && new URL(origin).host !== req.headers.host) {

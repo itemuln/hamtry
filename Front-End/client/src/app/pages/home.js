@@ -3,6 +3,7 @@ import { districts, listings, roomImage } from '../data/listings.js'
 import { findListings, initialFilters, money, readRoute, validLocation } from '../state/model.js'
 import { createAppState } from '../state/store.js'
 import { savePhotos, deletePhotos } from '../state/media-store.js'
+import { dashboardMarkup, setupDashboard, updateDashboard } from './dashboard.js'
 
 const budgets = '<option value="0">Төсөв сонгох</option><option value="700000">700,000 ₮ хүртэл</option><option value="1000000">1,000,000 ₮ хүртэл</option><option value="1500000">1,500,000 ₮ хүртэл</option>'
 const text = (root, selector, value) => { required(selector, root).textContent = value }
@@ -30,6 +31,7 @@ export class HamtryHome extends HTMLElement {
       </header>
       <main id="main-content">
       <hamtry-entrance class="home-entrance" tabindex="-1"></hamtry-entrance>
+      ${dashboardMarkup()}
           <section class="listing-section page-width" id="results" aria-labelledby="results-title">
                         <div class="section-heading"><div><h2 id="results-title">Тухтай булангаа олоорой<span class="heading-dot">.</span></h2></div><a class="all-listings" href="#map">Газрын зургаар үзэх <span aria-hidden="true">↗</span></a><hamtry-button class="new-listing" data-action="publish" hidden>Өрөө нэмэх +</hamtry-button></div>
 <section class="browse-choice" aria-label="Өрөөнүүдийг харах хэлбэр"><nav class="browse-mode" aria-label="Жагсаалт эсвэл газрын зураг"><a href="#rooms" data-browse-view="rooms"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h12M9 12h12M9 18h12M3 6h1M3 12h1M3 18h1"/></svg>Өрөөнүүд</a><a href="#map" data-browse-view="map" aria-label="Газрын зураг" title="Газрын зураг"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg><span class="map-label">Газрын зураг</span></a></nav></section>
@@ -66,7 +68,7 @@ export class HamtryHome extends HTMLElement {
     onCleanup(() => { this.saveListing = undefined })
     listen(required('.skip-link', this), 'click', event => {
       event.preventDefault()
-      const heading = state.route.get().page === 'home' ? required('.home-entrance', this) : required('#results-title', this)
+      const heading = required(state.route.get().page === 'home' ? '.home-entrance' : state.route.get().page === 'dashboard' ? '#dashboard-title' : '#results-title', this)
       heading.tabIndex = -1; heading.focus(); heading.scrollIntoView()
     })
     const showPublish = () => {
@@ -74,6 +76,7 @@ export class HamtryHome extends HTMLElement {
       required('.publish-form', this).hidden = false; required('.publish-preview', this).hidden = true
       publish.showModal()
     }
+    setupDashboard(this, { showPublish, toast, listen })
     for (const node of $('[data-action]', this)) listen(node, 'click', () => node.dataset.action === 'profile' ? profile.showModal() : showPublish())
     listen(this, 'hamtry-publish', showPublish)
     const menu = required('.menu-toggle', this)
@@ -92,7 +95,7 @@ export class HamtryHome extends HTMLElement {
         if (!active) return
         state.route.set(route); flushEffects()
         if (route.page !== 'detail' && previous.page !== 'detail') {
-          const heading = required(route.page === 'home' ? '.home-entrance' : '#results-title', this)
+          const heading = required(route.page === 'home' ? '.home-entrance' : route.page === 'dashboard' ? '#dashboard-title' : '#results-title', this)
           heading.tabIndex = -1; heading.focus({ preventScroll:true })
         }
       }
@@ -101,7 +104,6 @@ export class HamtryHome extends HTMLElement {
       } else update()
       if (route.page !== 'detail' && previous.page !== 'detail') {
         window.scrollTo({ top: 0, behavior: 'instant' })
-
       }
     })
     const filters = $('.filter-bar', this)
@@ -201,6 +203,8 @@ export class HamtryHome extends HTMLElement {
       const page = route.page === 'detail' ? this.previousPage : route.page
       const kind = page === 'map' ? 'rooms' : page === 'rooms' || page === 'roommates' ? page : state.kind.get()
       const home = page === 'home', savedPage = page === 'saved', dashboard = page === 'dashboard'
+      required('.provider-dashboard', this).hidden = !dashboard
+      updateDashboard(this, state.published.get())
       const heading = required('#results-title', this), tag = home ? 'H2' : 'H1'
       if (heading.tagName !== tag) {
         const next = document.createElement(tag); next.id = 'results-title'
@@ -209,7 +213,7 @@ export class HamtryHome extends HTMLElement {
       if (route.page !== 'detail') this.previousPage = route.page
       this.dataset.page = page
       required('.home-entrance', this).hidden = !home
-      required('#results', this).hidden = home
+      required('#results', this).hidden = home || dashboard
       for (const form of filters) form.hidden = home || dashboard
       const roomMap = page === 'map'
       required('.browse-map', this).hidden = !roomMap

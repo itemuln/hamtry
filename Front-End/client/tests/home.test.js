@@ -1,6 +1,10 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { findListings, initialFilters, parseDemo, readRoute, validLocation } from '../src/app/state/model.js'
+import { calendarGrid, findListings, initialFilters, parseDemo, readRoute, validLocation } from '../src/app/state/model.js'
+test('calendar starts on Monday and handles short months', () => {
+  assert.deepEqual(calendarGrid(2026, 9).slice(0, 5), [null, null, null, 1, 2])
+  assert.equal(calendarGrid(2028, 1).at(-1), 29)
+})
 const fixtures = [
   { id: 'r1', kind: 'rooms', title: 'Гэрэлтэй өрөө', district: 'Хан-Уул', area: '120 мянгат', price: 700000, traits: ['Амьтан зөвшөөрнө'], pets: true },
   { id: 'r2', kind: 'rooms', title: 'Тайван өрөө', district: 'Сүхбаатар', area: '11-р хороолол', price: 950000, traits: ['Тавилгатай'], pets: false },

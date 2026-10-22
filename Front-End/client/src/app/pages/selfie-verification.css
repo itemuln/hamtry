@@ -1,0 +1,37 @@
+.selfie-entry { display: grid; gap: var(--spacing-3); }
+.selfie-entry-heading { display: grid; gap: var(--spacing-2); }
+.selfie-entry-heading span, .selfie-entry small { color: var(--text-secondary); font-size: var(--type-caption); }
+.selfie-entry p { color: var(--text-secondary); }
+.selfie-dialog::part(dialog) { width: min(100% - var(--spacing-6), 32rem); }
+.selfie-flow { display: grid; gap: var(--spacing-4); color: var(--text-primary); font: var(--type-body-sm)/var(--line-height-body-sm) var(--font-sans); }
+.selfie-flow [hidden] { display: none !important; }
+.selfie-flow :is(p,h3) { margin: 0; font-family: var(--font-sans); letter-spacing: normal; }
+.selfie-flow .selfie-demo-note { padding: var(--spacing-3); border-radius: var(--radius-md); background: var(--status-info-subtle); color: var(--text-primary); font-size: var(--type-caption); }
+.selfie-progress { display: flex; justify-content: space-between; gap: var(--spacing-2); list-style: none; padding: 0; margin: 0; counter-reset: step; }
+.selfie-progress li { display: flex; align-items: center; gap: var(--spacing-1); font-size: var(--type-caption); color: var(--text-secondary); transition: color 180ms cubic-bezier(0.23, 1, 0.32, 1); }
+.selfie-progress-number { display: grid; place-items: center; flex: 0 0 var(--icon-size); width: var(--icon-size); height: var(--icon-size); border-radius: var(--radius-full); background: var(--surface-interactive); transition: background-color 180ms cubic-bezier(0.23, 1, 0.32, 1), color 180ms cubic-bezier(0.23, 1, 0.32, 1), transform 180ms cubic-bezier(0.23, 1, 0.32, 1); }
+.selfie-progress [aria-current] { color: var(--brand-primary); font-weight: 600; }
+.selfie-progress [aria-current] .selfie-progress-number { view-transition-name: selfie-step-active; background: var(--brand-primary); color: var(--text-inverse); transform: scale(1.08); }
+.selfie-progress [data-complete] .selfie-progress-number { background: var(--status-success-subtle); color: var(--brand-primary); }
+::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+::view-transition-group(selfie-step-active) { animation-duration: 240ms; animation-timing-function: cubic-bezier(0.77, 0, 0.175, 1); }
+.selfie-viewport { position: relative; isolation: isolate; height: clamp(15rem, 34dvh, 21rem); overflow: hidden; border-radius: var(--radius-lg); background: var(--surface-subtle); display: grid; place-items: center; }
+.selfie-viewport video { position: absolute; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.selfie-guide { width: 46%; height: 79%; border: var(--border-focus-width) dashed var(--brand-primary); border-radius: 48%; display: grid; place-items: center; z-index: 1; outline: var(--border-width) solid var(--surface-elevated); }
+.selfie-guide svg { width: 80%; height: 80%; color: var(--text-secondary); }
+.selfie-viewport[data-step="1"] .selfie-guide svg { transform: perspective(20rem) rotateY(-30deg); }
+.selfie-camera-label { position: absolute; bottom: var(--spacing-2); padding: var(--spacing-1) var(--spacing-3); border-radius: var(--radius-full); background: var(--surface-elevated); color: var(--text-primary); font-size: var(--type-caption); z-index: 1; }
+.selfie-instruction { text-align: center; display: grid; gap: var(--spacing-2); }
+.selfie-flow h3 { font-size: var(--type-heading-h3); line-height: var(--line-height-heading-h3); }
+.selfie-instruction p, .selfie-tips, .selfie-flow .selfie-privacy { color: var(--text-secondary); }
+.selfie-tips { padding-left: var(--spacing-5); margin: 0; display: grid; gap: var(--spacing-1); }
+.selfie-actions { display: grid; gap: var(--spacing-2); }
+.selfie-flow .selfie-privacy { font-size: var(--type-caption); line-height: var(--line-height-caption); text-align: center; }
+@media (max-width: 40em) { .selfie-progress li { flex-direction: column; text-align: center; flex: 1; } }
+@media (prefers-reduced-motion: reduce) { .selfie-progress li, .selfie-progress-number { transition-duration: 0.01ms; } .selfie-progress [aria-current] .selfie-progress-number { transform: none; } }
+/* The homepage dialog palette is scoped out on the dashboard. Inherit its shared tokens. */
+hamtry-home .selfie-dialog { --surface-elevated: inherit; --border-default: inherit; --text-primary: inherit; }
+.selfie-feedback { text-align: center; color: var(--brand-primary); min-height: var(--size-control-sm); font-size: var(--type-caption); }
+.selfie-guide[data-aligned="true"] { border-style: solid; border-color: var(--status-success); }
+.selfie-flow hamtry-button { width: 100%; }
+@media (max-width: 40em) { .selfie-viewport { height: 12rem; } .selfie-flow { gap: var(--spacing-3); } }
