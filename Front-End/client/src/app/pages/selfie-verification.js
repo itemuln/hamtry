@@ -12,7 +12,7 @@ export function setupVerification(root, listen) {
   dialog.setAttribute('heading', 'Selfie баталгаажуулалт')
   dialog.innerHTML = `<div class="selfie-flow">
     <p class="selfie-demo-note">Нүүрний хөдөлгөөн, бодит нүүр болон алхмуудын тохирлыг шалгана.</p>
-    <ol class="selfie-progress" aria-label="Баталгаажуулалтын явц"><li>Бэлтгэх</li><li>Selfie check</li><li>Дуусгах</li></ol>
+    <ol class="selfie-progress" aria-label="Баталгаажуулалтын явц"><li><span class="selfie-progress-number">1</span><span>Бэлтгэх</span></li><li><span class="selfie-progress-number">2</span><span>Selfie check</span></li><li><span class="selfie-progress-number">3</span><span>Дуусгах</span></li></ol>
     <div class="selfie-viewport"><video autoplay muted playsinline aria-label="Камерын шууд дүрс" hidden></video><div class="selfie-guide">${face}</div><span class="selfie-camera-label">Камер унтраалттай</span></div>
     <div class="selfie-instruction" role="status" aria-live="polite" aria-atomic="true"><h3></h3><p></p></div>
     <p class="selfie-feedback" role="status" aria-live="polite"></p><ul class="selfie-tips"><li>Гэрэлтэй газар, камерын өөдөөс сууна.</li><li>Нүдний шил, маск нүүрийг халхлахгүй байна.</li><li>Камераа нүдний түвшинд тогтвортой барина.</li></ul>
@@ -52,8 +52,15 @@ export function setupVerification(root, listen) {
       complete: [cameraDemo ? 'Demo дууслаа' : 'Selfie шалгалт амжилттай', cameraDemo ? 'Та алхмуудыг үзлээ. Бодит шалгалт хийгдээгүй.' : 'Бодит нүүр, толгойн хөдөлгөөн, зургуудын тохирол шалгагдлаа. Энэ нь бүртгэлийн эзэмшигчийг таньсан баталгаа биш.', 'Дуусгах'],
       error: ['Шалгалтыг үргэлжлүүлж чадсангүй', error, 'Дахин оролдох'],
     }[stage]
-    dialog.querySelector('h3').textContent = content[0]
-    dialog.querySelector('.selfie-instruction p').textContent = content[1]
+    const instruction = dialog.querySelector('.selfie-instruction')
+    instruction.querySelector('h3').textContent = content[0]
+    instruction.querySelector('p').textContent = content[1]
+    instruction.animate(
+      matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? [{ opacity: .65 }, { opacity: 1 }]
+        : [{ opacity: .65, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }],
+      { duration: 180, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' },
+    )
     next.textContent = content[2]
     next.toggleAttribute('disabled', ['permission', 'loading', 'processing'].includes(stage))
     next.hidden = stage === 'capture' && !cameraDemo
@@ -65,11 +72,17 @@ export function setupVerification(root, listen) {
     viewport.dataset.step = String(step)
     dialog.querySelector('.selfie-guide svg').style.visibility = stream ? 'hidden' : 'visible'
     dialog.querySelector('.selfie-camera-label').textContent = stage === 'capture' ? `${cameraDemo ? 'Камергүй demo' : 'Камер асаалттай'} · ${step + 1} / 3` : 'Камер унтраалттай'
-    dialog.querySelectorAll('.selfie-progress li').forEach((li, index) => {
-      const current = ['processing', 'complete'].includes(stage) ? 2 : ['capture', 'loading'].includes(stage) ? 1 : 0
+    const current = ['processing', 'complete'].includes(stage) ? 2 : ['capture', 'loading'].includes(stage) ? 1 : 0
+    const progress = dialog.querySelector('.selfie-progress')
+    const updateProgress = () => progress.querySelectorAll('li').forEach((li, index) => {
       if (index === current) li.setAttribute('aria-current', 'step')
       else li.removeAttribute('aria-current')
+      li.toggleAttribute('data-complete', index < current)
     })
+    const previous = [...progress.children].findIndex(li => li.hasAttribute('aria-current'))
+    if (dialog.open && previous >= 0 && previous !== current && document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.startViewTransition(updateProgress)
+    } else updateProgress()
   }
   async function startCamera() {
     stop()

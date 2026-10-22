@@ -18,19 +18,15 @@ const messages = [
   { id: 'nomin-arrival', person: 'nomin', text: 'Би товлосон цагтаа очно.' },
 ]
 const read = new Set()
-export const characterMarkup = id => `<span class="dashboard-character" data-person="${id}" aria-hidden="true">${people.find(person => person.id === id).initial}</span>`
+export const characterMarkup = (id, profile = false) => `<span class="dashboard-character" data-person="${id}"${profile ? ` data-person-profile="${id}"` : ''} aria-hidden="true">${people.find(person => person.id === id).initial}</span>`
 const clock = date => date.toLocaleTimeString('mn-MN', { hour: '2-digit', minute: '2-digit', hour12: false })
-
-export function attentionMarkup() {
-  return `<section class="dashboard-attention" id="dashboard-attention" aria-labelledby="dashboard-attention-title"><div class="dashboard-attention-heading"><h2 id="dashboard-attention-title" tabindex="-1">Анхаарах зүйлс</h2><small>Жишээ мэдээлэл</small></div><div class="dashboard-attention-links"><button type="button" class="attention-meeting" data-dashboard-scroll="dashboard-viewings"><strong>Ойртож буй уулзалт</strong><span data-next-meeting></span></button><button type="button" class="attention-message" data-dashboard-scroll="dashboard-messages"><strong><span data-unread-count>3</span> уншаагүй мессеж</strong><span>Уулзалтын цаг, хаягийг лавласан</span></button><button type="button" data-dashboard-scroll="dashboard-inquiries"><strong>3 хүсэлт хариу хүлээж байна</strong><span>Шинээр ирсэн хүсэлтүүдээ шалгах</span></button></div></section>`
-}
 
 export function viewingsMarkup() {
   return `<section class="dashboard-panel dashboard-viewings" id="dashboard-viewings" aria-labelledby="dashboard-viewings-title"><h2 id="dashboard-viewings-title" tabindex="-1">Удахгүй болох уулзалт</h2>${meetings.map((meeting, index) => `<article class="dashboard-viewing" data-meeting="${index}">${characterMarkup(meeting.person)}<div class="dashboard-viewing-copy"><span class="dashboard-meeting-status"></span><strong>${people.find(person => person.id === meeting.person).name}</strong><time datetime="${meeting.start.toISOString()}">${meeting.start.toLocaleDateString('mn-MN', { month: 'numeric', day: 'numeric' })} · ${clock(meeting.start)} – ${clock(new Date(meeting.start.getTime() + 30 * 60000))}</time><small>${meeting.listing}</small></div></article>`).join('')}<p>Нэг хүнийг бүх хэсэгт ижил дүрээр танина.</p></section>`
 }
 
 export function messagesMarkup() {
-  return `<section class="dashboard-panel dashboard-messages" id="dashboard-messages" aria-labelledby="dashboard-messages-title"><div class="dashboard-panel-heading"><h2 id="dashboard-messages-title" tabindex="-1">Мессежүүд <span class="dashboard-count" data-unread-count>3</span></h2><button type="button" data-read-all>Бүгдийг уншсан</button></div>${messages.map(message => `<article class="dashboard-message" data-message="${message.id}">${characterMarkup(message.person)}<div><strong>${people.find(person => person.id === message.person).name}</strong><p>${message.text}</p><small data-message-status>Уншаагүй</small></div><button type="button" data-read-message="${message.id}" aria-label="${people.find(person => person.id === message.person).name}: ${message.text} — уншсан болгох">Уншсан</button></article>`).join('')}<p class="dashboard-messages-status" role="status"></p></section>`
+  return `<section class="dashboard-panel dashboard-messages" id="dashboard-messages" aria-labelledby="dashboard-messages-title"><div class="dashboard-panel-heading"><h2 id="dashboard-messages-title" tabindex="-1">Мессежүүд <span class="dashboard-count" data-unread-count>3</span></h2><button type="button" data-read-all>Бүгдийг уншсан</button></div><div class="dashboard-message-list" role="region" aria-label="Мессежийн жагсаалт" tabindex="0">${messages.map(message => `<article class="dashboard-message" data-message="${message.id}">${characterMarkup(message.person, true)}<div class="dashboard-message-bubble"><strong>${people.find(person => person.id === message.person).name}</strong><p>${message.text}</p><small data-message-status>Уншаагүй</small></div><button type="button" data-read-message="${message.id}" aria-label="${people.find(person => person.id === message.person).name}: ${message.text} — уншсан болгох">Уншсан</button></article>`).join('')}</div><p class="dashboard-messages-status" role="status"></p></section>`
 }
 
 export function setupAttention(dashboard, listen) {
@@ -40,7 +36,6 @@ export function setupAttention(dashboard, listen) {
     dashboard.querySelector('[data-unread-summary]').textContent = unread ? `${senders} хүнээс шинэ мессеж` : 'Бүх мессежийг уншсан'
     dashboard.querySelectorAll('[data-unread-count]').forEach(node => { node.textContent = unread })
     dashboard.querySelector('[data-read-all]').disabled = unread === 0
-    dashboard.querySelector('.attention-message').classList.toggle('is-resolved', unread === 0)
     for (const message of messages) {
       const row = dashboard.querySelector(`[data-message="${message.id}"]`)
       const isRead = read.has(message.id)
@@ -58,8 +53,6 @@ export function setupAttention(dashboard, listen) {
       const label = minutes <= -30 ? 'Дууссан' : minutes <= 0 ? 'Уулзалтын цаг болсон' : minutes <= 60 ? `${minutes} минутын дараа` : 'Товлогдсон'
       row.querySelector('.dashboard-meeting-status').textContent = label
     }
-    dashboard.querySelector('[data-next-meeting]').textContent = urgent ? dashboard.querySelector('.is-soon .dashboard-meeting-status').textContent : 'Уулзалтын хуваариа харах'
-    dashboard.querySelector('.attention-meeting').classList.toggle('is-resolved', urgent === 0)
     const count = unread + 3 + urgent
     dashboard.querySelector('[data-notification-count]').textContent = count
     dashboard.querySelector('[data-notifications]').setAttribute('aria-label', `Анхаарах ${count} зүйл: мэдэгдэл харах`)

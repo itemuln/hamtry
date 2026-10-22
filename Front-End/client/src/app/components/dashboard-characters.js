@@ -43,6 +43,19 @@ export function renderCharacters(host, people) {
           const image = document.createElement('img'); image.src = src; image.alt = ''; image.width = 160; image.height = 200
           node.replaceChildren(image)
         })
+        const profiles = host.querySelectorAll(`[data-person-profile="${person.id}"]`)
+        if (profiles.length) {
+          renderer.setSize(160, 160)
+          camera.aspect = 1
+          camera.position.set(.2, 1.12, 1.7); camera.lookAt(0, .88, 0)
+          camera.updateProjectionMatrix()
+          renderer.render(scene, camera)
+          const portrait = renderer.domElement.toDataURL('image/png')
+          profiles.forEach(node => {
+            const image = document.createElement('img'); image.src = portrait; image.alt = ''; image.width = 160; image.height = 160
+            node.replaceChildren(image)
+          })
+        }
       } finally {
         geometries.forEach(geometry => geometry.dispose()); materials.forEach(material => material.dispose())
       }
