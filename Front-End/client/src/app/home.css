@@ -13,6 +13,9 @@
 @import '@fontsource/literata/cyrillic-700.css';
 @import '@fontsource/literata/cyrillic-ext-600.css';
 @import '@fontsource/literata/cyrillic-ext-700.css';
+@import '@fontsource/literata/latin-700-italic.css';
+@import '@fontsource/literata/cyrillic-700-italic.css';
+@import '@fontsource/literata/cyrillic-ext-700-italic.css';
 
 /* Хуудасны palette нь shared token-оос гарна; хадгалсан editor theme-ийг дарж бичихгүй. */
 hamtry-home {
@@ -34,9 +37,9 @@ hamtry-home {
   display: block; background: var(--home-paper); color: var(--brand-primary); min-height: 100dvh;
 }
 hamtry-home [hidden] { display: none !important; }
-hamtry-home .gradient-journey { display: block; }
+hamtry-home .home-entrance { display: block; }
 hamtry-home[data-page="home"] .site-header { display: none; }
-hamtry-home[data-page="home"] .home-hero { display: none; }
+hamtry-home[data-page="home"] > footer { display: none; }
 hamtry-home button, hamtry-home a { touch-action: manipulation; }
 hamtry-home a { text-decoration: none; }
 hamtry-home button { cursor: pointer; }
@@ -57,42 +60,15 @@ hamtry-home h1, hamtry-home h2, hamtry-home h3 { font-family: var(--font-display
 .profile-button { border: 0; padding: .85rem 1.1rem; background: var(--brand-accent-lime); color: var(--brand-primary); border-radius: 4rem; font-weight: 600; white-space: nowrap; }
 .profile-button span { margin-right: .35rem; }
 .menu-toggle { display: none; background: transparent; border: 0; color: inherit; font-size: 1.5rem; min-width: 2.75rem; min-height: 2.75rem; }
-.home-hero { background: var(--brand-primary); color: var(--text-inverse); padding: 10rem 5% 3.5rem; border-radius: 0 0 2.5rem 2.5rem; position: relative; overflow: hidden; }
-.hero-inner { display: grid; grid-template-columns: 1fr 1.05fr; align-items: center; gap: 2%; width: min(82rem, 100%); margin: auto; }
-.eyebrow { font: 600 .7rem/1.5 var(--font-sans); letter-spacing: .14em; margin: 0 0 var(--spacing-5); }
-.hero-copy .eyebrow { color: var(--brand-accent-lime); display: flex; align-items: center; gap: .65rem; }
-.tiny-star { font-size: 1.35rem; }
-.hero-copy h1 { font-size: clamp(3.4rem, 5.8vw, 6rem); line-height: 1.08; font-weight: 600; margin: 0 0 var(--spacing-6); }
-.hero-copy h1 span { color: var(--brand-accent-lime); }
-.hero-description { width: min(38ch, 100%); color: color-mix(in srgb, var(--text-inverse) 77%, var(--brand-primary)); font-size: var(--type-body-md); }
-.hero-link { display: inline-flex; align-items: center; gap: .75rem; padding: .85rem 1rem; min-height: 3rem; max-width: 100%; border-radius: var(--radius-action); background: var(--home-paper); color: var(--brand-primary); font-weight: 600; margin-top: var(--spacing-4); }
-.hero-link:hover { background: var(--brand-accent-lime); }
-.hero-link svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
-.hero-link span { font-size: 1.45rem; color: var(--brand-accent-lime); }
-.hero-caption { display: flex; align-items: center; gap: var(--spacing-3); margin-top: 2.6rem; opacity: .65; }
-.hero-caption p { font-size: var(--type-caption); line-height: 1.4; }
-.orbit-symbol { font-size: 1.6rem; border: 1px solid currentColor; width: 2.7rem; height: 2.7rem; display: grid; place-items: center; border-radius: 50%; transform: rotate(-15deg); }
-.search-wrap { width: min(82rem, 100%); margin: 2.25rem auto 0; }
-.search-kind { display: flex; gap: var(--spacing-4); margin-bottom: var(--spacing-4); }
-.search-kind button { background: none; border: 0; padding: .65rem 0; color: color-mix(in srgb, var(--text-inverse) 65%, transparent); font-size: var(--type-body-sm); border-bottom: .15rem solid transparent; }
-.search-kind button[aria-pressed="true"] { color: var(--brand-accent-lime); border-color: var(--brand-accent-lime); }
-.hero-search { display: grid; grid-template-columns: 1fr 1fr auto; align-items: center; gap: var(--spacing-6); background: var(--home-paper); color: var(--brand-primary); border-radius: var(--radius-xl); padding: var(--spacing-5) var(--spacing-6); }
-.hero-search hamtry-select { --surface-base: var(--home-paper); --border-default: var(--home-line); }
-.hero-search hamtry-select::part(control) { border: 0; border-bottom: 1px solid var(--home-line); border-radius: 0; padding-inline: 0; background: transparent; }
-.hero-search hamtry-button::part(button) { min-height: 3.8rem; border-radius: 4rem; background: var(--brand-accent-lime); color: var(--brand-primary); gap: var(--spacing-8); }
 .listing-section { padding-block: 5.5rem; min-height: 34rem; scroll-margin-top: 2rem; }
 hamtry-home[data-page]:not([data-page="home"]) .listing-section { padding-top: 10rem; }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: var(--spacing-6); margin-bottom: 2rem; }
-.section-heading .eyebrow { margin-bottom: var(--spacing-3); color: var(--home-quiet); }
 .section-heading :is(h1,h2) { font-size: clamp(2.2rem, 3.15vw, 3.35rem); line-height: 1.2; margin: 0; font-weight: 600; }
 .heading-dot { color: var(--brand-accent-pink); }
 .all-listings { padding: .7rem 0; border-bottom: 1px solid var(--home-line); white-space: nowrap; font-size: var(--type-body-sm); }
 .filter-bar { display: grid; grid-template-columns: 1.3fr 1fr 1fr auto auto; gap: var(--spacing-4); align-items: end; padding-block: var(--spacing-4) var(--spacing-6); }
 .filter-bar :is(hamtry-input,hamtry-select), .publish-form { --surface-base: var(--home-paper); --border-default: var(--home-line); }
-.filter-bar .pet-filter { margin-bottom: .2rem; }
 .text-button { border: 0; background: none; color: var(--home-quiet); text-decoration: underline; font-size: var(--type-body-sm); min-height: 2.75rem; }
-.filter-submit { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.filter-submit:focus { position: static; width: auto; height: auto; clip-path: none; }
 .results-meta { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between; align-items: center; font-size: var(--type-caption); color: var(--home-quiet); margin-bottom: var(--spacing-4); }
 .results-meta p { margin: 0; }
 .listing-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-6); }
@@ -107,11 +83,6 @@ hamtry-home[data-page]:not([data-page="home"]) .listing-section { padding-top: 1
 .empty-state > span { display: block; font-size: 3rem; }
 .empty-state h3 { font-size: 1.7rem; }
 .empty-state p { color: var(--home-quiet); margin-bottom: 2rem; }
-.provider-section { background: var(--brand-accent-pink); border-radius: var(--radius-xl); padding: var(--spacing-8); display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-6); }
-.provider-section h2 { font-size: clamp(2rem, 3vw, 3rem); line-height: 1.15; margin: 0; }
-.provider-section p { margin-bottom: var(--spacing-4); max-width: 38rem; }
-.provider-section hamtry-button { flex-shrink: 0; }
-.provider-section hamtry-button::part(button) { border-radius: 4rem; }
 hamtry-home footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-6); padding-block: 4rem 2rem; }
 hamtry-home footer p { color: var(--home-quiet); font-size: var(--type-body-sm); }
 hamtry-home footer div { margin-left: auto; display: flex; gap: var(--spacing-6); font-size: var(--type-caption); }
@@ -135,170 +106,6 @@ hamtry-home dd { margin: 0; font-size: var(--type-body-sm); }
 .role-choices small { color: var(--home-quiet); }
 .publish-form { display: grid; gap: var(--spacing-4); }
 .dialog-actions { display: flex; flex-wrap: wrap; gap: var(--spacing-3); padding-top: var(--spacing-4); }
-@media (max-width: 65rem) {
-  .site-header { gap: var(--spacing-4); padding: .65rem 1rem; }
-  .site-header nav { gap: var(--spacing-4); }
-  .profile-button { font-size: 1rem; }
-  .hero-copy h1 { font-size: clamp(3rem, 6vw, 5rem); }
-  .hero-caption { display: none; }
-  .filter-bar { grid-template-columns: 1fr 1fr 1fr; }
-  .listing-grid { gap: var(--spacing-4); }
-}
-@media (max-width: 60rem) {
-  .site-header { top: 1rem; }
-  .brand-mark { display: none; }
-  .wordmark { font-size: 1.5rem; }
-  .menu-toggle { display: block; margin-left: auto; order: 3; }
-  .profile-button { font-size: 1rem; padding: .75rem; }
-  .site-header nav { position: absolute; top: calc(100% + .65rem); left: 0; right: 0; display: none; flex-direction: column; gap: var(--spacing-2); align-items: stretch; background: var(--home-paper); padding: var(--spacing-5); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); }
-  .menu-open .site-header nav { display: flex; }
-  .site-header nav a { padding: .8rem; }
-  .home-hero { display: flex; flex-direction: column; padding-top: 8rem; padding-bottom: 2rem; border-radius: 0 0 1.5rem 1.5rem; }
-  .hero-inner { display: contents; }
-  .home-hero hamtry-hero-scene { order: 2; margin-top: var(--spacing-6); }
-  .hero-copy h1 { font-size: clamp(3.15rem, 10vw, 4.8rem); }
-  .hero-copy .eyebrow { font-size: .6rem; letter-spacing: .1em; }
-  .hero-description { font-size: var(--type-body-md); width: min(38ch, 100%); }
-  .hero-link { margin-top: var(--spacing-2); }
-  .search-wrap { order: 1; width: 100%; margin-top: var(--spacing-6); }
-  .hero-search { grid-template-columns: 1fr 1fr; gap: var(--spacing-4); padding: var(--spacing-4); }
-  .hero-search hamtry-button { grid-column: 1/-1; width: 100%; }
-  .hero-search hamtry-button::part(button) { width: 100%; min-height: 3.1rem; justify-content: space-between; }
-  .listing-section { padding-block: 3.5rem; }
-  .section-heading { align-items: start; flex-direction: column; gap: var(--spacing-4); }
-  .section-heading :is(h1,h2) { font-size: 2.1rem; }
-  .filter-bar { grid-template-columns: 1fr 1fr; gap: var(--spacing-3); }
-  .filter-bar hamtry-input { grid-column: 1/-1; }
-  .listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .provider-section { flex-direction: column; align-items: start; padding: var(--spacing-6); }
-  hamtry-home footer { gap: var(--spacing-4); padding-top: 3rem; }
-  hamtry-home footer p { flex-basis: 70%; font-size: 1rem; }
-  hamtry-home footer div { margin-left: 0; }
-}
-@media (max-width: 34rem) {
-  .site-header { gap: .4rem; padding: .5rem .75rem; }
-  .site-header .wordmark { font-size: 1.4rem; }
-  .profile-button { font-size: var(--type-caption); padding: .65rem .6rem; }
-  .profile-button span { display: none; }
-  .listing-grid { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-6); }
-  .role-choices { grid-template-columns: 1fr; }
-  .results-meta { align-items: start; gap: var(--spacing-4); }
-  .results-meta span { font-size: var(--type-caption); }
-  .hero-search { grid-template-columns: 1fr; }
-  .hero-copy h1 { font-size: clamp(2.5rem, 10vw, 3.1rem); }
-}
-@media (prefers-reduced-motion: no-preference) {
-  hamtry-home :is(.profile-button,.role-choices button,.hero-link) { transition: background .2s, color .2s, transform .2s; }
-  .profile-button:hover { transform: translateY(-.1rem); }
-}
-
-/* Газрын зураг + үр дүн нь нэг хайлттай, mobile дээр нэг багана болно. */
-.browse-layout { display: grid; gap: var(--spacing-6); }
-.listing-results { min-width: 0; }
-hamtry-home[data-page="map"] .browse-layout { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
-hamtry-home[data-page="map"] .listing-grid { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-5); }
-hamtry-home[data-page="map"] hamtry-property-card::part(card) { width: 100%; }
-@media (min-width: 48.01rem) {
-  hamtry-home[data-page="map"] hamtry-property-card::part(media) { width: 100%; height: 12rem; aspect-ratio: auto; }
-}
-hamtry-home[data-page="map"] .listing-results { max-height: 36rem; overflow-y: auto; padding: .2rem .5rem; scrollbar-color: var(--brand-primary) var(--home-paper); }
-.location-fields { border: 1px solid var(--home-line); border-radius: var(--radius-lg); padding: var(--spacing-4); min-width: 0; }
-.location-fields legend { font-weight: 600; padding-inline: var(--spacing-2); }
-.location-fields p { margin-top: 0; color: var(--home-quiet); font-size: var(--type-caption); }
-.coordinates { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-4); margin-top: var(--spacing-4); }
-@media (max-width: 65rem) {
-  .site-header nav { gap: var(--spacing-3); }
-  .site-header nav a { font-size: 1rem; }
-}
-@media (max-width: 48rem) {
-  hamtry-home[data-page="map"] .browse-layout { grid-template-columns: minmax(0, 1fr); }
-  hamtry-home[data-page="map"] .listing-results { max-height: none; overflow: visible; padding: 0; }
-}
-@media (max-width: 34rem) { .coordinates { grid-template-columns: minmax(0, 1fr); } }
-
-/* Сонгосон өрөөний хэмжээ: нэмэлт тайлбаргүй 3D орон зайд илүү талбай өгнө. */
-
-
-/* Өрөө шууд үзэх, хамтрагчийн хайлтыг дэлгэх хоёр том сонголт. */
-.icon-search .search-kind { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; padding: .5rem; margin-bottom: 1.25rem; background: var(--home-paper); border-radius: var(--radius-xl); max-width: 40rem; margin-inline: auto; }
-.icon-search .search-kind button { display: flex; align-items: center; justify-content: center; gap: .75rem; padding: 1.5rem; min-height: 6.5rem; border: 0; border-radius: var(--radius-action); background: transparent; color: var(--brand-primary); font: 600 1.125rem/1.3 var(--font-sans); text-align: center; }
-.icon-search .search-kind button:hover { background: var(--surface-interactive); }
-.icon-search .search-kind button[aria-pressed="true"] { background: var(--brand-accent-lime); }
-.icon-search .search-kind svg { width: 3.5rem; height: 3.5rem; flex-shrink: 0; }
-.icon-search .hero-search { margin-top: 1rem; }
-@media (max-width: 40rem) {
-  .icon-search .search-kind { gap: .65rem; }
-  .icon-search .search-kind button { flex-direction: column; align-items: center; text-align: center; padding: 1rem .65rem; font-size: 1rem; min-height: 9rem; gap: .75rem; }
-}
-
-/* Хот, хаалга, тавилгын navigation санааг бодит удирдлагаар танилцуулна. */
-.experience-intro { padding-block:5rem; }
- .experience-intro .intro-heading { display:grid; grid-template-columns:1.15fr 1fr; gap:3rem; align-items:end; }
- .experience-intro h2 { font:600 clamp(2.5rem,5vw,5rem)/1.14 var(--font-display); letter-spacing:-.025em; margin:0; text-wrap:balance; }
- .experience-intro p { font-size:1.125rem; line-height:1.7; max-width:50ch; color:var(--home-quiet); }
- .experience-intro .intro-action { display:inline-flex; align-items:center; justify-content:center; gap:1.25rem; padding:1rem 1.25rem; min-height:3.25rem; border-radius:var(--radius-action); background:var(--brand-primary); color:var(--home-paper); font:600 1rem/1.4 var(--font-sans); }
- .experience-intro .intro-action:hover { background:var(--brand-primary-hover); }
- .experience-intro .intro-action svg { width:1.25rem; height:1.25rem; }
- .experience-intro .intro-small { font-size:1rem; }
- @media(max-width:48rem) { .experience-intro .intro-heading { grid-template-columns:1fr; gap:1rem; } .experience-intro h2 { font-size:clamp(2.25rem,9vw,3.5rem); } }
- .experience-intro.intro-door { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
- .experience-intro .intro-heading { display:block; }
- .experience-intro .intro-room { --intro-surface:var(--surface-interactive); --intro-ink:var(--brand-primary); min-height:30rem; background:var(--intro-surface); color:var(--intro-ink); position:relative; display:flex; justify-content:center; align-items:center; gap:2rem; padding:2rem; border-radius:var(--radius-xl); }
- .experience-intro.intro-door[data-lights-off] .intro-room { --intro-surface:var(--brand-primary); --intro-ink:var(--home-paper); }
- .experience-intro .intro-doorway { display:block; width:11rem; max-width:60%; height:18.15rem; border:3px solid var(--intro-ink); border-bottom:0; perspective:50rem; }
- .experience-intro .intro-door-panel { position:relative; display:grid; place-items:center; width:100%; height:100%; background:var(--brand-primary); color:var(--home-paper); transform-origin:left; transform:rotateY(-12deg); border:1px solid var(--home-paper); }
- .experience-intro .intro-door-panel::after { content:''; position:absolute; right:10%; top:52%; width:.6rem; height:.6rem; border-radius:50%; background:var(--brand-accent-lime); }
- .experience-intro .intro-doorway:hover .intro-door-panel, .experience-intro .intro-doorway:focus-visible .intro-door-panel { transform:rotateY(-28deg); }
- .experience-intro .intro-door-label { font:600 1.125rem/1.4 var(--font-sans); }
- .experience-intro .intro-lamp { border:0; background:transparent; color:inherit; display:flex; flex-direction:column; align-items:center; gap:.75rem; padding:.5rem; min-height:3rem; font:600 1rem/1.4 var(--font-sans); }
- .experience-intro .intro-lamp svg { width:5rem; height:5rem; }
- .experience-intro .intro-room-note { position:absolute; bottom:1.25rem; inset-inline:1.25rem; text-align:center; font-size:.9375rem; }
- @media(prefers-reduced-motion:no-preference) { .experience-intro .intro-door-panel { transition:transform .3s cubic-bezier(.16,1,.3,1); } .experience-intro .intro-room { transition:background .2s,color .2s; } }
- @media(max-width:65rem) { .experience-intro.intro-door { grid-template-columns:1fr; gap:2rem; } }
- @media(max-width:40rem) { .experience-intro .intro-room { min-height:26rem; padding:1rem; gap:1rem; } .experience-intro .intro-lamp { font-size:.9375rem; } .experience-intro .intro-lamp svg { width:4rem; height:4rem; } }
-
-/* Room-first homepage hero. */
-
- .home-hero { display:block; padding:calc(8.5rem * 1) 5% calc(2.5rem * 1); border-radius:0 0 2rem 2rem; }
- .home-hero .hero-inner { display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr); gap:3rem; width:min(82rem,100%); align-items:center; }
- .home-hero .hero-copy { min-width:0; }
- .home-hero .hero-copy h1 { font-size:clamp(2.5rem,calc(5.2vw * 1),5.5rem); line-height:1.12; letter-spacing:-.025em; margin:0 0 1.5rem; text-wrap:balance; }
- .home-hero .hero-description { font-size:1.125rem; line-height:1.55; max-width:36ch; margin:0; }
- .home-hero .hero-link { margin-top:1.5rem; }
- .home-hero hamtry-hero-scene { --scene-height:clamp(23rem,calc(31vw * 1),34rem); min-width:0; width:100%; }
- .home-hero .search-wrap { margin:calc(1.5rem * 1) auto 0; }
- .home-hero .search-kind { margin-bottom:0; }
- .home-hero .hero-search { margin-top:1rem; }
- @media(max-width:65rem) { .home-hero .hero-inner { gap:1.5rem; } .home-hero .hero-copy h1 { font-size:clamp(2.5rem,calc(5.1vw * 1),4.5rem); } }
- @media(max-width:48rem) {
-  .home-hero { display:flex; flex-direction:column; padding:8rem 5% 2rem; border-radius:0 0 1.5rem 1.5rem; }
-  .home-hero .hero-inner { display:contents; }
-  .home-hero .hero-copy { order:0; width:100%; }
-  .home-hero .hero-copy h1 { font-size:clamp(2.5rem,calc(9vw * 1),4.8rem); }
-  .home-hero hamtry-hero-scene { order:2; margin-top:1rem; --scene-height:clamp(22rem,calc(65vw * 1),30rem); }
-  .home-hero .search-wrap { order:1; margin-top:2rem; }
- }
- .home-hero .hero-inner { grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); gap:4rem; }
- .home-hero .hero-copy { grid-column:2; grid-row:1; }
- .home-hero hamtry-hero-scene { grid-column:1; grid-row:1; --scene-height:clamp(25rem,calc(34vw * 1),35rem); }
- .home-hero .hero-copy h1 { font-size:clamp(2.5rem,calc(4.7vw * 1),5rem); }
- .home-hero .hero-description { color:color-mix(in srgb,var(--text-inverse) 85%,var(--brand-primary)); }
- @media(max-width:65rem) { .home-hero .hero-inner { gap:1.5rem; } }
- @media(max-width:48rem) { .home-hero .hero-copy h1 { font-size:clamp(2.5rem,calc(9vw * 1),4.8rem); } .home-hero hamtry-hero-scene { --scene-height:clamp(22rem,calc(65vw * 1),30rem); } }
-
-/* List and map are two views of the same room search. */
-.browse-views { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin-bottom:var(--spacing-6); }
-.browse-views a { display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1rem; min-height:2.75rem; color:var(--brand-primary); border-radius:var(--radius-action); background:var(--home-paper); font-weight:600; }
-.browse-views a[aria-current="page"] { background:var(--brand-accent-lime); }
-.browse-views a:hover { background:var(--surface-interactive); }
-.browse-views svg { width:1.25rem; height:1.25rem; }
-
-/* Combined Rooms navigation. */
- .site-header .main-nav { gap:calc(var(--spacing-6) * 1); }
- .site-header .main-nav .rooms-entry { display:inline-flex; align-items:center; gap:.5rem; min-height:2.75rem; }
- .site-header .main-nav .rooms-entry svg { width:1.25rem; height:1.25rem; flex:none; }
- @media(max-width:60rem) { .site-header .main-nav { gap:calc(var(--spacing-2) * 1); } }
- .site-header .main-nav .rooms-entry { font-weight:700; }
 
 /* Budget and conditions for map-first room browsing. */
  hamtry-home #results .filter-bar { display:flex; flex-wrap:wrap; align-items:end; gap:calc(var(--spacing-4) * 1); }
@@ -313,12 +120,6 @@ hamtry-home[data-page="map"] .listing-results { max-height: 36rem; overflow-y: a
  hamtry-home #results .condition-filter label { display:flex; align-items:center; gap:.75rem; padding:.65rem 0; cursor:pointer; }
  hamtry-home #results .condition-filter input { width:1.25rem; height:1.25rem; accent-color:var(--brand-primary); }
  @media(max-width:40rem) { hamtry-home #results .filter-bar { align-items:stretch; } hamtry-home #results .filter-bar hamtry-select { width:100%; } hamtry-home #results .condition-filter { flex:1; } }
- hamtry-home #results .filter-bar { padding:1rem; background:var(--surface-interactive); border-radius:var(--radius-xl); }
-hamtry-home[data-page="rooms"] .browse-layout, hamtry-home[data-page="map"] .browse-layout { grid-template-columns:minmax(0,1fr); }
-
-/* Accepted white filter band. */
- hamtry-home #results .filter-bar { background:var(--surface-elevated); padding:calc(1rem * 1); }
- hamtry-home #results .filter-bar { border:0; border-block:1px solid var(--home-line); border-radius:0; padding-inline:0; }
 
 /* Rooms list with a map-icon view tab. */
  .browse-choice { margin:0 0 var(--spacing-6); }
@@ -328,3 +129,30 @@ hamtry-home[data-page="rooms"] .browse-layout, hamtry-home[data-page="map"] .bro
  .browse-choice .browse-mode a:hover { background:var(--surface-interactive); }
  .browse-choice .map-label { font:inherit; }
  .browse-choice .browse-mode { width:fit-content; padding:.25rem; background:var(--surface-interactive); border-radius:var(--radius-action); } .browse-choice .browse-mode a[aria-current="page"] { background:var(--home-paper); } .browse-choice .map-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); } .browse-choice .browse-mode a[data-browse-view="map"] { min-width:3rem; }
+
+
+/* Flat, shared navigation and predictable responsive results. */
+.site-header { position:relative; top:auto; left:auto; width:90%; margin:auto; padding:1.5rem 0; border:0; border-bottom:1px solid var(--home-line); border-radius:0; background:transparent; }
+hamtry-home[data-page]:not([data-page="home"]) .listing-section { padding-top:4rem; }
+.filter-bar { border-block:1px solid var(--home-line); padding:1.25rem 0; margin-bottom:1.25rem; }
+.browse-map { display:block; }
+.location-fields { border:1px solid var(--home-line); border-radius:var(--radius-lg); padding:var(--spacing-4); min-width:0; }
+.location-fields legend { font-weight:600; padding-inline:var(--spacing-2); }
+.location-fields p { color:var(--home-quiet); font-size:var(--type-caption); }
+.coordinates { display:grid; grid-template-columns:1fr 1fr; gap:var(--spacing-4); margin-top:var(--spacing-4); }
+@media(max-width:65rem) { .site-header nav { gap:1rem; } .listing-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:60rem) {
+ .site-header { gap:.75rem; padding-block:1rem; } .brand-mark { display:none; } .wordmark { font-size:1.5rem; }
+ .menu-toggle { display:block; margin-left:auto; order:3; } .profile-button { font-size:1rem; padding:.75rem; }
+ .site-header nav { position:absolute; z-index:10; top:100%; left:0; right:0; display:none; flex-direction:column; align-items:stretch; padding:1rem; background:var(--home-paper); border:1px solid var(--home-line); }
+ .menu-open .site-header nav { display:flex; } .site-header nav a { padding:.8rem; }
+ .section-heading { align-items:start; flex-direction:column; gap:1rem; }
+ .listing-section { padding-block:3rem; } hamtry-home[data-page]:not([data-page="home"]) .listing-section { padding-top:3rem; }
+ hamtry-home footer div { margin-left:0; }
+}
+@media(max-width:34rem) { .listing-grid,.role-choices,.coordinates { grid-template-columns:1fr; } .profile-button { font-size:.875rem; } .profile-button span { display:none; } }
+@media(prefers-reduced-motion:no-preference) {
+ .profile-button,.role-choices button { transition:background 150ms,color 150ms; }
+ .toast:not([hidden]) { animation:toast-in 180ms ease-out; }
+ @keyframes toast-in { from { opacity:0; translate:0 .5rem; } to { opacity:1; translate:0 0; } }
+}

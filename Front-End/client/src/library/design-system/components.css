@@ -549,3 +549,10 @@
 .ht-dialog-close { flex-shrink: 0; width: var(--size-touch); height: var(--size-touch); font: inherit; font-size: var(--type-heading-h3); color: var(--text-primary); border: 0; border-radius: var(--radius-full); background: var(--surface-interactive); cursor: pointer; }
 .ht-dialog-body { padding: var(--spacing-5); }
 @media (prefers-reduced-motion: reduce) { .ht-chip { transition: none; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ht-dialog[open] { animation: ht-dialog-arrive 220ms cubic-bezier(.16,1,.3,1); }
+  .ht-dialog[open]::backdrop { animation: ht-backdrop-arrive 180ms ease-out; }
+  @keyframes ht-dialog-arrive { from { opacity:0; transform:translateY(.6rem) scale(.99); } to { opacity:1; transform:none; } }
+  @keyframes ht-backdrop-arrive { from { opacity:0; } to { opacity:1; } }
+}

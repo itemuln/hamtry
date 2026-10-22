@@ -213,3 +213,17 @@ system documented above. Controls and body-small use 1rem, ordinary body uses
 existing responsive range up to 6rem with -.025em tracking. Existing icon sizes
 and responsive heading endpoints are deliberate homepage roles; the detector
 compares them against the Explore-only frontmatter ramp and reports advisories.
+
+
+### Door entrance — 2026-10-15
+
+The user's supplied screenshot governs the homepage entrance: flat cream
+`#fff5e1`, blue `#304f8c`, frame `#213d69`, red `#ff321e`. Local entrance tokens
+leave the saved editor theme intact. Literata and Source Sans 3 remain locally
+hosted. The large two-line Mongolian invitation sits left of a rectangular blue
+door, with number 24, cream ring handle and a thin panel rule. Mobile stacks copy
+above the door. The door is the sole focal sequence: left hinge, dark threshold,
+then a dark choice screen. That screen offers rooms, roommates, the 3D city and
+listing preparation, plus a light toggle. Repeated heroes, avatar setup and fake
+match percentages have been removed. Shared dialogs arrive in 220ms; native route
+crossfades last 200ms. Reduced motion removes spatial motion and route transitions.

@@ -24,6 +24,7 @@ export {
 } from './core/index.js'
 export {
   registerComponents,
+  HamtryDoor,
   HamtryChip,
   HamtryDialog,
   HamtryButton,

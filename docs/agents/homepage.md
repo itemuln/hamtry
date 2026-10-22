@@ -14,23 +14,24 @@ Read [architecture](architecture.md) and [API contract](api-contract.md) first.
 
 ## Navigation and data
 
-The homepage hero search uses two large SVG choices on a centered cream surface (max-width 40rem),
-with centered icon-label groups:
-`Өрөөнүүдийг үзэх` resets filters and routes directly to `#rooms`;
-`Хамтрагч хайх` reveals the location/budget form and updates `aria-expanded`.
-The form has a stable `roommate-search` id and is hidden outside roommate mode.
-Submit is delegated from the page, uses native FormData and routes to `#roommates`.
+The first viewport is `hamtry-entrance`, a native HamtryElement with a signal-owned
+`door` / `inside` state. It matches the user's cream, blue and red door reference.
+`hamtry-door` is a registered library component: a keyboard button, left-hinged
+panel, `hamtry-door-opening` and `hamtry-door-open` events, and `reset()`.
+One activation opens the panel, then fades through black over 900ms. Reduced
+motion uses a 100ms state change without the hinge movement. Timers and listeners
+are disposed on disconnect; the entrance makes inactive sections hidden and inert.
+The inside screen starts dark, offers room and roommate links, the existing 3D
+city link, and a publish button. Its light toggle changes only this screen.
+Return resets the door and restores keyboard focus. The homepage no longer mounts
+an additional WebGL scene, repeated intro/provider sections, avatar creation, or
+a separate mock matching dataset. Browse routes still use the existing store,
+shared cards, forms, dialogs, saved choices and listing fixtures.
 
-The hero map action is a cream button-like anchor with an authored SVG map icon,
-labeled `Газрын зургаас харах`, navigating to the existing `#map` route.
-
-On `#home`, `.experience-intro` replaces the repeated listing teaser: an authored
-CSS door anchor opens `/explore.html#inside/home`, the city action opens
-`/explore.html#city/home`, and the lamp toggles only its introduction panel's
-`data-lights-off` state with an accessible pressed state and updated action label.
-It adds no second WebGL renderer. The original `#results` remains in the page and
-appears on browse, saved and provider routes. The skip link focuses the visible
-introduction heading on home and the result heading on other routes.
+Native View Transitions crossfade browse route changes and Explore's city/inside
+changes where supported; reduced motion switches immediately. Shared dialogs have
+a short entrance. No scroll hijacking or animation dependency was added.
+The skip link focuses the entrance on home and the result heading elsewhere.
 
 Hash routes: `#home`, `#map`, `#rooms`, `#roommates`, `#saved`, `#dashboard`,
 `#listing/<id>`. Unknown routes fall back to home. Missing detail IDs go to rooms
@@ -45,7 +46,7 @@ in [photo tours](photo-tours.md). Role controls navigation only. Real authentica
 contact, shared publication and backend persistence are absent. Save uses explicit
 UI actions; publish failure rolls back the new listing and media, retaining its draft.
 
-## App scene (not a library export)
+## Optional app scene (not mounted by the homepage)
 
 `hamtry-hero-scene` extends HamtryElement, open Shadow DOM. Public properties:
 `paused:boolean`, `rotationSpeed:number` (finite, clamped 0..1, default .18),

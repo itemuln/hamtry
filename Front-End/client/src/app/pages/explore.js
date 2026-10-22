@@ -1,4 +1,4 @@
-import { HamtryElement, listen, onCleanup, required, signal, untrack, useEffect } from '@hamtry/library'
+import { HamtryElement, listen, onCleanup, required, signal, flushEffects, untrack, useEffect } from '@hamtry/library'
 import { places, placeById, readExploreRoute } from '../data/places.js'
 import { listings } from '../data/listings.js'
 import { money } from '../state/model.js'
@@ -115,9 +115,14 @@ export class HamtryExplore extends HamtryElement {
     listen(preference, 'change', event => this.reduced.set(event.matches))
     listen(window, 'hashchange', () => {
       const next = readExploreRoute(location.hash), modeChanged = next.mode !== this.route.get().mode
-      scene?.cancelTravel(); this.travel.set(false); this.route.set(next)
-      feedback(next.mode === 'inside' ? 'Тавилга дээр дарж орон зайгаа нээгээрэй.' : '')
-      if (modeChanged) queueMicrotask(() => { if (active) $(next.mode === 'inside' ? '.back' : '.go').focus() })
+      const update = () => {
+        if (!active) return
+        scene?.cancelTravel(); this.travel.set(false); this.route.set(next); flushEffects()
+        feedback(next.mode === 'inside' ? 'Тавилга дээр дарж орон зайгаа нээгээрэй.' : '')
+        if (modeChanged) $(next.mode === 'inside' ? '.back' : '.go').focus()
+      }
+      if (modeChanged && document.startViewTransition && !this.reduced.get()) document.startViewTransition(update)
+      else update()
     })
     listen(window, 'storage', () => { const updated = createAppState(); this.app.saved.set(updated.saved.get()); this.app.published.set(updated.published.get()); this.app.role.set(updated.role.get()) })
     listen(canvas, 'webglcontextlost', event => {

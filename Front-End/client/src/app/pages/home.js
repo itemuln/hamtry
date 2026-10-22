@@ -1,4 +1,4 @@
-import { Scope, $, listen, onCleanup, required, untrack, useEffect } from '@hamtry/library'
+import { Scope, $, listen, onCleanup, required, untrack, useEffect, flushEffects } from '@hamtry/library'
 import { districts, listings, roomImage } from '../data/listings.js'
 import { findListings, initialFilters, money, readRoute, validLocation } from '../state/model.js'
 import { createAppState } from '../state/store.js'
@@ -29,17 +29,7 @@ export class HamtryHome extends HTMLElement {
         <button type="button" class="profile-button" data-action="profile"><span aria-hidden="true">◎</span> Миний орон зай</button>
       </header>
       <main id="main-content">
-                  <hamtry-gradient-journey class="gradient-journey" tabindex="-1"></hamtry-gradient-journey>
-                  <section class="home-hero" aria-labelledby="hero-title">
-                        <div class="hero-inner"><div class="hero-copy">
-                          <h1 id="hero-title">Нэг орон зай.<br><span>Шинэ эхлэл.</span></h1>
-                          <p class="hero-description">Байршлаа сонго. Өрөөнүүдийн зургаар танилц. Өөрт тохирох орон зай, хамтрагчаа ол.</p>
-                          <a class="hero-link" href="#map">Газрын зургаас харах<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg></a>
-                        </div><hamtry-hero-scene id="hero-room" minimal></hamtry-hero-scene></div>
-                        <div class="search-wrap icon-search"><div class="search-kind" role="group" aria-label="Хайх төрөл"><button type="button" data-kind="rooms" data-direct-rooms><svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 27V6h22v21M3 27h26M9 21v-8h14v8M9 17h14M9 21v3M23 21v3"/><path d="M12 13v4M20 13v4"/></svg><span>Өрөөнүүдийг үзэх</span></button><button type="button" data-kind="roommates" data-reveal-roommates aria-controls="roommate-search" aria-expanded="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="10" r="5"/><path d="M6 27v-3a10 10 0 0 1 20 0v3M11 27v-5M21 27v-5"/></svg><span>Хамтрагч хайх</span></button></div><form id="roommate-search" class="hero-search" data-roommate-search hidden><hamtry-select name="maxPrice" label="Сарын төсөв">${budgets}</hamtry-select><hamtry-button type="submit" size="lg">Хамтрагч хайх</hamtry-button></form></div>
-                      </section>
-                  <section class="experience-intro page-width intro-door" aria-labelledby="experience-title"><div class="intro-heading"><h2 id="experience-title">Хаалганы цаана<br>өөрийн орон зай.</h2><p>Хот дундуур машинаар явж газраа сонго. Хаалгаар нь ор. Буйдангаас өрөөнүүдээ, кафены цэснээс хамтрагчаа нээ.</p><a class="intro-action" href="/explore.html#city/home">Хотыг тойрох <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 19 19 5M5 5h14v14"/></svg></a></div><div class="intro-room"><a class="intro-doorway" href="/explore.html#inside/home" aria-label="3D өрөөнд орох"><span class="intro-door-panel"><span class="intro-door-label">Ороорой</span></span></a><button class="intro-lamp" type="button" data-intro-lamp aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 9-9 25h42L44 9ZM32 34v20M19 54h26M46 34v10"/><circle cx="46" cy="47" r="3"/></svg><span class="lamp-label">Гэрэл унтраах</span></button><span class="intro-room-note">Хаалга дээр дарж 3D өрөөнд орно.</span></div></section>
-          
+      <hamtry-entrance class="home-entrance" tabindex="-1"></hamtry-entrance>
           <section class="listing-section page-width" id="results" aria-labelledby="results-title">
                         <div class="section-heading"><div><h2 id="results-title">Тухтай булангаа олоорой<span class="heading-dot">.</span></h2></div><a class="all-listings" href="#map">Газрын зургаар үзэх <span aria-hidden="true">↗</span></a><hamtry-button class="new-listing" data-action="publish" hidden>Өрөө нэмэх +</hamtry-button></div>
 <section class="browse-choice" aria-label="Өрөөнүүдийг харах хэлбэр"><nav class="browse-mode" aria-label="Жагсаалт эсвэл газрын зураг"><a href="#rooms" data-browse-view="rooms"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h12M9 12h12M9 18h12M3 6h1M3 12h1M3 18h1"/></svg>Өрөөнүүд</a><a href="#map" data-browse-view="map" aria-label="Газрын зураг" title="Газрын зураг"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg><span class="map-label">Газрын зураг</span></a></nav></section>
@@ -51,7 +41,6 @@ export class HamtryHome extends HTMLElement {
                         <div class="browse-layout"><hamtry-apartment-map class="browse-map" hidden></hamtry-apartment-map><div class="listing-results"><div class="listing-grid"></div>
                         <div class="empty-state" hidden><span aria-hidden="true">⌂</span><h3></h3><p></p><hamtry-button class="empty-action">Шүүлтүүр цэвэрлэх</hamtry-button></div></div></div>
                       </section>
-                  <section class="provider-section page-width"><div><h2>Өрөөгөө танилцуул.</h2><p>Газрын зурагт цэг тавиад, утасныхаа зургуудыг өрөө бүрээр нэмээрэй.</p></div><hamtry-button data-action="publish" size="lg">Өрөө нэмэх ↗</hamtry-button></section>
                 </main>
       <footer class="page-width"><a class="wordmark" href="#home">hamtry.</a><div><a href="/components.html">Компонентууд</a><a href="/editor.html">Дизайн систем</a></div><small>Хичээлийн туршилтын хувилбар · Бодит захиалга, төлбөр, хэрэглэгчийн бүртгэлгүй.</small></footer>
       <div class="toast" role="status" aria-live="polite" hidden></div>
@@ -77,7 +66,7 @@ export class HamtryHome extends HTMLElement {
     onCleanup(() => { this.saveListing = undefined })
     listen(required('.skip-link', this), 'click', event => {
       event.preventDefault()
-      const heading = $('.experience-intro h2', this).find(node => node.getClientRects().length) || required('#results-title', this)
+      const heading = state.route.get().page === 'home' ? required('.home-entrance', this) : required('#results-title', this)
       heading.tabIndex = -1; heading.focus(); heading.scrollIntoView()
     })
     const showPublish = () => {
@@ -86,14 +75,7 @@ export class HamtryHome extends HTMLElement {
       publish.showModal()
     }
     for (const node of $('[data-action]', this)) listen(node, 'click', () => node.dataset.action === 'profile' ? profile.showModal() : showPublish())
-    // Танилцуулгын чийдэн зөвхөн өөрийн хэсгийн гэрлийг солино.
-    listen(this, 'click', event => {
-      const lamp = event.target.closest('[data-intro-lamp]')
-      if (!lamp) return
-      const dark = lamp.closest('.experience-intro').toggleAttribute('data-lights-off')
-      lamp.setAttribute('aria-pressed', String(dark))
-      required('.lamp-label', lamp).textContent = dark ? 'Гэрэл асаах' : 'Гэрэл унтраах'
-    })
+    listen(this, 'hamtry-publish', showPublish)
     const menu = required('.menu-toggle', this)
     const closeMenu = () => { menu.setAttribute('aria-expanded', 'false'); this.classList.remove('menu-open') }
     listen(menu, 'click', () => { const open = menu.getAttribute('aria-expanded') !== 'true'; menu.setAttribute('aria-expanded', String(open)); this.classList.toggle('menu-open', open) })
@@ -106,29 +88,21 @@ export class HamtryHome extends HTMLElement {
     listen(window, 'hashchange', () => {
       const route = readRoute(location.hash)
       const previous = state.route.get()
-      state.route.set(route)
+      const update = () => {
+        if (!active) return
+        state.route.set(route); flushEffects()
+        if (route.page !== 'detail' && previous.page !== 'detail') {
+          const heading = required(route.page === 'home' ? '.home-entrance' : '#results-title', this)
+          heading.tabIndex = -1; heading.focus({ preventScroll:true })
+        }
+      }
+      if (route.page !== previous.page && route.page !== 'detail' && previous.page !== 'detail' && document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.startViewTransition(update)
+      } else update()
       if (route.page !== 'detail' && previous.page !== 'detail') {
         window.scrollTo({ top: 0, behavior: 'instant' })
-        // Page солиход keyboard хэрэглэгч шинэ гарчигт очно; modal хаахад native focus return үлдэнэ.
-        queueMicrotask(() => {
-          if (!this.isConnected) return
-          const heading = required(route.page === 'home' ? '.gradient-journey' : '#results-title', this)
-          heading.tabIndex = -1; heading.focus({ preventScroll: true })
-        })
+
       }
-    })
-    for (const button of $('[data-kind]', this)) listen(button, 'click', () => {
-      state.kind.set(button.dataset.kind)
-      if (button.hasAttribute('data-direct-rooms')) { state.filters.set({ ...initialFilters }); location.hash = 'rooms' }
-      else if (!button.closest('.search-kind')) location.hash = button.dataset.kind
-    })
-    // Hero form-ийн submit-ийг parent дээр сонсоно: native form ба preview-үүд ижил урсгалтай.
-    listen(this, 'submit', event => {
-      if (!event.target.matches('.hero-search')) return
-      event.preventDefault()
-      const data = new FormData(event.target)
-      state.filters.set({ ...initialFilters, maxPrice: Number(data.get('maxPrice')) })
-      location.hash = state.kind.get() === 'rooms' ? 'map' : 'roommates'
     })
     const filters = $('.filter-bar', this)
     const applyFilters = form => {
@@ -234,11 +208,8 @@ export class HamtryHome extends HTMLElement {
       }
       if (route.page !== 'detail') this.previousPage = route.page
       this.dataset.page = page
-      for (const hero of $('.home-hero', this)) hero.hidden = !home
-      required('.provider-section', this).hidden = !home
-      const introductions = $('.experience-intro', this)
-      for (const introduction of introductions) introduction.hidden = !home
-      required('#results', this).hidden = home && introductions.length > 0
+      required('.home-entrance', this).hidden = !home
+      required('#results', this).hidden = home
       for (const form of filters) form.hidden = home || dashboard
       const roomMap = page === 'map'
       required('.browse-map', this).hidden = !roomMap
@@ -253,9 +224,6 @@ export class HamtryHome extends HTMLElement {
         if (node.dataset.nav === page || (page === 'map' && node.hasAttribute('data-room-navigation'))) node.setAttribute('aria-current', 'page'); else node.removeAttribute('aria-current')
       }
       text(this, '#results-title', page === 'map' ? 'Өөрийн өрөөг олоорой.' : dashboard ? 'Миний өрөөнүүд.' : savedPage ? 'Таны хадгалсан сонголтууд.' : kind === 'roommates' ? 'Нэг хэмнэлтэй хүнээ олоорой.' : home ? 'Тухтай булангаа олоорой.' : 'Өөрийн өрөөг олоорой.')
-      for (const node of $('[data-kind]', this)) node.setAttribute('aria-pressed', String(node.dataset.kind === kind))
-      for (const form of $('[data-roommate-search]', this)) form.hidden = kind !== 'roommates'
-      for (const button of $('[data-reveal-roommates]', this)) button.setAttribute('aria-expanded', String(kind === 'roommates'))
       const filter = state.filters.get(), saved = state.saved.get()
       // Control-ийн .value setter доторх getter-үүд page effect-ийн dependency болох ёсгүй.
       untrack(() => { for (const node of $('.filter-bar [name]', this)) {

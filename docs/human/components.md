@@ -194,3 +194,15 @@ native behavior. Backdrop болон хаах товч мөн хаана. `close
 
 Нүүр дээрх бодит хэрэглээг [homepage guide](homepage.md)-аас үзээрэй. Effect дотор
 field property бичихдээ setter-ийн дотоод signal уншилтыг `untrack()`-аар тусгаарлана.
+
+## Хаалга
+
+```html
+<hamtry-door style="width:20rem;height:34rem"></hamtry-door>
+```
+
+Native button нь Enter / Space, focus outline, reduced motion дэмжинэ.
+`hamtry-door-opening` нь эхлэхэд, `hamtry-door-open` нь дуусахад гарна.
+Дахин тоглуулахдаа `door.reset()` дуудна. Өнгийг `--door-blue`,
+`--door-frame`, `--door-paper` хувьсагчаар тохируулна. Доторх 24 нь
+нүүр хуудасны reference-ийн өрөөний дугаар бөгөөд бодит зарын дугаар биш.
