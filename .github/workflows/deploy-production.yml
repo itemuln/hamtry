@@ -90,7 +90,7 @@ jobs:
           artifact_directory="${RUNNER_TEMP}/hamtry-${GITHUB_SHA}"
           install -d -m 0700 "$artifact_directory"
           tar -C Front-End/client -czf "$artifact_directory/frontend.tar.gz" \
-            dist server package.json src/library/design-system/theme.js src/library/design-system/tokens.json
+            dist server package.json theme/hamtry-theme.json src/library/design-system/theme.js src/library/design-system/tokens.json
           cp Front-End/client/theme/hamtry-theme.json "$artifact_directory/theme-seed.json"
 
           mapfile -t backend_jars < <(

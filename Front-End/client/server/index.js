@@ -19,7 +19,7 @@ const types = {
 }
 createServer(async (req, res) => {
   if (livenessRoute(req, res)) return
-  if (await themeRoute(req, res)) return
+  if (await themeRoute(req, res, true)) return
   if (req.method !== 'GET') {
     res.writeHead(405).end()
     return
@@ -47,7 +47,7 @@ createServer(async (req, res) => {
   process.env.HOST || '127.0.0.1',
   () => {
     console.log(
-      'Hamtry authoring server ready. Shared theme is saved in theme/hamtry-theme.json.',
+      'Hamtry server ready. Theme is read-only; edit locally and deploy through Git.',
     )
   },
 )

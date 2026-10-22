@@ -52,8 +52,9 @@ npm run build
 npm start
 ```
 
-The built authoring server runs at `http://127.0.0.1:4173` and keeps theme edits
-on disk. Node 22.18+ is required. `npm run preview` also supports the theme API.
+The built server runs at `http://127.0.0.1:4173` and reads the theme committed
+with the release; theme writes are disabled. Edit with `npm run dev` or
+`npm run preview`, then commit the theme file and deploy. Node 22.18+ is required.
 Run `npm test` and `npm run lint` for checks.
 
 Future pages/components load the shared theme once:
