@@ -23,3 +23,13 @@ Local шалгах: `Front-End/client` дотроос `npm test`, `npm run lint`
 `npm run build`, `npx wrangler deploy --dry-run`.
 `npm run preview:cloudflare` нь Worker-ийг local дээр ажиллуулна.
 Зар, зураг, profile-ийн demo мэдээлэл browser дотроо хэвээр.
+
+VPS administrator нь `sudo bash infrastructure/production/install-ml-service.sh Back-End/liveness`
+командаар ML service-ийг тусад нь суулгана. Installer нь Python орчин, model
+хадгалах хавтас, `hamtry-liveness` service болон зөвхөн Hamtry-ийн NGINX ML замыг
+тохируулна. Model анх татагдахад хэдэн минут шаардагдаж болно. Health болон
+session шалгалтын дараа жинхэнэ камераар тусад нь турших шаардлагатай.
+
+2026-10-22-нд VPS болон Cloudflare замаар health, session, буруу зураг,
+дахин ашигласан session, хэт том хүсэлт болон нүүргүй туршилтын зургийн шалгалт
+амжилттай болсон. Бодит камераар амжилттай selfie баталгаажуулахыг тусад нь шалгана.

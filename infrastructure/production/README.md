@@ -10,12 +10,14 @@ Spring Boot 4.1.1 / Java 21 is currently a JPA/PostgreSQL scaffold, with no
 marketplace controllers, accounts, or authentication. Browser-local listings,
 photos and demo data remain browser-local after deployment.
 
-NGINX terminates HTTPS and routes requests to the loopback frontend and Spring services.
+The public frontend runs on Cloudflare Workers. On the VPS, NGINX terminates
+HTTPS and routes ML requests directly to the dedicated loopback Python service.
+The existing VPS frontend and Spring scaffold remain available for maintenance.
 
 | Component | Runtime | Persistent state |
 | --- | --- | --- |
 | Frontend and theme reads | `hamtry-frontend`, port 4173 | Theme versioned with each release |
-| Selfie check | Python process started by `hamtry-frontend`, port 8001 | DeepFace models in `/var/lib/hamtry/liveness` |
+| Selfie check | `hamtry-liveness`, Python/ONNX on port 8001 | DeepFace models in `/var/lib/hamtry/liveness` |
 | Spring backend | `hamtry-backend`, port 8082 | PostgreSQL |
 | PostgreSQL 17 | Compose project `hamtry`, loopback port 5435 | `hamtry-postgres-data` Docker volume |
 
@@ -75,8 +77,9 @@ deployment waits for the model load to finish.
 
 ## GitHub Actions configuration
 
-The workflow `.github/workflows/deploy-production.yml` runs on pushes to `main`
-and manual dispatch. In the repository's `production` environment set:
+Frontend pushes to `main` deploy to Cloudflare using `deploy-cloudflare.yml`.
+The previous `.github/workflows/deploy-production.yml` is manual-only for VPS
+maintenance. In the repository's `production` environment set:
 
 | Setting | Value |
 | --- | --- |
@@ -101,6 +104,40 @@ first deployment removes the first links and stops the new services. Successful
 retries of an active SHA are idempotent. Old releases are retained for recovery.
 
 ## Validation
+
+### Standalone VPS ML service
+
+For a Cloudflare frontend with VPS inference, run as an administrator from a
+reviewed checkout:
+
+```sh
+sudo bash infrastructure/production/install-ml-service.sh Back-End/liveness
+```
+
+This installs Python venv support if missing and the pinned API dependencies
+in `/opt/hamtry/ml/.venv`, then enables `hamtry-liveness.service` as user `hamtry`.
+One Uvicorn worker owns the in-memory sessions and inference lock. The API binds
+only to `127.0.0.1:8001`, uses ONNX, and stores model weights under
+`/var/lib/hamtry/liveness`. A 2 GiB memory limit and two-CPU quota bound resource
+use on the shared VPS; confirm these limits against real inference on deployment.
+
+After model startup passes the local health check, the installer backs up the
+Hamtry NGINX site and adds or replaces `/api/liveness/` routing directly to ML.
+It validates and reloads NGINX, restoring the config on failure. It does not
+change SSH, database configuration, or other applications' sites.
+The Cloudflare Worker already proxies this path to the VPS HTTPS origin.
+
+Verify health, session creation, invalid-image rejection and session replay
+rejection through the VPS and Cloudflare origins. Startup and session creation
+do not prove successful real-camera verification.
+
+Verified on 2026-10-22: the dedicated service loaded RetinaFace, Fasnet and SFace;
+health and session endpoints worked through both public origins. Invalid JSON
+schema, malformed images, reused sessions, over-limit bodies and a synthetic
+blank JPEG were rejected with the expected statuses. The blank-image test reached
+the real face detector. Real-camera acceptance remains a separate manual check.
+
+### Existing VPS release checks
 
 From the repository root:
 

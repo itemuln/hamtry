@@ -1,0 +1,30 @@
+[Unit]
+Description=Hamtry selfie verification API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hamtry
+Group=hamtry
+WorkingDirectory=/opt/hamtry/ml
+Environment=DEEPFACE_BACKEND_ENGINE=onnx
+Environment=DEEPFACE_HOME=/var/lib/hamtry/liveness
+Environment=PYTHONUNBUFFERED=1
+Environment=OMP_NUM_THREADS=2
+ExecStart=/opt/hamtry/ml/.venv/bin/python -m uvicorn app:app --host 127.0.0.1 --port 8001 --workers 1 --no-access-log
+Restart=on-failure
+RestartSec=10s
+TimeoutStopSec=30s
+MemoryMax=2G
+CPUQuota=200%
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/hamtry/liveness
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.target
