@@ -20,7 +20,7 @@ fi
 incoming_source="/var/lib/hamtry-deploy/incoming/${release_id}"
 incoming_directory=$(mktemp -d /opt/hamtry/operations/.release.XXXXXX)
 trap 'rm -rf -- "$incoming_directory"' EXIT
-for artifact in frontend.tar.gz hamtry-backend.jar theme-seed.json SHA256SUMS; do
+for artifact in frontend.tar.gz hamtry-backend.jar liveness.tar.gz nginx.conf theme-seed.json SHA256SUMS; do
   cp --no-dereference -- "$incoming_source/$artifact" "$incoming_directory/$artifact"
 done
 frontend_release="/opt/hamtry/frontend/releases/${release_id}"
@@ -36,7 +36,7 @@ if [[ ! "$frontend_port" =~ ^[0-9]+$ ]] || (( frontend_port < 1024 || frontend_p
   exit 1
 fi
 
-for required_command in curl find nginx sha256sum systemctl tar flock; do
+for required_command in curl find nginx sha256sum systemctl tar flock python3; do
   if ! command -v "$required_command" >/dev/null 2>&1; then
     echo "Required deployment command is missing: ${required_command}" >&2
     exit 1
@@ -49,7 +49,7 @@ if [[ ! "$backend_port" =~ ^[0-9]+$ ]] || (( backend_port < 1024 || backend_port
   exit 1
 fi
 
-for artifact in frontend.tar.gz hamtry-backend.jar theme-seed.json SHA256SUMS; do
+for artifact in frontend.tar.gz hamtry-backend.jar liveness.tar.gz nginx.conf theme-seed.json SHA256SUMS; do
   artifact_path="${incoming_directory}/${artifact}"
   if [[ ! -f "$artifact_path" || -L "$artifact_path" ]]; then
     echo "Missing regular deployment artifact: ${artifact_path}" >&2
@@ -58,8 +58,19 @@ for artifact in frontend.tar.gz hamtry-backend.jar theme-seed.json SHA256SUMS; d
 done
 
 manifest_files=$(awk '{print $2}' "${incoming_directory}/SHA256SUMS" | LC_ALL=C sort)
-if [[ "$manifest_files" != $'frontend.tar.gz\nhamtry-backend.jar\ntheme-seed.json' ]]; then
-  echo "SHA256SUMS must contain exactly the three expected release artifacts." >&2
+if [[ "$manifest_files" != $'frontend.tar.gz\nhamtry-backend.jar\nliveness.tar.gz\nnginx.conf\ntheme-seed.json' ]]; then
+  echo "SHA256SUMS must contain exactly the five expected release artifacts." >&2
+  exit 1
+fi
+if tar -tzf "${incoming_directory}/liveness.tar.gz" | grep -Eq '(^/|(^|/)\.\.(/|$))'; then
+  echo "Liveness archive contains an unsafe path." >&2
+  exit 1
+fi
+if tar -tvzf "${incoming_directory}/liveness.tar.gz" \
+  | awk '{ entry_type = substr($1, 1, 1); if (entry_type != "d" && entry_type != "-") exit 1 }'; then
+  :
+else
+  echo "Liveness archive may contain only regular files and directories." >&2
   exit 1
 fi
 (
@@ -98,6 +109,11 @@ if [[ ( -e "$frontend_current" || -L "$frontend_current" ) && "$current_frontend
   echo "A current release path exists but is not a valid release link." >&2
   exit 1
 fi
+nginx_config=/etc/nginx/sites-available/hamtry
+if [[ ! -f "$nginx_config" || -L "$nginx_config" ]]; then
+  echo "Expected the active Hamtry NGINX config at ${nginx_config}." >&2
+  exit 1
+fi
 
 if [[ "$(readlink -f "$frontend_current" 2>/dev/null || true)" == "$frontend_release" \
   && "$(readlink -f "$backend_current" 2>/dev/null || true)" == "$backend_release" ]]; then
@@ -113,13 +129,15 @@ fi
 
 frontend_switched=false
 backend_switched=false
+nginx_switched=false
 deployment_complete=false
 
 wait_for_frontend_health() {
-  for _ in {1..30}; do
+  for _ in {1..300}; do
     if systemctl is-active --quiet hamtry-frontend \
       && curl --fail --silent --show-error --max-time 5 "http://127.0.0.1:${frontend_port}/" >/dev/null \
-      && curl --fail --silent --show-error --max-time 5 "http://127.0.0.1:${frontend_port}/api/theme" >/dev/null; then
+      && curl --fail --silent --show-error --max-time 5 "http://127.0.0.1:${frontend_port}/api/theme" >/dev/null \
+      && curl --fail --silent --show-error --max-time 5 "http://127.0.0.1:${frontend_port}/api/liveness/health" | grep -q '"status":"ready"'; then
       return 0
     fi
     sleep 2
@@ -157,6 +175,11 @@ rollback_release() {
 
   if [[ "$deployment_complete" != true ]]; then
     echo "Deployment failed; restoring the previous release." >&2
+
+    if [[ "$nginx_switched" == true ]]; then
+      install -o root -g root -m 0644 "${incoming_directory}/nginx.previous" "$nginx_config"
+      if ! nginx -t || ! systemctl reload nginx; then echo "CRITICAL: restored NGINX config did not reload." >&2; fi
+    fi
 
     if [[ "$frontend_switched" == true ]]; then
       if [[ -n "$current_frontend_target" ]]; then
@@ -202,6 +225,12 @@ tar --extract --gzip \
   --directory "$frontend_release" \
   --no-same-owner \
   --no-same-permissions
+install -d -m 0755 "${frontend_release}/liveness"
+tar --extract --gzip \
+  --file "${incoming_directory}/liveness.tar.gz" \
+  --directory "${frontend_release}/liveness" \
+  --no-same-owner \
+  --no-same-permissions
 install -o root -g root -m 0644 \
   "${incoming_directory}/hamtry-backend.jar" \
   "${backend_release}/hamtry-backend.jar"
@@ -213,6 +242,9 @@ fi
 find "$frontend_release" -type d -exec chmod 0755 {} +
 find "$frontend_release" -type f -exec chmod 0644 {} +
 chown -R root:root "$frontend_release" "$backend_release"
+
+python3 -m venv /opt/hamtry/liveness/.venv
+/opt/hamtry/liveness/.venv/bin/python -m pip install --requirement "${frontend_release}/liveness/requirements.txt"
 
 if [[ ! -f /var/lib/hamtry/theme/hamtry-theme.json ]]; then
   install -o hamtry -g hamtry -m 0640 "$incoming_directory/theme-seed.json" /var/lib/hamtry/theme/hamtry-theme.json
@@ -235,7 +267,12 @@ if ! wait_for_frontend_health; then
   echo "The new frontend did not become healthy." >&2
   exit 1
 fi
+install -o root -g root -m 0644 "$nginx_config" "${incoming_directory}/nginx.previous"
+install -o root -g root -m 0644 "${incoming_directory}/nginx.conf" "${nginx_config}.next"
+mv -f -- "${nginx_config}.next" "$nginx_config"
+nginx_switched=true
 nginx -t
+systemctl reload nginx
 
 public_url=$(sed -n 's/^APP_PUBLIC_URL=//p' "$environment_file" | tail -n 1)
 if [[ ! "$public_url" =~ ^https://[A-Za-z0-9.-]+(:[0-9]+)?$ ]]; then
@@ -249,6 +286,9 @@ curl --fail --silent --show-error --max-time 15 \
 curl --fail --silent --show-error --max-time 15 \
   --retry 5 --retry-delay 2 --retry-all-errors \
   "${public_url}/actuator/health" >/dev/null
+curl --fail --silent --show-error --max-time 15 \
+  --retry 5 --retry-delay 2 --retry-all-errors \
+  -X POST "${public_url}/api/liveness/sessions" >/dev/null
 
 deployment_complete=true
 rm -rf -- "$incoming_directory" "$incoming_source"

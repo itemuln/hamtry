@@ -1,8 +1,8 @@
 import { onCleanup } from '@hamtry/library'
 
 export const people = [
-  { id: 'nomin', name: 'Н. Номин', initial: 'Н', shirt: '--brand-accent-pink', hair: 0 },
-  { id: 'temuulen', name: 'Т. Тэмүүлэн', initial: 'Т', shirt: '--brand-primary', hair: 1 },
+  { id: 'nomin', name: 'Н. Номин', initial: 'Н', shirt: '--brand-primary', hair: 0 },
+  { id: 'temuulen', name: 'Т. Тэмүүлэн', initial: 'Т', shirt: '--status-info', hair: 1 },
   { id: 'anu', name: 'А. Ану', initial: 'А', shirt: '--brand-accent-lime', hair: 2 },
 ]
 const now = new Date()

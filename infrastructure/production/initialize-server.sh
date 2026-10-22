@@ -4,13 +4,13 @@ set -euo pipefail
 [[ $# -eq 1 ]] || { echo "Usage: $0 <hostname>" >&2; exit 1; }
 server_name=$1
 [[ "$server_name" =~ ^[A-Za-z0-9][A-Za-z0-9.-]*[A-Za-z0-9]$ && "$server_name" == *.* && "$server_name" != *..* ]] || { echo "Invalid DNS hostname." >&2; exit 1; }
-for command in java docker nginx openssl; do
+for command in java docker nginx openssl python3; do
   command -v "$command" >/dev/null || { echo "Install $command first." >&2; exit 1; }
 done
 /opt/hamtry/runtime/node/bin/node -e 'if (Number(process.versions.node.split(".")[0]) < 24) process.exit(1)'
 id hamtry >/dev/null 2>&1 || useradd --system --home-dir /var/lib/hamtry --create-home --shell /usr/sbin/nologin hamtry
-install -d -m 0755 /opt/hamtry/{frontend,backend}/releases /opt/hamtry/operations /var/www/certbot
-install -d -m 0750 -o hamtry -g hamtry /var/lib/hamtry/theme
+install -d -m 0755 /opt/hamtry/{frontend,backend,liveness}/releases /opt/hamtry/operations /var/www/certbot
+install -d -m 0750 -o hamtry -g hamtry /var/lib/hamtry/theme /var/lib/hamtry/liveness
 install -d -m 0750 -o root -g hamtry /etc/hamtry
 if [[ ! -f /etc/hamtry/hamtry.env ]]; then
   umask 0077
@@ -34,6 +34,8 @@ EOF
   chmod 0640 /etc/hamtry/hamtry.env
 fi
 script_directory=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+python3 -m venv /opt/hamtry/liveness/.venv
+/opt/hamtry/liveness/.venv/bin/python -m pip install --requirement "$script_directory/../../Back-End/liveness/requirements.txt"
 install -m 0644 "$script_directory/postgres.compose.yaml" /opt/hamtry/operations/postgres.compose.yaml
 install -m 0644 "$script_directory/hamtry-backend.service" "$script_directory/hamtry-frontend.service" /etc/systemd/system/
 systemctl daemon-reload

@@ -10,11 +10,12 @@ Spring Boot 4.1.1 / Java 21 is currently a JPA/PostgreSQL scaffold, with no
 marketplace controllers, accounts, or authentication. Browser-local listings,
 photos and demo data remain browser-local after deployment.
 
-NGINX terminates HTTPS and routes requests to two loopback services:
+NGINX terminates HTTPS and routes requests to the loopback frontend and Spring services.
 
 | Component | Runtime | Persistent state |
 | --- | --- | --- |
 | Frontend and theme reads | `hamtry-frontend`, port 4173 | Theme versioned with each release |
+| Selfie check | Python process started by `hamtry-frontend`, port 8001 | DeepFace models in `/var/lib/hamtry/liveness` |
 | Spring backend | `hamtry-backend`, port 8082 | PostgreSQL |
 | PostgreSQL 17 | Compose project `hamtry`, loopback port 5435 | `hamtry-postgres-data` Docker volume |
 
@@ -35,10 +36,15 @@ roll back the database.
 
 ## One-time server setup
 
-Copy this directory to a root-controlled staging directory. Commands below run
-on the VPS from that directory. Verify that 4173, 8082 and 5435 are free first;
+Clone the repository into a root-controlled staging directory. Commands below
+run on the VPS from `infrastructure/production` in that checkout. Verify that
+4173, 8001, 8082 and 5435 are free first;
 if different ports are chosen, align the environment file, Compose and NGINX.
 Java 21, Docker/Compose, NGINX, curl, OpenSSL, Certbot and xz must be installed.
+Python 3 with `venv` support and outbound HTTPS are required for selfie checks.
+The initializer and release deploy install pinned Python packages. The first launch downloads
+DeepFace weights to `/var/lib/hamtry/liveness` and may take several minutes;
+deployment waits for the model load to finish.
 
 1. Run `sudo ./install-node-runtime.sh`. Downloads the pinned official Node 24
    archive and verifies its recorded SHA-256 before extraction.

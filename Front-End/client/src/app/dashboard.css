@@ -6,7 +6,8 @@ hamtry-home[data-page="dashboard"] {
 }
 hamtry-home[data-page="dashboard"] :is(a,button):focus-visible { outline: var(--border-focus-width) solid var(--brand-primary); outline-offset: var(--spacing-1); }
 hamtry-home[data-page="dashboard"] .skip-link { background: var(--brand-primary); color: var(--text-inverse); }
-hamtry-home[data-page="dashboard"] :is(.site-header, .gradient-journey, main > footer) { display: none; }
+hamtry-home[data-page="dashboard"] :is(.site-header, .gradient-journey, main > footer),
+hamtry-home[data-page="dashboard"] > footer.page-width { display: none; }
 hamtry-home .provider-dashboard { font: 400 var(--type-body-sm)/var(--line-height-body-sm) var(--font-sans); color: var(--text-primary); }
 hamtry-home .provider-dashboard :is(h1,h2,h3,p) { font-family: var(--font-sans); letter-spacing: normal; margin: 0; }
 hamtry-home .provider-dashboard p { line-height: inherit; }
