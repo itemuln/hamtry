@@ -1,8 +1,6 @@
-name: Deploy Hamtry production
+name: VPS maintenance deployment
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
