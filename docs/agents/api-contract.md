@@ -37,7 +37,7 @@ for asynchronous work; the engine does not implement async effect tracking.
 `createMotion()` is a public, scoped API. Call it synchronously inside component
 `setup()` or `Scope.run()`. It imports only `animejs/waapi` and exposes:
 
-- `play(element, { opacity, transform }, { duration = 240, delay = 0, onComplete })`:
+- `play(element, { opacity, transform }, { duration = 240, delay = 0, ease = 'cubic-bezier(.16,1,.3,1)', onComplete })`:
   a finite native-WAAPI animation, with at most one owned animation per element.
 - `stop(element)`: cancels the prior animation without firing its completion.
 - `reduced`: whether reduced motion is requested or the document is hidden.

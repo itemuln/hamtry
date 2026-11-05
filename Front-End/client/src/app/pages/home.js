@@ -34,7 +34,7 @@ export class HamtryHome extends HTMLElement {
       <a class="skip-link" href="#main-content">Үндсэн агуулга руу очих</a>
       <header class="site-header">
         <a class="wordmark" href="#rooms" aria-label="Hamtry нүүр"><span class="brand-mark" aria-hidden="true">h.</span>hamtry<span class="brand-period">.</span></a>
-        <nav id="main-nav" class="main-nav" aria-label="Үндсэн цэс"><a href="#map" data-nav="map"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5Z"/></svg><span>3D ертөнц</span></a><a href="#rooms" data-nav="home">${searchIcon('rooms')}Нүүр хуудас</a><a href="#saved" data-nav="saved"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4Z"/></svg>Хадгалсан <span class="saved-count">0</span></a><a href="#dashboard" data-nav="dashboard" class="dashboard-link" hidden>Миний зарууд</a></nav>
+        <nav id="main-nav" class="main-nav" aria-label="Үндсэн цэс"><a href="#map" data-nav="map"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5Z"/></svg><span>3D ертөнц</span></a><a href="#rooms" data-nav="home">${searchIcon('rooms')}<span>Нүүр хуудас</span></a><a href="#saved" data-nav="saved"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4Z"/></svg><span>Хадгалсан</span> <span class="saved-count">0</span></a><a href="#dashboard" data-nav="dashboard" class="dashboard-link" hidden>Миний зарууд</a></nav>
         <div class="header-actions"><button type="button" class="host-button" data-action="publish">Өрөө санал болгох</button><button type="button" class="profile-button" data-action="profile" aria-label="Миний орон зай"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3"/><path d="M6 19a6 6 0 0 1 12 0"/></svg></button></div>
       </header>
       <div class="search-dock">
@@ -43,19 +43,19 @@ export class HamtryHome extends HTMLElement {
         <button type="button" class="search-segment" popovertarget="search-district" aria-expanded="false"><span class="step-heading">${searchIcon('location')}Хаана</span><span class="search-value" data-search-summary="district">Бүх дүүрэг</span></button>
         <button type="button" class="search-segment search-query" popovertarget="search-keywords" aria-expanded="false"><span class="step-heading">${searchIcon('conditions')}Нөхцөл <small>заавал биш</small></span><span class="search-value" data-search-summary="query">Нөхцөл сонгох</span><span class="search-compact-summary" aria-hidden="true">Нөхцөл</span></button>
         <button type="button" class="search-segment" popovertarget="search-budget" aria-expanded="false"><span class="step-heading">${searchIcon('budget')}Төсөв</span><span class="search-value" data-search-summary="maxPrice">Төсөв сонгох</span></button>
-        <div id="search-kind" class="search-panel" popover role="dialog" aria-labelledby="kind-panel-title">
+        <div id="search-kind" class="search-panel" popover="manual" role="dialog" aria-labelledby="kind-panel-title">
           <h2 id="kind-panel-title">Юу хайж байна?</h2><p class="search-panel-hint">Хайх зүйлээ сонгоод эхэлье.</p>
           <div class="search-kind-choices"><button type="button" data-search-kind="roommates" aria-pressed="false">${searchIcon('roommates')}<strong>Өрөөний хамтрагч</strong><span>Нэг хэмнэлтэй хүнээ олох</span>${searchIcon('next')}</button><button type="button" data-search-kind="rooms" aria-pressed="true">${searchIcon('rooms')}<strong>Өрөө</strong><span>Амьдрах орон зайгаа олох</span>${searchIcon('next')}</button></div>
         </div>
-        <div id="search-district" class="search-panel" popover role="dialog" aria-labelledby="district-panel-title">
+        <div id="search-district" class="search-panel" popover="manual" role="dialog" aria-labelledby="district-panel-title">
           <div class="location-panel-heading"><h2 id="district-panel-title">Дүүргээ сонгох</h2><section class="browse-choice" aria-label="Өрөөнүүдийг харах хэлбэр"><nav class="browse-mode" aria-label="Жагсаалт эсвэл газрын зураг"><a href="#list" data-browse-view="list"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h12M9 12h12M9 18h12M3 6h1M3 12h1M3 18h1"/></svg>Өрөөнүүд</a><a href="#map" data-browse-view="map" aria-label="Газрын зураг" title="Газрын зураг"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg><span class="map-label">Газрын зураг</span></a></nav></section></div><div class="location-tools"><hamtry-button class="new-listing" data-action="publish">Өрөө нэмэх +</hamtry-button></div><fieldset class="search-options"><legend>Хаана амьдрах вэ?</legend>${[['all', 'Бүх дүүрэг'], ...districts.map(name => [name, name])].map(([value, label]) => `<label><input type="radio" name="district" value="${value}" ${value === 'all' ? 'checked' : ''}>${searchIcon('location')}<span>${label}</span></label>`).join('')}</fieldset>
           <div class="search-panel-actions"><button type="button" data-clear-search="district">Цэвэрлэх</button><button type="button" data-search-next="search-keywords">Үргэлжлүүлэх</button></div>
         </div>
-        <div id="search-budget" class="search-panel" popover role="dialog" aria-labelledby="budget-panel-title">
+        <div id="search-budget" class="search-panel" popover="manual" role="dialog" aria-labelledby="budget-panel-title">
           <h2 id="budget-panel-title">Сарын төсөв</h2><fieldset class="search-options"><legend>Түрээсийн дээд хэмжээ</legend>${[[0, 'Хязгааргүй'], [700000, '700,000 ₮ хүртэл'], [1000000, '1,000,000 ₮ хүртэл'], [1500000, '1,500,000 ₮ хүртэл']].map(([value, label]) => `<label><input type="radio" name="maxPrice" value="${value}" ${value === 0 ? 'checked' : ''}>${searchIcon('budget')}<span>${label}</span></label>`).join('')}</fieldset>
           <div class="search-panel-actions"><button type="button" data-clear-search="maxPrice">Цэвэрлэх</button><button class="finish-search" type="submit">Хайх</button></div>
         </div>
-        <div id="search-keywords" class="search-panel" popover role="dialog" aria-labelledby="keywords-panel-title">
+        <div id="search-keywords" class="search-panel" popover="manual" role="dialog" aria-labelledby="keywords-panel-title">
           <h2 id="keywords-panel-title">Танд юу чухал вэ?</h2><p class="search-panel-hint">Хүсвэл сонгоорой. Энэ алхмыг алгасаж болно.</p><label class="keyword-field">Хайх үг<input name="query" placeholder="Өрөө, байршил, нөхцөл" aria-label="Хайх үг" /></label>
           <fieldset class="search-options condition-options"><legend>Хүссэн нөхцөлүүд</legend>${['Тамхи татдаггүй', 'Амьтан зөвшөөрнө', 'Тавилгатай', 'Wi-Fi', 'Цэвэрч', 'Гэрээс ажилладаг'].map(condition => `<label><input type="checkbox" name="conditions" value="${condition}">${searchIcon('check')}<span>${condition}</span></label>`).join('')}</fieldset>
           <div class="search-panel-actions"><button type="button" data-search-skip>Алгасах</button><button type="button" class="reset-filters">Цэвэрлэх</button><button type="button" data-search-next="search-budget">Үргэлжлүүлэх</button></div>
@@ -101,7 +101,7 @@ export class HamtryHome extends HTMLElement {
     })
     const showPublish = () => {
       if (saving) return
-      for (const panel of $('.search-panel', this)) panel.hidePopover()
+      closeSearchPanels()
       required('.publish-form', this).hidden = false; required('.publish-preview', this).hidden = true
       publish.showModal()
     }
@@ -135,7 +135,7 @@ export class HamtryHome extends HTMLElement {
     listen(this, 'submit', event => {
       if (!event.target.matches('.header-search')) return
       event.preventDefault(); applyFilters(event.target)
-      for (const panel of $('.search-panel', this)) panel.hidePopover()
+      closeSearchPanels()
       if (!['rooms', 'roommates', 'map', 'list'].includes(state.route.get().page)) location.hash = state.kind.get()
       required('#results', this).focus({ preventScroll: true })
     })
@@ -145,20 +145,65 @@ export class HamtryHome extends HTMLElement {
     })
     const searchBar = required('.header-search', this)
     const searchPanels = $('.search-panel', this)
-    const closeSearchPanels = () => { for (const panel of searchPanels) panel.hidePopover() }
-    const openSearchStep = id => {
-      closeSearchPanels()
-      const trigger = required(`.search-segment[popovertarget="${id}"]`, this)
-      trigger.focus({ preventScroll: true })
-      const panel = required(`#${id}`, this)
-      panel.showPopover()
+    let panelRevision = 0
+    const closeSearchPanels = () => {
+      panelRevision++
+      for (const panel of searchPanels) { motion.stop(panel); panel.hidePopover() }
     }
+    const openSearchStep = (id, beforeReveal) => {
+      const revision = ++panelRevision
+      const current = searchPanels.find(panel => panel.matches(':popover-open'))
+      const reveal = () => {
+        if (revision !== panelRevision || !id) return
+        beforeReveal?.()
+        const trigger = required(`.search-segment[popovertarget="${id}"]`, this)
+        const panel = required(`#${id}`, this)
+        trigger.focus({ preventScroll: true })
+        panel.showPopover()
+        positionSearchPanel(panel)
+        // Нээлтийн эхний frame-ийг toggle event хүлээлгүй тохируулж анивчихыг зогсооно.
+        motion.play(panel, { opacity: [0, 1], transform: ['translateY(-12px) scale(.985)', 'none'] }, { duration: 620, ease: navbarEase })
+        panel.querySelector('[data-search-kind], input')?.focus({ preventScroll: true })
+      }
+      if (!current) { reveal(); return }
+      const visual = getComputedStyle(current)
+      const opacity = visual.opacity, transform = visual.transform
+      motion.play(current, { opacity: [opacity, 0], transform: [transform, 'translateY(6px) scale(.99)'] }, {
+        duration: 220, ease: 'cubic-bezier(.4,0,1,1)',
+        onComplete: () => {
+          if (revision !== panelRevision) return
+          current.hidePopover()
+          reveal()
+        },
+      })
+    }
+    for (const trigger of $('.search-segment[popovertarget]', searchBar)) listen(trigger, 'click', event => {
+      event.preventDefault()
+      const id = trigger.getAttribute('popovertarget')
+      openSearchStep(required(`#${id}`, this).matches(':popover-open') ? null : id)
+    })
+    listen(document, 'pointerdown', event => {
+      if (!searchPanels.some(panel => panel.matches(':popover-open'))) return
+      if (event.target.closest('[data-action="publish"]')) closeSearchPanels()
+      else if (!event.target.closest('.search-panel, .search-segment[popovertarget]')) openSearchStep(null)
+    })
+    listen(document, 'keydown', event => {
+      const current = searchPanels.find(panel => panel.matches(':popover-open'))
+      if (event.key !== 'Escape' || !current || document.querySelector('dialog[open]')) return
+      event.preventDefault()
+      openSearchStep(null)
+      required(`.search-segment[popovertarget="${current.id}"]`, this).focus({ preventScroll: true })
+    })
     for (const button of $('[data-search-kind]', this)) listen(button, 'click', () => {
       const kind = button.dataset.searchKind
-      state.kind.set(kind)
-      if (kind === 'roommates') state.filters.set({ ...state.filters.get(), district: 'all', maxPrice: 0 })
-      location.hash = kind
-      openSearchStep(kind === 'roommates' ? 'search-keywords' : 'search-district')
+      // Хуучин panel хаагдсаны дараа route, төрөл, layout-ийг нэг дор шинэчилнэ.
+      openSearchStep(kind === 'roommates' ? 'search-keywords' : 'search-district', () => {
+        state.kind.set(kind)
+        if (kind === 'roommates') state.filters.set({ ...state.filters.get(), district: 'all', maxPrice: 0 })
+        state.route.set(readRoute(`#${kind}`))
+        location.hash = kind
+        flushEffects()
+      })
     })
     for (const input of $('[name="district"]', searchBar)) listen(input, 'click', () => {
       applyFilters(searchBar)
@@ -182,6 +227,7 @@ export class HamtryHome extends HTMLElement {
       for (const { target } of frames) motion.stop(target)
       return frames
     }
+    const navbarEase = 'cubic-bezier(.25,.1,.25,1)'
     const animateSearchLayout = frames => {
       const measured = frames.map(frame => ({ ...frame, after: frame.target.getBoundingClientRect() }))
       for (const { target, before, after } of measured) {
@@ -191,7 +237,7 @@ export class HamtryHome extends HTMLElement {
         const dy = surface ? before.top - after.top : before.top + before.height / 2 - after.top - after.height / 2
         const sx = surface ? before.width / after.width : 1, sy = surface ? before.height / after.height : 1
         if (Math.abs(dx) + Math.abs(dy) + Math.abs(sx - 1) + Math.abs(sy - 1) < .1) continue
-        motion.play(target, { transform: [`translate(${dx}px,${dy}px) scale(${sx},${sy})`, 'none'] }, { duration: 360 })
+        motion.play(target, { transform: [`translate(${dx}px,${dy}px) scale(${sx},${sy})`, 'none'] }, { duration: 480, ease: navbarEase })
       }
     }
     const positionSearchPanel = panel => {
@@ -202,14 +248,11 @@ export class HamtryHome extends HTMLElement {
       panel.style.left = `${Math.max(16, Math.min(anchor.left, window.innerWidth - panel.offsetWidth - 16))}px`
       panel.style.maxHeight = `${window.innerHeight - Math.max(16, top) - 16}px`
     }
-    for (const panel of searchPanels) listen(panel, 'toggle', event => {
+    for (const panel of searchPanels) listen(panel, 'toggle', () => {
       const trigger = required(`.search-segment[popovertarget="${panel.id}"]`, this)
-      trigger.setAttribute('aria-expanded', String(event.newState === 'open'))
-      if (event.newState !== 'open') { motion.stop(panel); return }
-      positionSearchPanel(panel)
-      motion.play(panel, { opacity: [.65, 1], transform: ['translateY(-8px) scale(.99)', 'none'] }, { duration: 220 })
-      const control = panel.querySelector('[data-search-kind], input')
-      control?.focus({ preventScroll: true })
+      const open = panel.matches(':popover-open')
+      trigger.setAttribute('aria-expanded', String(open))
+      if (!open) motion.stop(panel)
     })
     const updateSearchDock = () => {
       const compact = searchDock.getBoundingClientRect().top <= 0 && window.scrollY > 0
@@ -217,7 +260,7 @@ export class HamtryHome extends HTMLElement {
         const frames = captureSearchLayout()
         searchDock.classList.toggle('is-compact', compact)
         animateSearchLayout(frames)
-        if (!compact) for (const value of $('.search-segment:not([hidden]) .search-value', searchBar)) motion.play(value, { opacity: [0, 1] }, { duration: 180, delay: 70 })
+        if (!compact) for (const value of $('.search-segment:not([hidden]) .search-value', searchBar)) motion.play(value, { opacity: [0, 1] }, { duration: 240, delay: 90, ease: navbarEase })
       }
       for (const panel of searchPanels) if (panel.matches(':popover-open')) positionSearchPanel(panel)
     }
@@ -357,7 +400,7 @@ export class HamtryHome extends HTMLElement {
       const matches = savedPage || dashboard ? findListings(all, searchFilter, kind) : items
       const searchLabel = `${matches.length} ${kind === 'roommates' ? 'хамтрагч' : 'өрөө'} харах`
       text(this, '.search-submit-label', searchLabel)
-      if (lastSearchLabel && lastSearchLabel !== searchLabel && !searchDock.classList.contains('is-compact')) motion.play(required('.search-submit-label', this), { opacity: [.45, 1], transform: ['translateY(3px)', 'none'] }, { duration: 180 })
+      if (lastSearchLabel && lastSearchLabel !== searchLabel && !searchDock.classList.contains('is-compact')) motion.play(required('.search-submit-label', this), { opacity: [.45, 1], transform: ['translateY(3px)', 'none'] }, { duration: 220, ease: navbarEase })
       lastSearchLabel = searchLabel
       required('.search-submit', this).setAttribute('aria-label', searchLabel)
       text(this, '.finish-search', searchLabel)
@@ -368,7 +411,7 @@ export class HamtryHome extends HTMLElement {
       required('.map-location-note', this).hidden = !roomMap || kind !== 'roommates' || Boolean(located.length) || !items.length
       if (route.page === 'detail') required('.browse-map', this).selectedId = route.id
       text(this, '.result-count', `${items.length} ${savedPage ? 'хадгалсан сонголт' : dashboard ? 'туршилтын зар' : 'сонголт'}`)
-      for (const count of $('.saved-count', this)) count.textContent = saved.length
+      for (const count of $('.saved-count', this)) { count.textContent = saved.length; count.dataset.empty = String(saved.length === 0) }
       for (const link of $('.dashboard-link', this)) link.hidden = state.role.get() !== 'provider'
       for (const button of $('[data-role]', this)) button.setAttribute('aria-pressed', String(button.dataset.role === state.role.get()))
       const nodes = items.map(item => {

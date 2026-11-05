@@ -122,9 +122,29 @@ Switching back to rooms restores the full flow.
 
 `createMotion` owns native animations through the component scope. The sticky
 search changes its layout once at the scroll threshold, then transforms separate
-background surfaces and icons for 360ms. Search steps enter in 220ms; visible
+background surfaces and icons for 480ms with a gentle ease-in/out curve. Search
+steps enter in 620ms with a fade and 12px rise. Switching first exits the current
+panel over 220ms, then reveals the requested panel. Panels use manual popovers
+so native light-dismiss cannot bypass the exit; outside pointer presses and Escape
+close through the same transition, and Escape restores trigger focus. The entry starts synchronously
+after positioning, before the next paint; rapid requests cancel stale transitions.
+Expanded values fade
+in over 240ms after a 90ms delay.
+Result-count updates take 220ms. Visible
 result cards enter/reflow in 240–260ms with at most 100ms total stagger. Unchanged
 saved-card grids do not replay. Only the first eight cards are inspected for
 motion, and offscreen cards do not animate. No map canvas animation or continuous
 RAF loop was added. Reduced motion and background tabs settle immediately;
 reconnect/disconnect releases active animations and preference listeners.
+
+At widths up to 40rem, the same primary navigation becomes a fixed bottom bar
+(home, map, saved), with icon/label targets, active icon emphasis and a saved-count
+badge. Owner dashboard navigation remains available when enabled. Content and the
+full-height map reserve its height including the device safe-area inset; toasts
+sit above it. Desktop navigation remains in the header.
+
+Room/person selection commits its route, filters and responsive search layout as
+one update after the outgoing type panel exits. A cancelled selection never
+commits. The next panel is measured against the updated layout before entering.
+Desktop result grids use four columns above 65rem, two at intermediate widths,
+and one below 34rem. The three example people occupy three of the four slots.

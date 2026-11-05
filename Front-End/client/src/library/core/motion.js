@@ -36,7 +36,7 @@ export function createMotion() {
   return {
     get reduced() { return preference.matches || document.hidden },
     stop,
-    play(target, keyframes, { duration = 240, delay = 0, onComplete } = {}) {
+    play(target, keyframes, { duration = 240, delay = 0, ease = 'cubic-bezier(.16,1,.3,1)', onComplete } = {}) {
       stop(target)
       if (preference.matches || document.hidden || !target.isConnected || !duration) {
         onComplete?.()
@@ -48,7 +48,7 @@ export function createMotion() {
         ...keyframes,
         duration,
         delay,
-        ease: 'cubic-bezier(.16,1,.3,1)',
+        ease,
         persist: false,
         onComplete: () => {
           if (running.get(target) !== entry) return

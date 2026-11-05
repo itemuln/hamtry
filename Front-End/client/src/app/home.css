@@ -58,7 +58,7 @@ hamtry-home h1, hamtry-home h2, hamtry-home h3 { font-family: var(--font-display
 .text-button { border: 0; background: none; color: var(--home-quiet); text-decoration: underline; font-size: var(--type-body-sm); min-height: 2.75rem; }
 .results-meta { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between; align-items: center; font-size: var(--type-caption); color: var(--home-quiet); margin-bottom: var(--spacing-4); }
 .results-meta p { margin: 0; }
-.listing-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-6); }
+.listing-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--spacing-6); }
 .listing-grid :is(hamtry-property-card,hamtry-roommate-card) { width: 100%; min-width: 0; --text-primary: var(--brand-primary); --text-secondary: var(--home-quiet); --border-default: var(--home-line); --radius-lg: 1.4rem; --radius-xl: 1.4rem; }
 .listing-grid ::part(card) { border: 1px solid var(--home-line); box-shadow: none; height: 100%; }
 .card-extras { padding-top: var(--spacing-4); }
@@ -319,3 +319,24 @@ hamtry-home[data-search-kind="roommates"] .search-dock.is-compact .header-search
 }
 
 @media(max-width:40rem) { .search-dock:not(.is-compact) .search-submit { position:relative; right:auto; bottom:auto; } }
+
+/* Mobile destinations stay within thumb reach, above the device home indicator. */
+@media(max-width:40rem) {
+ hamtry-home { --mobile-nav-height:calc(4.5rem + env(safe-area-inset-bottom,0px)); padding-bottom:var(--mobile-nav-height); }
+ hamtry-home .site-header #main-nav { position:fixed; z-index:30; inset:auto 0 0; display:flex; flex-direction:row; align-items:stretch; justify-content:space-around; gap:0; overflow:visible; padding:.35rem max(.5rem,env(safe-area-inset-right,0px)) calc(.35rem + env(safe-area-inset-bottom,0px)) max(.5rem,env(safe-area-inset-left,0px)); min-height:var(--mobile-nav-height); background:var(--home-paper); border:0; border-top:1px solid var(--home-line); }
+ hamtry-home .site-header #main-nav a { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:.25rem; min-width:0; min-height:3.75rem; padding:.3rem .2rem; font-size:.6875rem; line-height:1.3; text-align:center; -webkit-tap-highlight-color:transparent; }
+ hamtry-home .site-header #main-nav a::after { display:none; }
+ hamtry-home .site-header #main-nav a[data-nav="home"] { order:-1; }
+ hamtry-home .site-header #main-nav a[data-nav="dashboard"] { order:1; }
+ hamtry-home .site-header #main-nav svg { width:1.65rem; height:1.65rem; stroke-width:1.8; }
+ hamtry-home .site-header #main-nav a[aria-current="page"] svg { stroke-width:2.4; fill:color-mix(in srgb,var(--brand-primary) 10%,transparent); }
+ hamtry-home .site-header #main-nav a:focus-visible { outline:2px solid var(--brand-primary); outline-offset:-4px; border-radius:.5rem; }
+ hamtry-home .site-header #main-nav .saved-count { position:absolute; top:.15rem; left:calc(50% + .45rem); min-width:1rem; height:1rem; padding:0 .2rem; display:grid; place-items:center; font-size:.625rem; background:var(--brand-primary); color:var(--home-paper); border:2px solid var(--home-paper); border-radius:1rem; }
+ hamtry-home .site-header #main-nav .saved-count[data-empty="true"] { display:none; }
+ hamtry-home .toast { bottom:calc(var(--mobile-nav-height) + .75rem); }
+}
+@media(max-width:40rem) and (prefers-reduced-motion:no-preference) {
+ hamtry-home .site-header #main-nav a { transition:color 200ms ease; }
+ hamtry-home .site-header #main-nav svg { transition:transform 280ms cubic-bezier(.25,.1,.25,1),fill 200ms ease; }
+ hamtry-home .site-header #main-nav a:active svg { transform:scale(.9); }
+}
