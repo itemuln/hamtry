@@ -1,0 +1,103 @@
+/* UI-ийн одоогийн rem хэмжээсийг хадгална; fluid токенууд тусдаа хэвээр.
+ * Page болон Shadow DOM нь tokens.css-ээр дамжуулан эдгээр утгыг өвлөнө. */
+:root {
+  --ui-space-caption: 1.7rem;
+  --ui-radius-profile: 1.2rem;
+  --ui-explore-reserved-height: 28rem;
+  --ui-space-4: 1rem;
+  --ui-space-8: 2rem;
+  --ui-space-12: 3rem;
+  --ui-space-16: 4rem;
+  --ui-space-20: 5rem;
+  --ui-space-24: 6rem;
+  --ui-space-hairline: .1rem;
+  --ui-space-fine: .15rem;
+  --ui-space-micro: .2rem;
+  --ui-space-1: .25rem;
+  --ui-space-dense: .3rem;
+  --ui-space-small: .35rem;
+  --ui-space-tight: .4rem;
+  --ui-space-icon-gap: .45rem;
+  --ui-space-2: .5rem;
+  --ui-space-label-gap: .55rem;
+  --ui-space-compact: .6rem;
+  --ui-space-inset-sm: .625rem;
+  --ui-space-control: .65rem;
+  --ui-space-button: .7rem;
+  --ui-space-3: .75rem;
+  --ui-space-row: .8rem;
+  --ui-space-control-wide: .85rem;
+  --ui-space-inset-lg: .9rem;
+  --ui-space-group: 1.1rem;
+  --ui-space-group-wide: 1.15rem;
+  --ui-space-paragraph: 1.2rem;
+  --ui-space-5: 1.25rem;
+  --ui-space-panel-compact: 1.4rem;
+  --ui-space-6: 1.5rem;
+  --ui-space-panel-wide: 1.6rem;
+  --ui-space-7: 1.75rem;
+  --ui-space-9: 2.25rem;
+  --ui-space-10: 2.5rem;
+  --ui-space-11: 2.75rem;
+  --ui-space-profile-offset: 3.15rem;
+  --ui-space-journey-offset: 3.2rem;
+  --ui-space-15: 3.75rem;
+  --ui-space-22: 5.5rem;
+  --ui-radius-panel: 1rem;
+  --ui-radius-pill-lg: 2rem;
+  --ui-radius-pill: 3rem;
+  --ui-radius-dock: 4rem;
+  --ui-radius-header: 5rem;
+  --ui-radius-sm: .5rem;
+  --ui-radius-day: .6rem;
+  --ui-radius-chip: .65rem;
+  --ui-radius-item: .7rem;
+  --ui-radius-control: .75rem;
+  --ui-radius-action: .8rem;
+  --ui-radius-menu: 1.1rem;
+  --ui-radius-posting: 1.15rem;
+  --ui-radius-card: 1.4rem;
+  --ui-radius-search: 1.5rem;
+  --ui-radius-sheet: 1.75rem;
+  --ui-radius-circle: 50%;
+  --ui-color-white: #ffffff;
+  --ui-on-primary-hover: rgb(255 255 255 / .12);
+  --ui-surface-page: color-mix(in srgb, var(--surface-base) 20%, var(--ui-color-white));
+  --ui-border-line: color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  --ui-text-muted: color-mix(in srgb, var(--brand-primary) 68%, var(--ui-surface-page));
+  --ui-surface-field: var(--ui-surface-page);
+  --ui-shadow-search: 0 .6rem 2rem color-mix(in srgb,var(--brand-primary) 7%,transparent);
+  --ui-shadow-panel: 0 .75rem 2rem color-mix(in srgb,var(--brand-primary) 14%,transparent);
+  --ui-shadow-posting: 0 .75rem 2rem color-mix(in srgb,var(--brand-primary) 20%,transparent);
+  --ui-shadow-menu: 0 .75rem 2rem color-mix(in srgb,var(--brand-primary) 12%,transparent);
+  --ui-shadow-hover: 0 .25rem .6rem rgb(0 0 0 / .08);
+  --ui-shadow-calendar: 0 .75rem 2rem rgb(0 0 0 / .16);
+  --ui-shadow-pin: 0 .2rem .7rem color-mix(in srgb,var(--brand-primary) 10%,transparent);
+  --ui-shadow-map-menu: 0 .6rem 1.5rem color-mix(in srgb,var(--brand-primary) 12%,transparent);
+  --ui-shadow-destination: 0 .5rem 2rem rgb(24 33 63 / 4%);
+  --ui-shadow-journey: 0 .3rem 2rem rgb(24 33 63 / 8%);
+  --ui-shadow-marker: 0 .2rem .8rem rgb(24 33 63 / 7%);
+}
+
+/* Харанхуй өнгөний горимыг нэг shared design-system давхарга эзэмшинэ. */
+:root[data-appearance="dark"] {
+  color-scheme: dark;
+  --brand-primary: #e5e9ff;
+  --brand-primary-hover: #cdd5ff;
+  --brand-primary-pressed: #bec9ff;
+  --surface-base: #101526;
+  --surface-subtle: #1c243c;
+  --surface-elevated: #151b2e;
+  --surface-interactive: #29324c;
+  --surface-base-field: #1c243c;
+  --text-primary: #edf0ff;
+  --text-secondary: #b2bcd3;
+  --text-tertiary: #a6b1cc;
+  --text-inverse: #151b2e;
+  --border-default: #3b455f;
+  --ui-surface-page: #151b2e;
+  --ui-border-line: #3b455f;
+  --ui-text-muted: #b2bcd3;
+  --ui-surface-field: #1c243c;
+}
+:root[data-appearance="dark"] body { background: var(--ui-surface-page); }

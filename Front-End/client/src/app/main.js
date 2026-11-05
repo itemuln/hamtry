@@ -16,7 +16,6 @@ if (location.pathname === '/explore.html' && !location.hash) history.replaceStat
 try {
   const appearance = localStorage.getItem('hamtry:appearance') === 'dark' ? 'dark' : 'light'
   document.documentElement.dataset.appearance = appearance
-  document.documentElement.style.colorScheme = appearance
 } catch { /* Хадгалалт хаалттай үед анхны цайвар өнгөөр ажиллана. */ }
 applyDefaultTheme()
 registerComponents()

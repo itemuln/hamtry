@@ -15,16 +15,16 @@ hamtry-home .provider-dashboard button { font: inherit; }
 .provider-dashboard .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .dashboard-mobile-header, .dashboard-mobile-menu { display: none; }
 .dashboard-layout { width: min(100%, 92rem); margin: auto; display: grid; grid-template-columns: 15.75rem minmax(0,1fr); gap: 0; padding: var(--spacing-4); }
-.dashboard-sidebar { padding: var(--spacing-4) .625rem; display: flex; flex-direction: column; align-items: center; }
+.dashboard-sidebar { padding: var(--spacing-4) var(--ui-space-inset-sm); display: flex; flex-direction: column; align-items: center; }
 .dashboard-brand { align-self: flex-start; display: flex; align-items: center; gap: var(--spacing-2); padding-left: var(--spacing-3); height: 3rem; font: 600 var(--type-heading-h1)/var(--line-height-heading-h1) var(--font-sans); color: var(--text-primary); }
 .dashboard-brand img { width: 1.25rem; height: 1.25rem; }
-.dashboard-account { align-self: stretch; display: flex; align-items: center; gap: var(--spacing-2); margin: 2.75rem 0 var(--spacing-4); min-height: 2.625rem; }
+.dashboard-account { align-self: stretch; display: flex; align-items: center; gap: var(--spacing-2); margin: var(--ui-space-11) 0 var(--spacing-4); min-height: 2.625rem; }
 .dashboard-account > span:last-child, .dashboard-inquiry-name, .dashboard-viewing > span:last-child { display: flex; flex-direction: column; gap: var(--spacing-1); min-width: 0; }
 .dashboard-account strong, .dashboard-inquiry strong { font-weight: 600; }
 .dashboard-account small, .dashboard-inquiry small, .dashboard-inquiry time, .dashboard-listing small, .dashboard-viewing small { color: var(--text-secondary); font-size: var(--type-caption); line-height: var(--line-height-caption); }
 .dashboard-avatar { display: grid; place-items: center; flex: 0 0 var(--size-avatar-sm); height: var(--size-avatar-sm); border-radius: var(--radius-full); background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 600; }
 .dashboard-side-nav { align-self: stretch; display: flex; flex-direction: column; gap: var(--spacing-6); background: var(--surface-elevated); border: var(--border-width) solid var(--border-default); border-radius: var(--radius-lg); padding: var(--spacing-4); }
-.dashboard-side-nav :is(a,button) { display: flex; align-items: center; gap: var(--spacing-1); width: 100%; min-height: var(--size-control-md); padding: .625rem var(--spacing-3); border: 0; background: none; color: var(--text-secondary); text-align: left; font-weight: 600; }
+.dashboard-side-nav :is(a,button) { display: flex; align-items: center; gap: var(--spacing-1); width: 100%; min-height: var(--size-control-md); padding: var(--ui-space-inset-sm) var(--spacing-3); border: 0; background: none; color: var(--text-secondary); text-align: left; font-weight: 600; }
 .dashboard-side-nav :is(a,button):hover { background: var(--surface-interactive); border-radius: var(--radius-md); }
 .dashboard-side-nav [aria-current="page"] { color: var(--brand-primary); text-decoration: underline; }
 .dashboard-side-nav img { width: 1.5rem; height: 1.5rem; }
@@ -75,8 +75,7 @@ hamtry-home .provider-dashboard h1 { font: 600 var(--type-heading-h1)/var(--line
 .dashboard-days span { display: grid; place-items: center; height: 2.125rem; color: var(--text-secondary); font-size: var(--type-caption); }
 .dashboard-days .has-viewing { background: var(--status-success-subtle); border-radius: var(--radius-full); color: var(--brand-primary); }
 .dashboard-schedule { width: 100%; margin-top: var(--spacing-1); }
-.dashboard-viewings { background: var(--status-success-subtle); }
-.dashboard-viewing { display: flex; gap: var(--spacing-3); align-items: flex-start; margin-top: var(--spacing-4); min-height: 5.125rem; }
+.dashboard-viewing { display: flex; gap: var(--spacing-3); margin-top: var(--spacing-4); min-height: 5.125rem; }
 .dashboard-viewing > span:last-child { gap: var(--spacing-1); }
 .dashboard-viewing > span:last-child strong { font-weight: 600; }
 .dashboard-date { flex: 0 0 3.125rem; display: flex; flex-direction: column; padding: var(--spacing-1); border-radius: var(--radius-md); background: var(--surface-elevated); }
@@ -112,7 +111,7 @@ hamtry-home footer.dashboard-footer small { grid-column: 1/-1; flex-basis: auto;
 }
 .dashboard-viewing time { font-size:var(--type-caption); font-variant-numeric:tabular-nums; }
 .dashboard-message-list { display:flex; gap:var(--spacing-3); overflow-x:auto; overscroll-behavior-x:contain; padding-bottom:var(--spacing-2); scroll-snap-type:x mandatory; }
-.dashboard-messages { background:#fff; }
+.dashboard-messages { background:var(--surface-elevated); }
 .dashboard-message { position:relative; display:grid; grid-template-columns:3.5rem minmax(0,1fr); grid-template-rows:auto auto; align-items:start; flex:0 0 min(22rem,85%); gap:var(--spacing-2) var(--spacing-3); scroll-snap-align:start; }
 .dashboard-message .dashboard-character { grid-column:1; grid-row:1; align-self:start; flex-basis:3.5rem; width:3.5rem; height:3.5rem; overflow:hidden; border-radius:var(--radius-full); }
 .dashboard-message .dashboard-character img { object-fit:cover; object-position:center 10%; }
@@ -148,7 +147,7 @@ hamtry-home footer.dashboard-footer small { grid-column: 1/-1; flex-basis: auto;
   .dashboard-layout { display: block; padding: 0; }
   .dashboard-sidebar { display: none; }
   .dashboard-workspace { padding: var(--spacing-4); display: flex; flex-direction: column; }
-  .dashboard-utility { height: auto; order: 2; display: block; }
+  .dashboard-utility { height: auto; order: 2; }
   .dashboard-utility .dashboard-search { width: 100%; margin: var(--spacing-8) 0; }
   .dashboard-search input { font-size: var(--type-body-md); }
   .dashboard-icon-button, .dashboard-role { display: none; }
@@ -166,7 +165,7 @@ hamtry-home footer.dashboard-footer small { grid-column: 1/-1; flex-basis: auto;
   .dashboard-filters { display: none; }
   .dashboard-panel { padding: var(--spacing-6); }
   .dashboard-panel-heading button { width: 4.75rem; min-height: var(--size-control-md); }
-  .dashboard-inquiry { display: grid; grid-template-columns: var(--size-avatar-sm) minmax(0,1fr) 6.25rem; }
+  .dashboard-inquiry { display: grid; }
   .dashboard-inquiry time { width: auto; grid-column: 2; grid-row: 2; }
   .dashboard-inquiry hamtry-button { grid-column: 3; grid-row: 1/3; width: 6.25rem; }
   .dashboard-inquiry-name { grid-column: 2; }

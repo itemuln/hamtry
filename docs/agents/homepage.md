@@ -188,7 +188,7 @@ contains the redundant add-room action.
 A burger button between add-listing and profile opens a small header popover.
 Notifications, safe living and help are disabled upcoming concepts. The working
 “Харанхуй горим” switch stores light/dark in `hamtry:appearance`; startup restores
-it before mounting the app. The dark palette is scoped to Hamtry, including
+it before mounting the app. The shared dark palette applies at the app document root, including
 shadow-component tokens; it does not overwrite the theme editor's saved CSS.
 
 Expanded placement is calculated from each result's original index and current
@@ -211,3 +211,10 @@ with the listing's availability as its minimum date; earlier dates and previous
 months are disabled. Month navigation, keyboard day navigation and local selection
 work. Selection does not create a booking or account. Hover feedback is restricted
 to enabled actions and respects reduced motion.
+
+App styling consumes shared UI tokens rather than repeating spacing, radii,
+shadows or palette values. The prior page-level dark block is removed; the
+appearance switch now sets its data attribute and CSS owns color-scheme. The
+dashboard message surface follows surface-elevated instead of fixed white.
+Overridden duplicate declarations, retired detail selectors and the unused map
+menu CSS keyframe are removed without changing animation ownership.

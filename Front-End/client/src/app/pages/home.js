@@ -170,7 +170,6 @@ export class HamtryHome extends HTMLElement {
     const applyAppearance = mode => {
       this.dataset.appearance = mode
       document.documentElement.dataset.appearance = mode
-      document.documentElement.style.colorScheme = mode
       appearanceToggle.setAttribute('aria-checked', String(mode === 'dark'))
     }
     applyAppearance(document.documentElement.dataset.appearance === 'dark' ? 'dark' : 'light')

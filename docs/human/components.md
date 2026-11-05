@@ -222,3 +222,8 @@ Dialog нээгдэхдээ 220ms, хаагдахдаа 130ms хөдөлгөөн
 
 Картын `slot="heading"` хэсэгт гарчиг-link байрлуулж болно; байхгүй бол `heading`
 attribute-ийн текст харагдана. `::part(image)` нь зурагт хөнгөн хөдөлгөөн өгнө.
+
+Хуваалцсан UI токенууд нь `src/library/design-system/ui-tokens.css` дотор байна.
+`--ui-space-*`, `--ui-radius-*`, `--ui-shadow-*` нь одоогийн rem хэмжээг хадгалдаг;
+өмнөх fluid токенууд өөрчлөгдөөгүй. Light/dark palette нэг төвтэй бөгөөд Shadow
+DOM компонентууд мөн өвлөнө. Хуудасны CSS дотор өнгөний palette хуулж тавихгүй.

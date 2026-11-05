@@ -145,3 +145,16 @@ minimum; user selection emits `hamtry-date-change` with `{ value: 'YYYY-MM-DD' }
 The calendar uses a native popover, restores trigger focus on selection, supports
 arrow-key day/month crossing and roving focus, and closes on Escape/outside-click,
 resize or page scroll. Listeners and motion are released with its component scope.
+
+## Shared UI tokens
+
+`src/library/design-system/tokens.css` imports `ui-tokens.css`. This layer contains
+fixed-rem `--ui-space-*` and `--ui-radius-*` values, semantic `--ui-shadow-*`, page
+surfaces/borders/muted text, and the shared `:root[data-appearance="dark"]` palette.
+The existing generated fluid `--spacing-*`/`--radius-*` tokens are unchanged;
+fixed UI values preserve the authored component geometry when replacing literals.
+App and app-component CSS inherit these through base.css, including Shadow DOM.
+Do not redeclare the dark palette in page CSS. Change shared values here rather
+than duplicating literals. Unique layout widths, aspect ratios and breakpoints
+remain structural constants. `tests/ui-tokens.test.js` guards unresolved UI token
+references across all app stylesheets. React/chart code is unchanged by this work.

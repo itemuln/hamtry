@@ -1,3 +1,4 @@
+@import './ui-tokens.css';
 /* Theme declarations come from theme.js and /hamtry-theme.css. */
 .type-display-lg {
   font: 700 var(--type-display-lg)/var(--line-height-display-lg)

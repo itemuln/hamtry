@@ -3,7 +3,7 @@
    Three temporary layouts: full canvas / detail sheet / vertical control rail. */
 :host([data-live-layout]) { min-height:100svh; }
 :host([data-live-layout]) .world-shell { position:relative; width:100%; max-width:none; padding:0; }
-:host([data-live-layout]) .world-header { min-height:4.5rem; padding:0 1.5rem; border-bottom:0; }
+:host([data-live-layout]) .world-header { min-height:4.5rem; padding:0 var(--ui-space-6); border-bottom:0; }
 :host([data-live-layout]) .world-header nav .current,
 :host([data-live-layout]) .world-copy,
 :host([data-live-layout]) .scene-caption,
@@ -13,62 +13,62 @@
 :host([data-live-layout]) .trip-hint { display:none; }
 :host([data-live-layout]) .world { height:calc(var(--p-map-height,100) * 1svh - 4.5rem); min-height:30rem; padding:0; }
 :host([data-live-layout]) .scene-surface { inset:0; height:100%; }
-:host([data-live-layout]) .world-toolbar { top:1rem; right:1.5rem; gap:calc(.5rem * var(--p-spacing,1)); z-index:2; }
-:host([data-live-layout]) .world-toolbar button { font-size:.8125rem; padding:.65rem 1rem; background:var(--surface-elevated); }
+:host([data-live-layout]) .world-toolbar { top:1rem; right:1.5rem; gap:calc(var(--ui-space-2) * var(--p-spacing,1)); z-index:2; }
+:host([data-live-layout]) .world-toolbar button { font-size:.8125rem; padding:var(--ui-space-control) var(--ui-space-4); background:var(--surface-elevated); }
 :host([data-live-layout]) .world-toolbar .reset-view { display:block; }
-:host([data-live-layout]) .destination { position:absolute; right:1.5rem; bottom:1.5rem; max-width:calc(100% - 3rem); width:21rem; padding:1.4rem; margin:0; }
-:host([data-live-layout]) .destination h2 { font-size:1.35rem; padding-right:2rem; }
-:host([data-live-layout]) .destination-kind { margin-top:.5rem; font-size:.8125rem; }
+:host([data-live-layout]) .destination { position:absolute; right:1.5rem; bottom:1.5rem; max-width:calc(100% - 3rem); width:21rem; padding:var(--ui-space-panel-compact); margin:0; }
+:host([data-live-layout]) .destination h2 { font-size:1.35rem; padding-right:var(--ui-space-8); }
+:host([data-live-layout]) .destination-kind { margin-top:var(--ui-space-2); font-size:.8125rem; }
 :host([data-live-layout]) .destination-description { font-size:1rem; line-height:1.6; }
 :host([data-live-layout]) .destination-footer { justify-content:flex-end; }
 :host([data-live-layout]) .go::part(button) { font-size:.9375rem; }
-.close-destination { position:absolute; top:.7rem; right:.7rem; display:grid; place-items:center; width:2.75rem; height:2.75rem; border:0; background:transparent; border-radius:.5rem; }
+.close-destination { position:absolute; top:.7rem; right:.7rem; display:grid; place-items:center; width:2.75rem; height:2.75rem; border:0; background:transparent; border-radius:var(--ui-radius-sm); }
 .close-destination:hover { background:var(--surface-interactive); }
 .close-destination svg { width:1.1rem; height:1.1rem; fill:none; stroke:currentColor; stroke-width:1.6; }
-:host([data-live-layout]) .control-deck { position:absolute; top:5rem; right:1.5rem; z-index:5; width:min(20rem,calc(100% - 3rem)); padding:.5rem; border:1px solid var(--border-default); border-radius:1rem; background:var(--surface-elevated); }
+:host([data-live-layout]) .control-deck { position:absolute; top:5rem; right:1.5rem; z-index:5; width:min(20rem,calc(100% - 3rem)); padding:var(--ui-space-2); border:1px solid var(--border-default); border-radius:var(--ui-radius-panel); background:var(--surface-elevated); }
 :host([data-live-layout]) .places { display:flex; flex-direction:column; gap:0; }
-:host([data-live-layout]) .place { min-height:2.75rem; padding:.8rem 1rem; border:0; border-radius:.5rem; background:transparent; display:block; }
+:host([data-live-layout]) .place { min-height:2.75rem; padding:var(--ui-space-row) var(--ui-space-4); border:0; border-radius:var(--ui-radius-sm); background:transparent; display:block; }
 :host([data-live-layout]) .place strong { font-size:.9375rem; }
 :host([data-live-layout]) .place small { display:none; }
 :host([data-live-layout]) .furniture { flex-direction:column; }
 :host([data-live-layout]) .furniture hamtry-button { flex:none; }
 :host([data-live-layout]) .furniture hamtry-button::part(button) { font-size:.9375rem; min-height:2.75rem; }
-:host([data-live-layout]) .marker { width:2.75rem; height:2.75rem; padding:0; font-size:0; display:flex; align-items:center; justify-content:center; gap:.55rem; }
-:host([data-live-layout]) .marker::before { content:""; display:block; width:.4rem; height:.4rem; border-radius:50%; background:currentColor; flex-shrink:0; }
+:host([data-live-layout]) .marker { width:2.75rem; height:2.75rem; padding:0; font-size:0; display:flex; align-items:center; justify-content:center; gap:var(--ui-space-label-gap); }
+:host([data-live-layout]) .marker::before { content:""; display:block; width:.4rem; height:.4rem; border-radius:var(--ui-radius-circle); background:currentColor; flex-shrink:0; }
 :host([data-live-layout][data-details="true"]) .marker[aria-pressed="true"],
-:host([data-live-layout]) .marker:focus-visible { width:auto; padding:.6rem .85rem; font-size:.875rem; }
+:host([data-live-layout]) .marker:focus-visible { width:auto; padding:var(--ui-space-compact) var(--ui-space-control-wide); font-size:.875rem; }
 :host([data-live-layout]) .scene-feedback { left:1.5rem; bottom:1.5rem; font-size:.875rem; }
 :host([data-live-layout]) .journey { bottom:1.5rem; top:auto; font-size:.9375rem; }
 :host([data-live-layout]) .journey strong { font-size:.9375rem; }
 
 /* Wide canvas with a compact, clicked destination at the lower right. */
-:host([data-live-layout="canvas"]) .destination { border-radius:1rem; }
+:host([data-live-layout="canvas"]) .destination { border-radius:var(--ui-radius-panel); }
 
 /* An inset canvas and a centered bottom sheet leave the city unobstructed. */
-:host([data-live-layout="sheet"]) .world-shell { padding-inline:1.25rem; }
-:host([data-live-layout="sheet"]) .world-header { padding-inline:.25rem; }
+:host([data-live-layout="sheet"]) .world-shell { padding-inline:var(--ui-space-5); }
+:host([data-live-layout="sheet"]) .world-header { padding-inline:var(--ui-space-1); }
 :host([data-live-layout="sheet"]) .world { height:calc(var(--p-map-height,100) * 1svh - 5.75rem); }
-:host([data-live-layout="sheet"]) .scene-surface { border-radius:1rem; overflow:hidden; }
+:host([data-live-layout="sheet"]) .scene-surface { border-radius:var(--ui-radius-panel); overflow:hidden; }
 :host([data-live-layout="sheet"]) .destination { left:50%; right:auto; transform:translateX(-50%); bottom:1rem; width:calc(var(--p-sheet-width,34) * 1rem); max-width:calc(100% - 2rem); }
 :host([data-live-layout="sheet"]) .destination-description { max-width:48ch; }
 
 /* A vertical tool rail frees the top edge; destination information stays to one side. */
 :host([data-live-layout="rail"]) .world-toolbar { left:1.5rem; right:auto; top:1rem; flex-direction:column; align-items:stretch; }
-:host([data-live-layout="rail"]) .world-toolbar button { text-align:left; border-radius:.75rem; }
+:host([data-live-layout="rail"]) .world-toolbar button { text-align:left; border-radius:var(--ui-radius-control); }
 :host([data-live-layout="rail"]) .destination { width:calc(var(--p-panel-width,21) * 1rem); }
 :host([data-live-layout="rail"]) .control-deck { right:auto; left:1.5rem; top:8.5rem; }
 
 @media(max-width:42em) {
-  :host([data-live-layout]) .world-header { min-height:4rem; padding-inline:1rem; }
+  :host([data-live-layout]) .world-header { min-height:4rem; padding-inline:var(--ui-space-4); }
   :host([data-live-layout]) .world { height:calc(var(--p-map-height,100) * 1svh - 4rem); min-height:30rem; padding:0; }
-  :host([data-live-layout]) .world-toolbar { top:.75rem; right:1rem; flex-direction:row; flex-wrap:wrap; max-width:calc(100% - 2rem); gap:.4rem; }
-  :host([data-live-layout]) .world-toolbar button { font-size:.75rem; padding:.5rem .7rem; }
+  :host([data-live-layout]) .world-toolbar { top:.75rem; right:1rem; flex-direction:row; flex-wrap:wrap; max-width:calc(100% - 2rem); gap:var(--ui-space-tight); }
+  :host([data-live-layout]) .world-toolbar button { font-size:.75rem; padding:var(--ui-space-2) var(--ui-space-button); }
   :host([data-live-layout]) .destination { right:1rem; bottom:1rem; max-width:calc(100% - 2rem); }
   :host([data-live-layout]) .destination-description { font-size:.9375rem; }
   :host([data-live-layout]) .control-deck { top:4.5rem; right:1rem; }
   :host([data-live-layout]) .scene-feedback { left:1rem; bottom:1rem; max-width:calc(100% - 2rem); }
-  :host([data-live-layout="sheet"]) .world-shell { padding-inline:.5rem; }
-  :host([data-live-layout="sheet"]) .world-header { padding-inline:.5rem; }
+  :host([data-live-layout="sheet"]) .world-shell { padding-inline:var(--ui-space-2); }
+  :host([data-live-layout="sheet"]) .world-header { padding-inline:var(--ui-space-2); }
   :host([data-live-layout="sheet"]) .world { height:calc(var(--p-map-height,100) * 1svh - 4.5rem); }
   :host([data-live-layout="rail"]) .world-toolbar { left:1rem; right:auto; align-items:flex-start; }
   :host([data-live-layout="rail"]) .control-deck { left:1rem; right:auto; }

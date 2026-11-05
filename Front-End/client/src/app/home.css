@@ -26,57 +26,56 @@ hamtry-home:not([data-page="dashboard"]) {
   --type-label-lg: 1rem;
   --type-caption: .9375rem;
   font: 400 1rem/1.5 var(--font-sans);
-  --home-paper: color-mix(in srgb, var(--surface-base) 20%, white);
-  --home-line: color-mix(in srgb, var(--brand-primary) 16%, transparent);
-  --home-quiet: color-mix(in srgb, var(--brand-primary) 68%, var(--home-paper));
+  --home-paper: var(--ui-surface-page);
+  --home-line: var(--ui-border-line);
+  --home-quiet: var(--ui-text-muted);
   --surface-elevated: var(--home-paper);
-  --surface-base-field: var(--home-paper);
+  --surface-base-field: var(--ui-surface-field);
   display: block; background: var(--home-paper); color: var(--brand-primary); min-height: 100dvh;
 }
 hamtry-home [hidden] { display: none !important; }
 hamtry-home button, hamtry-home a { touch-action: manipulation; }
 hamtry-home a { text-decoration: none; }
 hamtry-home button { cursor: pointer; }
-hamtry-home :is(a,button):focus-visible { outline: .2rem solid var(--brand-accent-pink); outline-offset: .25rem; }
+hamtry-home :is(a,button):focus-visible { outline: .2rem solid var(--brand-accent-pink); outline-offset: var(--ui-space-1); }
 hamtry-home p { line-height: 1.65; }
 hamtry-home h1, hamtry-home h2, hamtry-home h3 { font-family: var(--font-display); letter-spacing: -.025em; text-wrap: balance; }
 .page-width { width: min(82rem, 90%); margin-inline: auto; }
 .skip-link { position: fixed; z-index: 30; left: 5%; top: 1rem; transform: translateY(-200%); background: var(--brand-accent-lime); padding: var(--spacing-3); border-radius: var(--radius-md); }
 .skip-link:focus { transform: none; }
-.site-header { position: absolute; z-index: 10; top: var(--spacing-5); left: 5%; width: 90%; display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-6); padding: .75rem 1.25rem; border-radius: 5rem; background: var(--home-paper); border: 1px solid var(--home-line); }
+.site-header { z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-6); }
 .wordmark { display: flex; align-items: center; font: 700 1.75rem/1 var(--font-sans); letter-spacing: -.03em; }
-.brand-mark { display: grid; place-items: center; margin-right: .65rem; width: 2.1rem; height: 2.1rem; background: var(--brand-primary); color: var(--brand-accent-lime); border-radius: 50%; font-size: 1.6rem; }
+.brand-mark { display: grid; place-items: center; margin-right: var(--ui-space-control); width: 2.1rem; height: 2.1rem; background: var(--brand-primary); color: var(--brand-accent-lime); border-radius: var(--ui-radius-circle); font-size: 1.6rem; }
 .brand-period { color: var(--brand-primary); }
 .site-header nav { display: flex; gap: var(--spacing-6); align-items: center; }
-.site-header nav a { font: 600 var(--type-body-sm)/1.4 var(--font-sans); padding-block: .6rem; position: relative; }
-.site-header nav a[aria-current="page"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: .15rem; height: .15rem; background: var(--brand-primary); border-radius: 1rem; }
-.saved-count { border: 1px solid var(--home-line); padding: .1rem .4rem; margin-left: .2rem; border-radius: 1rem; font-size: var(--type-caption); }
-.profile-button { border: 0; padding: .85rem 1.1rem; background: var(--brand-accent-lime); color: var(--brand-primary); border-radius: 4rem; font-weight: 600; white-space: nowrap; }
-.profile-button span { margin-right: .35rem; }
-.listing-section { padding-block: 5.5rem; min-height: 34rem; scroll-margin-top: 2rem; }
+.site-header nav a { font: 600 var(--type-body-sm)/1.4 var(--font-sans); padding-block: var(--ui-space-compact); position: relative; }
+.site-header nav a[aria-current="page"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: .15rem; height: .15rem; background: var(--brand-primary); border-radius: var(--ui-radius-panel); }
+.saved-count { border: 1px solid var(--home-line); padding: var(--ui-space-hairline) var(--ui-space-tight); margin-left: var(--ui-space-micro); border-radius: var(--ui-radius-panel); font-size: var(--type-caption); }
+.profile-button { border: 0; padding: var(--ui-space-control-wide) var(--ui-space-group); background: var(--brand-accent-lime); color: var(--brand-primary); border-radius: var(--ui-radius-dock); font-weight: 600; white-space: nowrap; }
+.profile-button span { margin-right: var(--ui-space-small); }
+.listing-section { padding-block: var(--ui-space-22); min-height: 34rem; scroll-margin-top: 2rem; }
 .publish-form { --surface-base: var(--home-paper); --border-default: var(--home-line); }
 .text-button { border: 0; background: none; color: var(--home-quiet); text-decoration: underline; font-size: var(--type-body-sm); min-height: 2.75rem; }
-.results-meta { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between; align-items: center; font-size: var(--type-caption); color: var(--home-quiet); margin-bottom: var(--spacing-4); }
+.results-meta { display: flex; flex-wrap: wrap; gap: var(--ui-space-2) var(--ui-space-6); justify-content: space-between; align-items: center; font-size: var(--type-caption); color: var(--home-quiet); margin-bottom: var(--spacing-4); }
 .results-meta p { margin: 0; }
 .listing-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--spacing-6); }
-.listing-grid :is(hamtry-property-card,hamtry-roommate-card) { width: 100%; min-width: 0; --text-primary: var(--brand-primary); --text-secondary: var(--home-quiet); --border-default: var(--home-line); --radius-lg: 1.4rem; --radius-xl: 1.4rem; }
+.listing-grid :is(hamtry-property-card,hamtry-roommate-card) { width: 100%; min-width: 0; --text-primary: var(--brand-primary); --text-secondary: var(--home-quiet); --border-default: var(--home-line); --radius-lg: var(--ui-radius-card); --radius-xl: var(--ui-radius-card); }
 .listing-grid ::part(card) { border: 1px solid var(--home-line); box-shadow: none; height: 100%; }
 .card-extras { padding-top: var(--spacing-4); }
-.card-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
-.card-tags span { font-size: var(--type-caption); padding: .35rem .65rem; border: 1px solid var(--home-line); border-radius: 3rem; }
-.empty-state { padding: 4rem 1rem; border: 1px dashed var(--home-line); border-radius: var(--radius-xl); text-align: center; }
+.card-tags { display: flex; flex-wrap: wrap; gap: var(--ui-space-tight); }
+.card-tags span { font-size: var(--type-caption); padding: var(--ui-space-small) var(--ui-space-control); border: 1px solid var(--home-line); border-radius: var(--ui-radius-pill); }
+.empty-state { padding: var(--ui-space-16) var(--ui-space-4); border: 1px dashed var(--home-line); border-radius: var(--radius-xl); text-align: center; }
 .empty-state > span { display: block; font-size: 3rem; }
 .empty-state h3 { font-size: 1.7rem; }
-.empty-state p { color: var(--home-quiet); margin-bottom: 2rem; }
-hamtry-home footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-6); padding-block: 4rem 2rem; }
+.empty-state p { color: var(--home-quiet); margin-bottom: var(--ui-space-8); }
+hamtry-home footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-6); padding-block: var(--ui-space-16) var(--ui-space-8); }
 hamtry-home footer p { color: var(--home-quiet); font-size: var(--type-body-sm); }
 hamtry-home footer div { margin-left: auto; display: flex; gap: var(--spacing-6); font-size: var(--type-caption); }
 hamtry-home footer small { flex-basis: 100%; padding-top: var(--spacing-5); border-top: 1px solid var(--home-line); color: var(--home-quiet); font-size: var(--type-caption); }
-.toast { position: fixed; bottom: var(--spacing-6); left: 50%; transform: translateX(-50%); z-index: 20; background: var(--brand-primary); color: var(--text-inverse); padding: 1rem 1.5rem; border-radius: 3rem; box-shadow: var(--shadow-lg); width: max-content; max-width: 90%; font-size: var(--type-body-sm); }
+.toast { position: fixed; bottom: var(--spacing-6); left: 50%; transform: translateX(-50%); z-index: 20; background: var(--brand-primary); color: var(--text-inverse); padding: var(--ui-space-4) var(--ui-space-6); border-radius: var(--ui-radius-pill); box-shadow: var(--shadow-lg); width: max-content; max-width: 90%; font-size: var(--type-body-sm); }
 hamtry-home hamtry-dialog { --text-primary: var(--brand-primary); --surface-elevated: var(--home-paper); --border-default: var(--home-line); }
 .detail-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: var(--radius-lg); }
 .detail-summary { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-4); margin-top: var(--spacing-5); }
-.detail-label { font-size: var(--type-caption); letter-spacing: .1em; }
 .detail-summary strong { font-size: 1.5rem; font-family: var(--font-display); }
 .detail-content h3, .preview-copy h3 { font-size: 1.5rem; margin-bottom: var(--spacing-2); }
 .detail-location, .detail-description { color: var(--home-quiet); }
@@ -96,29 +95,28 @@ hamtry-home dd { margin: 0; font-size: var(--type-body-sm); }
 
 /* Rooms list with a map-icon view tab. */
  .browse-choice { margin:0 0 var(--spacing-6); }
- .browse-choice .browse-mode { display:flex; align-items:center; gap:calc(.5rem * 1); flex-wrap:wrap; }
- .browse-choice .browse-mode a { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:3rem; padding:.75rem 1rem; border-radius:var(--radius-action); color:var(--brand-primary); font-weight:600; }
+ .browse-choice .browse-mode { display:flex; align-items:center; gap:calc(var(--ui-space-2) * 1); flex-wrap:wrap; }
+ .browse-choice .browse-mode a { display:inline-flex; align-items:center; justify-content:center; gap:var(--ui-space-2); min-height:3rem; padding:var(--ui-space-3) var(--ui-space-4); border-radius:var(--radius-action); color:var(--brand-primary); font-weight:600; }
  .browse-choice .browse-mode svg { width:1.25rem; height:1.25rem; flex:none; }
  .browse-choice .browse-mode a:hover { background:var(--surface-interactive); }
  .browse-choice .map-label { font:inherit; }
- .browse-choice .browse-mode { width:fit-content; padding:.25rem; background:var(--surface-interactive); border-radius:var(--radius-action); } .browse-choice .browse-mode a[aria-current="page"] { background:var(--home-paper); } .browse-choice .map-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); } .browse-choice .browse-mode a[data-browse-view="map"] { min-width:3rem; }
+ .browse-choice .browse-mode { width:fit-content; padding:var(--ui-space-1); background:var(--surface-interactive); border-radius:var(--radius-action); } .browse-choice .browse-mode a[aria-current="page"] { background:var(--home-paper); } .browse-choice .map-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); } .browse-choice .browse-mode a[data-browse-view="map"] { min-width:3rem; }
 
 
 /* Flat, shared navigation and predictable responsive results. */
-.site-header { position:relative; top:auto; left:auto; width:90%; margin:auto; padding:1.5rem 0; border:0; border-bottom:1px solid var(--home-line); border-radius:0; background:transparent; }
-hamtry-home .listing-section { padding-top:4rem; }
+.site-header { position:relative; top:auto; left:auto; width:90%; margin:auto; padding:var(--ui-space-6) 0; border:0; border-bottom:1px solid var(--home-line); border-radius:0; background:transparent; }
 .browse-map { display:block; }
 .location-fields { border:1px solid var(--home-line); border-radius:var(--radius-lg); padding:var(--spacing-4); min-width:0; }
 .location-fields legend { font-weight:600; padding-inline:var(--spacing-2); }
 .location-fields p { color:var(--home-quiet); font-size:var(--type-caption); }
 .coordinates { display:grid; grid-template-columns:1fr 1fr; gap:var(--spacing-4); margin-top:var(--spacing-4); }
-@media(max-width:65rem) { .site-header nav { gap:1rem; } .listing-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:65rem) { .site-header nav { gap:var(--ui-space-4); } .listing-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:60rem) {
- .site-header { gap:.75rem; padding-block:1rem; } .brand-mark { display:none; } .wordmark { font-size:1.5rem; }
- .profile-button { font-size:1rem; padding:.75rem; }
- .site-header nav { position:absolute; z-index:10; top:100%; left:0; right:0; display:none; flex-direction:column; align-items:stretch; padding:1rem; background:var(--home-paper); border:1px solid var(--home-line); }
- .site-header nav a { padding:.8rem; }
- .listing-section { padding-block:3rem; } hamtry-home .listing-section { padding-top:3rem; }
+ .site-header { gap:var(--ui-space-3); padding-block:var(--ui-space-4); } .brand-mark { display:none; } .wordmark { font-size:1.5rem; }
+ .profile-button { font-size:1rem; padding:var(--ui-space-3); }
+ .site-header nav { position:absolute; z-index:10; top:100%; left:0; right:0; display:none; flex-direction:column; align-items:stretch; padding:var(--ui-space-4); background:var(--home-paper); border:1px solid var(--home-line); }
+ .site-header nav a { padding:var(--ui-space-row); }
+ .listing-section { padding-block:var(--ui-space-12); } hamtry-home .listing-section { padding-top:var(--ui-space-12); }
  hamtry-home footer div { margin-left:0; }
 }
 @media(max-width:34rem) { .listing-grid,.role-choices,.coordinates { grid-template-columns:1fr; } .profile-button { font-size:.875rem; } .profile-button span { display:none; } }
@@ -129,120 +127,113 @@ hamtry-home .listing-section { padding-top:4rem; }
 }
 
 /* Marketplace navigation: centered destinations and a shared search bar. */
-hamtry-home .site-header { width:94%; display:grid; grid-template-columns:1fr auto 1fr; gap:1.5rem; padding:1.6rem 0 1rem; border:0; }
+hamtry-home .site-header { width:94%; display:grid; grid-template-columns:1fr auto 1fr; gap:var(--ui-space-6); padding:var(--ui-space-panel-wide) 0 var(--ui-space-4); border:0; }
 .site-header > .wordmark { color:var(--brand-primary); }
-hamtry-home .site-header nav { gap:2rem; }
-hamtry-home .site-header nav a { display:flex; align-items:center; gap:.65rem; min-height:4rem; color:var(--home-quiet); }
+hamtry-home .site-header nav { gap:var(--ui-space-8); }
+hamtry-home .site-header nav a { display:flex; align-items:center; gap:var(--ui-space-control); min-height:4rem; color:var(--home-quiet); }
 hamtry-home .site-header nav a[aria-current="page"] { color:var(--brand-primary); }
 .site-header nav svg { width:2rem; height:2rem; flex:none; }
-.header-actions { display:flex; align-items:center; justify-content:flex-end; gap:.8rem; }
-.host-button { border:0; background:none; color:inherit; font:600 1rem var(--font-sans); padding:.75rem; white-space:nowrap; }
-hamtry-home .profile-button { width:3rem; height:3rem; min-width:3rem; padding:.75rem; border:0; border-radius:50%; background:var(--surface-interactive); color:var(--brand-primary); }
+.header-actions { display:flex; align-items:center; justify-content:flex-end; gap:var(--ui-space-row); }
+.host-button { border:0; background:none; color:inherit; font:600 1rem var(--font-sans); padding:var(--ui-space-3); white-space:nowrap; }
+hamtry-home .profile-button { width:3rem; height:3rem; min-width:3rem; padding:var(--ui-space-3); border:0; border-radius:var(--ui-radius-circle); background:var(--surface-interactive); color:var(--brand-primary); }
 .profile-button svg,.search-submit svg { display:block; width:100%; height:100%; }
-.header-search { display:flex; align-items:center; width:min(56rem,90%); margin:1rem auto 2rem; padding:.6rem; border:1px solid var(--home-line); border-radius:4rem; background:var(--home-paper); box-shadow:0 .6rem 2rem color-mix(in srgb, var(--brand-primary) 7%, transparent); }
-.search-segment { display:flex; flex:1; min-width:0; flex-direction:column; gap:.25rem; padding:.4rem 1.6rem; }
+.header-search { display:flex; align-items:center; margin:var(--ui-space-4) auto var(--ui-space-8); padding:var(--ui-space-compact); border:1px solid var(--home-line); border-radius:var(--ui-radius-dock); background:var(--home-paper); box-shadow:var(--ui-shadow-search); }
+.search-segment { display:flex; flex:1; min-width:0; flex-direction:column; gap:var(--ui-space-1); padding:var(--ui-space-tight) var(--ui-space-panel-wide); }
 .search-segment + .search-segment { border-left:1px solid var(--home-line); }
 .search-segment > span { font-size:.875rem; font-weight:600; }
 .search-segment :is(input,select) { border:0; background:transparent; color:var(--home-quiet); font:400 1rem var(--font-sans); width:100%; min-width:0; padding:0; text-overflow:ellipsis; }
 .search-segment :is(input,select):focus-visible { outline:2px solid var(--brand-primary); outline-offset:4px; }
-.search-submit { flex:none; width:3.5rem; height:3.5rem; padding:1rem; border:0; border-radius:50%; background:var(--brand-primary); color:var(--text-inverse); }
-hamtry-home .listing-section { padding-top:2rem; }
+.search-submit { flex:none; width:3.5rem; height:3.5rem; padding:var(--ui-space-4); border:0; border-radius:var(--ui-radius-circle); background:var(--brand-primary); color:var(--text-inverse); }
+hamtry-home .listing-section { padding-top:var(--ui-space-8); }
 @media(min-width:75rem) { .site-header #main-nav { grid-column:2; grid-row:1; } .site-header .header-actions { grid-column:3; grid-row:1; } }
-@media(max-width:74.999rem) { hamtry-home .site-header { grid-template-columns:1fr auto; gap:.7rem; } .site-header .wordmark { grid-column:1; } .header-actions { grid-column:2; } hamtry-home .site-header nav { position:static; grid-column:1 / -1; grid-row:2; display:flex; flex-direction:row; align-items:center; gap:1.25rem; overflow-x:auto; padding:.25rem 0; border:0; border-radius:0; background:transparent; } hamtry-home .site-header nav a { flex:none; min-height:3rem; padding:.5rem 0; } .site-header nav svg { width:1.5rem; height:1.5rem; } }
-@media(max-width:40rem) { .host-button { display:none; } .header-search { border-radius:1.5rem; flex-wrap:wrap; padding:.6rem; } .search-segment { flex-basis:50%; padding:.5rem .8rem; } .search-query { flex-basis:calc(100% - 3.5rem); } .search-segment.search-query { border-left:0; border-top:1px solid var(--home-line); padding-top:.8rem; margin-top:.4rem; } .search-submit { width:3rem; height:3rem; padding:.85rem; } hamtry-home .site-header { width:90%; } }
+@media(max-width:74.999rem) { hamtry-home .site-header { grid-template-columns:1fr auto; gap:var(--ui-space-button); } .site-header .wordmark { grid-column:1; } .header-actions { grid-column:2; } hamtry-home .site-header nav { position:static; grid-column:1 / -1; grid-row:2; display:flex; flex-direction:row; align-items:center; gap:var(--ui-space-5); overflow-x:auto; padding:var(--ui-space-1) 0; border:0; border-radius:0; background:transparent; } hamtry-home .site-header nav a { flex:none; min-height:3rem; padding:var(--ui-space-2) 0; } .site-header nav svg { width:1.5rem; height:1.5rem; } }
+@media(max-width:40rem) { .host-button { display:none; } .header-search { border-radius:var(--ui-radius-search); flex-wrap:wrap; padding:var(--ui-space-compact); } .search-segment { flex-basis:50%; padding:var(--ui-space-2) var(--ui-space-row); } .search-query { flex-basis:calc(100% - 3.5rem); } .search-segment.search-query { border-left:0; border-top:1px solid var(--home-line); padding-top:var(--ui-space-row); margin-top:var(--ui-space-tight); } .search-submit { width:3rem; height:3rem; padding:var(--ui-space-control-wide); } hamtry-home .site-header { width:90%; } }
 
 
 
 /* Search field panels use the same theme as the marketplace. */
-.header-search > .search-segment { border:0; background:transparent; color:var(--brand-primary); text-align:left; border-radius:3rem; font:inherit; cursor:pointer; }
+.header-search > .search-segment { border:0; background:transparent; color:var(--brand-primary); text-align:left; border-radius:var(--ui-radius-pill); font:inherit; cursor:pointer; }
 .header-search > .search-segment + .search-segment { border-left:1px solid var(--home-line); }
 .header-search > .search-segment[aria-expanded="true"] { background:var(--surface-interactive); }
 .header-search .search-value { color:var(--home-quiet); font-size:1rem; font-weight:400; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
-.search-panel { position:fixed; inset:auto; margin:0; width:min(28rem,calc(100vw - 2rem)); box-sizing:border-box; overflow-y:auto; padding:1.75rem; border:1px solid var(--home-line); border-radius:1.5rem; background:var(--home-paper); color:var(--brand-primary); box-shadow:0 .75rem 2rem color-mix(in srgb,var(--brand-primary) 14%,transparent); }
+.search-panel { position:fixed; inset:auto; margin:0; width:min(28rem,calc(100vw - 2rem)); box-sizing:border-box; overflow-y:auto; padding:var(--ui-space-7); border:1px solid var(--home-line); border-radius:var(--ui-radius-search); background:var(--home-paper); color:var(--brand-primary); box-shadow:var(--ui-shadow-panel); }
 .search-panel::backdrop { background:transparent; }
-.search-panel h2 { font:600 1.25rem/1.4 var(--font-sans); margin:0 0 1.25rem; }
+.search-panel h2 { font:600 1.25rem/1.4 var(--font-sans); margin:0 0 var(--ui-space-5); }
 .search-options { border:0; padding:0; margin:0; }
-.search-options legend { color:var(--home-quiet); font-size:.9375rem; margin-bottom:.75rem; }
-.search-options label { display:flex; align-items:center; gap:.75rem; padding:1rem .5rem; border-bottom:1px solid var(--home-line); cursor:pointer; }
-.search-options input { width:1.15rem; height:1.15rem; accent-color:var(--brand-primary); }
-.search-panel-actions { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-top:1.5rem; }
-.search-panel-actions button { border:0; background:transparent; color:inherit; padding:.75rem 1rem; font:600 1rem var(--font-sans); }
+.search-options legend { color:var(--home-quiet); font-size:.9375rem; margin-bottom:var(--ui-space-3); }
+.search-options label { display:flex; align-items:center; border-bottom:1px solid var(--home-line); cursor:pointer; }
+.search-options input { accent-color:var(--brand-primary); }
+.search-panel-actions { display:flex; align-items:center; justify-content:space-between; gap:var(--ui-space-4); }
+.search-panel-actions button { border:0; background:transparent; color:inherit; font:600 1rem var(--font-sans); }
 .search-panel-actions button:first-child { text-decoration:underline; text-underline-offset:.2em; }
 .search-panel-actions button:last-child { background:var(--brand-primary); color:var(--text-inverse); border-radius:var(--radius-action); }
-@media(max-width:40rem) { .header-search > .search-query { border-left:0; border-top:1px solid var(--home-line); border-radius:0; } .search-panel { padding:1.25rem; } }
+@media(max-width:40rem) { .header-search > .search-query { border-radius:0; } .search-panel { padding:var(--ui-space-5); } }
 
 /* Keep search reachable while its expanded layout folds into a compact pill. */
 .search-dock { display:flow-root; position:sticky; top:0; z-index:20; height:8.5rem; pointer-events:none; }
 .search-dock .header-search { pointer-events:auto; box-sizing:border-box; }
 .search-dock .search-segment > span:first-child { max-height:1.5rem; opacity:1; overflow:hidden; }
-.search-dock.is-compact .header-search { width:min(38rem,94%); margin:.65rem auto 0; padding:.4rem; border-radius:4rem; }
-.search-dock.is-compact .search-segment { gap:0; padding:.55rem 1rem; flex-basis:0; }
+.search-dock.is-compact .header-search { margin:var(--ui-space-control) auto 0; padding:var(--ui-space-tight); border-radius:var(--ui-radius-dock); }
+.search-dock.is-compact .search-segment { gap:0; flex-basis:0; }
 .search-dock.is-compact .search-segment > span:first-child { max-height:0; opacity:0; }
 .search-dock.is-compact .search-value { font-weight:600; color:var(--brand-primary); }
-.search-dock.is-compact .search-submit { width:2.75rem; height:2.75rem; padding:.8rem; }
-.search-dock.is-compact .search-query { border-top:0; margin-top:0; border-left:1px solid var(--home-line); border-radius:3rem; }
+.search-dock.is-compact .search-submit { height:2.75rem; }
+.search-dock.is-compact .search-query { border-top:0; margin-top:0; border-left:1px solid var(--home-line); border-radius:var(--ui-radius-pill); }
 #results { scroll-margin-top:6rem; }
-@media(max-width:40rem) { .search-dock { height:14rem; } .search-dock.is-compact .header-search { flex-wrap:nowrap; } .search-dock.is-compact .search-segment { padding:.5rem .65rem; } .search-dock.is-compact .search-value { font-size:.8125rem; } }
-@media(prefers-reduced-motion:no-preference) {
-}
+@media(max-width:40rem) { .search-dock.is-compact .header-search { flex-wrap:nowrap; } .search-dock.is-compact .search-value { font-size:.8125rem; } }
 
 .search-compact-summary { display:none; }
 .search-dock.is-compact .search-query .search-value { display:none; }
 .search-dock.is-compact .search-compact-summary { display:block; color:var(--brand-primary); font:600 1rem var(--font-sans); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
 @media(max-width:40rem) { .search-dock.is-compact .search-compact-summary { font-size:.8125rem; } }
 
-.condition-options { margin-top:1.25rem; }
-
-.location-tools { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem; }
-.location-panel-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem; }
+.condition-options { margin-top:var(--ui-space-5); }
+.location-panel-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--ui-space-4); margin-bottom:var(--ui-space-5); }
 .location-panel-heading h2 { margin:0; }
 .location-panel-heading .browse-choice { margin:0 0 0 auto; }
-.location-panel-heading .browse-mode a { padding:.6rem .75rem; min-height:2.75rem; font-size:.9375rem; }
+.location-panel-heading .browse-mode a { padding:var(--ui-space-compact) var(--ui-space-3); min-height:2.75rem; font-size:.9375rem; }
 
 /* A guided search: choose a person or room, place, preferences, then budget. */
 .header-search { width:min(66rem,94%); }
-.header-search > .search-segment { padding:.55rem 1.25rem; }
-.step-heading { display:flex; align-items:center; gap:.45rem; white-space:nowrap; }
+.header-search > .search-segment { padding:var(--ui-space-label-gap) var(--ui-space-5); }
+.step-heading { display:flex; align-items:center; gap:var(--ui-space-icon-gap); white-space:nowrap; }
 .step-heading svg { width:1.15rem; height:1.15rem; flex:none; }
 .step-heading small { font:400 .7rem var(--font-sans); color:var(--home-quiet); }
-.search-panel-hint { color:var(--home-quiet); font-size:1rem; margin:-.5rem 0 1.5rem; }
-.search-kind-choices { display:grid; grid-template-columns:1fr 1fr; gap:.85rem; }
-.search-kind-choices button { display:flex; flex-direction:column; align-items:flex-start; gap:.85rem; padding:1.25rem; border:1px solid var(--home-line); border-radius:1rem; background:var(--home-paper); color:var(--brand-primary); font:inherit; text-align:left; }
-.search-kind-choices button > svg:first-child { width:3.25rem; height:3.25rem; padding:.65rem; box-sizing:border-box; border-radius:1rem; background:var(--surface-interactive); }
+.search-panel-hint { color:var(--home-quiet); font-size:1rem; margin:calc(-1 * var(--ui-space-2)) 0 var(--ui-space-6); }
+.search-kind-choices { display:grid; grid-template-columns:1fr 1fr; gap:var(--ui-space-control-wide); }
+.search-kind-choices button { display:flex; flex-direction:column; align-items:flex-start; gap:var(--ui-space-control-wide); padding:var(--ui-space-5); border:1px solid var(--home-line); border-radius:var(--ui-radius-panel); background:var(--home-paper); color:var(--brand-primary); font:inherit; text-align:left; }
+.search-kind-choices button > svg:first-child { width:3.25rem; height:3.25rem; padding:var(--ui-space-control); box-sizing:border-box; border-radius:var(--ui-radius-panel); background:var(--surface-interactive); }
 .search-kind-choices button > svg:last-child { width:1.4rem; height:1.4rem; align-self:flex-end; margin-top:auto; }
 .search-kind-choices strong { font-size:1.05rem; line-height:1.5; }
 .search-kind-choices span { color:var(--home-quiet); font-size:.9375rem; line-height:1.5; }
 .search-kind-choices button[aria-pressed="true"] { border-color:var(--brand-primary); background:var(--surface-interactive); }
 .search-kind-choices button[aria-pressed="true"] > svg:first-child { background:var(--brand-accent-lime); }
-.search-options { display:grid; grid-template-columns:1fr 1fr; gap:.65rem; }
-.search-options legend { padding:0 0 .5rem; }
-.search-options label { position:relative; gap:.6rem; padding:.9rem .7rem; border:1px solid var(--home-line); border-radius:.75rem; font-size:.9375rem; line-height:1.4; }
+.search-options { display:grid; grid-template-columns:1fr 1fr; gap:var(--ui-space-control); }
+.search-options legend { padding:0 0 var(--ui-space-2); }
+.search-options label { position:relative; gap:var(--ui-space-compact); padding:var(--ui-space-inset-lg) var(--ui-space-button); border:1px solid var(--home-line); border-radius:var(--ui-radius-control); font-size:.9375rem; line-height:1.4; }
 .search-options label:has(input:checked) { background:var(--surface-interactive); border-color:var(--brand-primary); }
 .search-options label:focus-within { outline:2px solid var(--brand-primary); outline-offset:3px; }
 .search-options input { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
 .search-options svg { width:1.3rem; height:1.3rem; flex:none; }
-.condition-options svg { opacity:.3; }
 .condition-options label:has(input:checked) svg { opacity:1; }
-.search-panel-actions { position:sticky; bottom:-1.75rem; padding-block:.8rem; margin-top:1rem; background:var(--home-paper); }
-.search-panel-actions button { font-size:.9375rem; padding:.75rem; }
+.search-panel-actions { position:sticky; bottom:-1.75rem; padding-block:var(--ui-space-row); margin-top:var(--ui-space-4); background:var(--home-paper); }
+.search-panel-actions button { font-size:.9375rem; padding:var(--ui-space-3); }
 .search-panel-actions .reset-filters { color:var(--home-quiet); }
-.search-dock.is-compact .header-search { width:min(44rem,94%); }
 @media(max-width:40rem) {
  .search-dock { height:15rem; }
- .search-dock:not(.is-compact) .header-search { display:grid; grid-template-columns:1fr 1fr; position:relative; border-radius:1.75rem; padding:.6rem; }
- .header-search > .search-segment { padding:.75rem .8rem; border-radius:1rem; }
+ .search-dock:not(.is-compact) .header-search { display:grid; grid-template-columns:1fr 1fr; position:relative; border-radius:var(--ui-radius-sheet); padding:var(--ui-space-compact); }
+ .header-search > .search-segment { padding:var(--ui-space-3) var(--ui-space-row); border-radius:var(--ui-radius-panel); }
  .header-search > .search-query { border-top:1px solid var(--home-line); border-left:0; margin:0; }
- .header-search > .search-segment[popovertarget="search-budget"] { border-top:1px solid var(--home-line); padding-right:3.75rem; }
- .step-heading { gap:.3rem; font-size:.8125rem; }
+ .header-search > .search-segment[popovertarget="search-budget"] { border-top:1px solid var(--home-line); }
+ .step-heading { gap:var(--ui-space-dense); font-size:.8125rem; }
  .step-heading small { display:none; }
- .search-dock:not(.is-compact) .search-submit { position:absolute; right:.85rem; bottom:1.05rem; }
  .search-dock.is-compact .header-search { display:flex; }
- .search-dock.is-compact .search-segment[popovertarget="search-budget"] { padding:.5rem .45rem; border-top:0; }
- .search-dock.is-compact .search-segment { padding:.5rem .45rem; }
+ .search-dock.is-compact .search-segment[popovertarget="search-budget"] { border-top:0; }
+ .search-dock.is-compact .search-segment { padding:var(--ui-space-2) var(--ui-space-icon-gap); }
  .search-dock.is-compact .search-value,.search-dock.is-compact .search-compact-summary { font-size:.75rem; }
- .search-dock.is-compact .search-submit { width:2.5rem; height:2.5rem; padding:.75rem; }
+ .search-dock.is-compact .search-submit { height:2.5rem; padding:var(--ui-space-3); }
  .search-panel-actions { bottom:-1.25rem; }
- .search-kind-choices button { padding:1rem; }
+ .search-kind-choices button { padding:var(--ui-space-4); }
 }
 @media(prefers-reduced-motion:no-preference) {
  .search-kind-choices button,.search-options label { transition:background 160ms ease,border-color 160ms ease; }
@@ -252,17 +243,17 @@ hamtry-home .listing-section { padding-top:2rem; }
 @media(prefers-reduced-motion:reduce) { .search-panel:popover-open { animation:none; } }
 
 /* The scrolled search keeps its four actions as compact icon buttons. */
-.search-dock.is-compact .header-search { width:17.5rem; max-width:94%; gap:.2rem; }
-.search-dock.is-compact .search-segment { flex:1 1 0; width:auto; min-height:3rem; padding:.65rem; align-items:center; justify-content:center; }
+.search-dock.is-compact .header-search { width:17.5rem; max-width:94%; gap:var(--ui-space-micro); }
+.search-dock.is-compact .search-segment { flex:1 1 0; width:auto; min-height:3rem; padding:var(--ui-space-control); align-items:center; justify-content:center; }
 .search-dock.is-compact .search-segment > .step-heading:first-child { max-height:2rem; opacity:1; font-size:0; gap:0; }
 .search-dock.is-compact .step-heading svg { width:1.4rem; height:1.4rem; }
 .search-dock.is-compact .step-heading small { display:block; font-size:0; opacity:0; }
 .search-dock.is-compact .search-segment .search-value { display:block; max-height:0; opacity:0; transform:translateY(-.25rem); }
 .search-dock.is-compact .search-segment .search-compact-summary { display:none; }
-@media(max-width:40rem) { .search-dock.is-compact .search-segment[popovertarget="search-budget"] { padding:.65rem; } }
+@media(max-width:40rem) { .search-dock.is-compact .search-segment[popovertarget="search-budget"] { padding:var(--ui-space-control); } }
 
 /* Numeric endpoints and fading labels let the search morph in both directions. */
-.search-dock .header-search { gap:.2rem; }
+.search-dock .header-search { gap:var(--ui-space-micro); }
 .search-dock .search-segment { flex:1 1 0; }
 .search-dock .search-value { max-height:2rem; opacity:1; transform:none; }
 @media(prefers-reduced-motion:no-preference) {
@@ -277,26 +268,26 @@ hamtry-home[data-view="map"] #results { position:relative; width:100%; height:10
 hamtry-home[data-view="map"] .browse-layout { height:100%; }
 hamtry-home[data-view="map"] .browse-map { height:100%; }
 hamtry-home[data-view="map"] > footer { display:none; }
-hamtry-home[data-view="map"] .results-meta { position:absolute; z-index:2; left:50%; bottom:.65rem; transform:translateX(-50%); margin:0; padding:.4rem .8rem; border-radius:var(--radius-action); background:var(--home-paper); pointer-events:none; font-size:.8125rem; white-space:nowrap; }
+hamtry-home[data-view="map"] .results-meta { position:absolute; z-index:2; left:50%; bottom:.65rem; transform:translateX(-50%); margin:0; padding:var(--ui-space-tight) var(--ui-space-row); border-radius:var(--radius-action); background:var(--home-paper); pointer-events:none; font-size:.8125rem; white-space:nowrap; }
 hamtry-home[data-view="map"] .results-meta > span { display:none; }
-hamtry-home[data-view="map"] .listing-results:not([hidden]) { position:absolute; z-index:3; top:7rem; right:1rem; width:min(23rem,calc(100% - 2rem)); max-height:calc(100% - 8rem); overflow:auto; padding:.75rem; background:var(--home-paper); border-radius:var(--radius-lg); }
+hamtry-home[data-view="map"] .listing-results:not([hidden]) { position:absolute; z-index:3; top:7rem; right:1rem; width:min(23rem,calc(100% - 2rem)); max-height:calc(100% - 8rem); overflow:auto; padding:var(--ui-space-3); background:var(--home-paper); border-radius:var(--radius-lg); }
 hamtry-home[data-view="map"] .listing-grid { grid-template-columns:1fr; }
-hamtry-home[data-view="map"] .empty-state { padding:1.25rem; }
+hamtry-home[data-view="map"] .empty-state { padding:var(--ui-space-5); }
 @media(max-width:40rem) { hamtry-home[data-view="map"] .search-dock { height:12.5rem; } hamtry-home[data-view="map"] .listing-results:not([hidden]) { top:7.5rem; max-height:calc(100% - 8.5rem); } }
 
 /* Show the matching result count as the primary search action. */
-.search-dock .search-submit { display:inline-flex; align-items:center; justify-content:center; gap:.6rem; width:11.5rem; border-radius:3rem; padding:.9rem 1rem; font:600 .9375rem var(--font-sans); white-space:nowrap; }
+.search-dock .search-submit { display:inline-flex; align-items:center; justify-content:center; gap:var(--ui-space-compact); width:11.5rem; border-radius:var(--ui-radius-pill); padding:var(--ui-space-inset-lg) var(--ui-space-4); font:600 .9375rem var(--font-sans); white-space:nowrap; }
 .search-dock .search-submit svg { flex:none; width:1.25rem; height:1.25rem; }
 .search-submit-label { display:block; max-width:14rem; opacity:1; overflow:hidden; }
-.search-dock.is-compact .search-submit { width:2.75rem; gap:0; padding:.7rem; }
+.search-dock.is-compact .search-submit { width:2.75rem; gap:0; padding:var(--ui-space-button); }
 .search-dock.is-compact .search-submit-label { max-width:0; opacity:0; }
 hamtry-home[data-search-kind="roommates"] .header-search { width:min(44rem,94%); }
 hamtry-home[data-search-kind="roommates"] .search-dock.is-compact .header-search { width:12rem; }
 @media(max-width:40rem) {
  .search-dock,hamtry-home[data-view="map"] .search-dock { height:17rem; }
- .search-dock:not(.is-compact) .search-submit { position:static; grid-column:1 / -1; width:100%; height:3rem; margin-top:.35rem; }
- .header-search > .search-segment[popovertarget="search-budget"] { padding-right:.8rem; }
- .search-dock:not(.is-compact) .header-search { row-gap:.2rem; }
+ .search-dock:not(.is-compact) .search-submit { grid-column:1 / -1; width:100%; height:3rem; margin-top:var(--ui-space-small); }
+ .header-search > .search-segment[popovertarget="search-budget"] { padding-right:var(--ui-space-row); }
+ .search-dock:not(.is-compact) .header-search { row-gap:var(--ui-space-micro); }
  hamtry-home[data-search-kind="roommates"] .search-dock { height:12rem; }
  hamtry-home[data-search-kind="roommates"] .header-search > .search-query { border-top:0; border-left:1px solid var(--home-line); }
  .search-dock.is-compact .search-submit { width:2.5rem; }
@@ -305,7 +296,7 @@ hamtry-home[data-search-kind="roommates"] .search-dock.is-compact .header-search
 /* Layout changes once; Anime.js moves the surfaces and icons on the compositor. */
 .search-dock .header-search { position:relative; isolation:isolate; background:transparent; border-color:transparent; box-shadow:none; }
 .search-surface,.search-submit-surface { position:absolute; inset:0; z-index:-1; border-radius:inherit; pointer-events:none; transform-origin:top left; }
-.search-surface { border:1px solid var(--home-line); background:var(--home-paper); box-shadow:0 .6rem 2rem color-mix(in srgb,var(--brand-primary) 7%,transparent); }
+.search-surface { border:1px solid var(--home-line); background:var(--home-paper); box-shadow:var(--ui-shadow-search); }
 .search-dock .search-submit { position:relative; isolation:isolate; background:transparent; }
 .search-submit-surface { background:var(--brand-primary); }
 @media(prefers-reduced-motion:no-preference) {
@@ -319,15 +310,15 @@ hamtry-home[data-search-kind="roommates"] .search-dock.is-compact .header-search
 /* Mobile destinations stay within thumb reach, above the device home indicator. */
 @media(max-width:40rem) {
  hamtry-home { --mobile-nav-height:calc(4.5rem + env(safe-area-inset-bottom,0px)); padding-bottom:var(--mobile-nav-height); }
- hamtry-home .site-header #main-nav { position:fixed; z-index:30; inset:auto 0 0; display:flex; flex-direction:row; align-items:stretch; justify-content:space-around; gap:0; overflow:visible; padding:.35rem max(.5rem,env(safe-area-inset-right,0px)) calc(.35rem + env(safe-area-inset-bottom,0px)) max(.5rem,env(safe-area-inset-left,0px)); min-height:var(--mobile-nav-height); background:var(--home-paper); border:0; border-top:1px solid var(--home-line); }
- hamtry-home .site-header #main-nav a { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:.25rem; min-width:0; min-height:3.75rem; padding:.3rem .2rem; font-size:.6875rem; line-height:1.3; text-align:center; -webkit-tap-highlight-color:transparent; }
+ hamtry-home .site-header #main-nav { z-index:30; inset:auto 0 0; display:flex; flex-direction:row; align-items:stretch; justify-content:space-around; gap:0; overflow:visible; padding:var(--ui-space-small) max(var(--ui-space-2),env(safe-area-inset-right,0px)) calc(var(--ui-space-small) + env(safe-area-inset-bottom,0px)) max(var(--ui-space-2),env(safe-area-inset-left,0px)); min-height:var(--mobile-nav-height); background:var(--home-paper); border:0; border-top:1px solid var(--home-line); }
+ hamtry-home .site-header #main-nav a { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:var(--ui-space-1); min-width:0; min-height:3.75rem; padding:var(--ui-space-dense) var(--ui-space-micro); font-size:.6875rem; line-height:1.3; text-align:center; -webkit-tap-highlight-color:transparent; }
  hamtry-home .site-header #main-nav a::after { display:none; }
  hamtry-home .site-header #main-nav a[data-nav="home"] { order:-1; }
  hamtry-home .site-header #main-nav a[data-nav="publish"] { order:1; }
  hamtry-home .site-header #main-nav svg { width:1.65rem; height:1.65rem; stroke-width:1.8; }
  hamtry-home .site-header #main-nav a[aria-current="page"] svg { stroke-width:2.4; fill:color-mix(in srgb,var(--brand-primary) 10%,transparent); }
- hamtry-home .site-header #main-nav a:focus-visible { outline:2px solid var(--brand-primary); outline-offset:-4px; border-radius:.5rem; }
- hamtry-home .site-header #main-nav .saved-count { position:absolute; top:.15rem; left:calc(50% + .45rem); min-width:1rem; height:1rem; padding:0 .2rem; display:grid; place-items:center; font-size:.625rem; background:var(--brand-primary); color:var(--home-paper); border:2px solid var(--home-paper); border-radius:1rem; }
+ hamtry-home .site-header #main-nav a:focus-visible { outline:2px solid var(--brand-primary); outline-offset:-4px; border-radius:var(--ui-radius-sm); }
+ hamtry-home .site-header #main-nav .saved-count { position:absolute; top:.15rem; left:calc(50% + .45rem); min-width:1rem; height:1rem; padding:0 var(--ui-space-micro); display:grid; place-items:center; font-size:.625rem; background:var(--brand-primary); color:var(--home-paper); border:2px solid var(--home-paper); border-radius:var(--ui-radius-panel); }
  hamtry-home .site-header #main-nav .saved-count[data-empty="true"] { display:none; }
  hamtry-home .toast { bottom:calc(var(--mobile-nav-height) + .75rem); }
 }
@@ -338,25 +329,25 @@ hamtry-home[data-search-kind="roommates"] .search-dock.is-compact .header-search
 }
 
 /* A compact posting choice anchored to the primary header action. */
-.site-header .add-listing-button { display:inline-flex; align-items:center; justify-content:center; gap:.4rem; min-height:2.8rem; padding:.7rem 1rem; border:0; border-radius:1rem; background:var(--brand-primary); color:var(--text-inverse); font:600 .875rem var(--font-sans); white-space:nowrap; }
+.site-header .add-listing-button { display:inline-flex; align-items:center; justify-content:center; gap:var(--ui-space-tight); min-height:2.8rem; padding:var(--ui-space-button) var(--ui-space-4); border:0; border-radius:var(--ui-radius-panel); background:var(--brand-primary); color:var(--text-inverse); font:600 .875rem var(--font-sans); white-space:nowrap; }
 .add-listing-button svg { width:1.15rem; height:1.15rem; }
-.listing-type-menu { position:fixed; inset:auto; margin:0; width:min(21rem,calc(100vw - 1.5rem)); padding:.5rem; border:0; border-radius:1.15rem; background:var(--brand-primary); color:var(--text-inverse); overflow:auto; box-shadow:0 .75rem 2rem color-mix(in srgb,var(--brand-primary) 20%,transparent); }
-.listing-type-menu button { display:flex; align-items:center; gap:.8rem; width:100%; padding:1rem .8rem; border:0; border-radius:.75rem; background:transparent; color:inherit; text-align:left; font:inherit; }
-.listing-type-menu button:not(:disabled):hover,.listing-type-menu button:focus-visible { background:rgb(255 255 255 / .12); }
+.listing-type-menu { position:fixed; inset:auto; margin:0; width:min(21rem,calc(100vw - 1.5rem)); padding:var(--ui-space-2); border:0; border-radius:var(--ui-radius-posting); background:var(--brand-primary); color:var(--text-inverse); overflow:auto; box-shadow:var(--ui-shadow-posting); }
+.listing-type-menu button { display:flex; align-items:center; gap:var(--ui-space-row); width:100%; padding:var(--ui-space-4) var(--ui-space-row); border:0; border-radius:var(--ui-radius-control); background:transparent; color:inherit; text-align:left; font:inherit; }
+.listing-type-menu button:not(:disabled):hover,.listing-type-menu button:focus-visible { background:var(--ui-on-primary-hover); }
 .listing-type-menu button:focus-visible { outline:2px solid currentColor; outline-offset:-2px; }
 .listing-type-menu button:disabled { cursor:not-allowed; color:color-mix(in srgb,var(--text-inverse) 70%,var(--brand-primary)); }
 .listing-type-menu svg { width:1.5rem; height:1.5rem; flex:none; }
 .listing-type-menu button > svg:last-child:not(:first-child) { margin-left:auto; width:1.1rem; }
 .listing-type-menu strong,.listing-type-menu small { display:block; }
 .listing-type-menu strong { font-size:.9375rem; }
-.listing-type-menu small { margin-top:.3rem; font-size:.8125rem; }
+.listing-type-menu small { margin-top:var(--ui-space-dense); font-size:.8125rem; }
 .condition-options svg { opacity:1; }
 
 /* One shared indicator glides between destinations without moving tab content. */
 hamtry-home .site-header #main-nav { position:relative; isolation:isolate; }
 hamtry-home .site-header #main-nav a[aria-current="page"]::after { display:none; }
-.nav-indicator { position:absolute; z-index:-1; pointer-events:none; border-radius:.75rem; background:color-mix(in srgb,var(--brand-primary) 6%,transparent); transform-origin:top left; }
-.nav-indicator::after { content:''; position:absolute; inset:auto .2rem 0; height:2px; border-radius:1rem; background:var(--brand-primary); }
+.nav-indicator { position:absolute; z-index:-1; pointer-events:none; border-radius:var(--ui-radius-control); background:color-mix(in srgb,var(--brand-primary) 6%,transparent); transform-origin:top left; }
+.nav-indicator::after { content:''; position:absolute; inset:auto .2rem 0; height:2px; border-radius:var(--ui-radius-panel); background:var(--brand-primary); }
 @media(max-width:40rem) { hamtry-home .site-header #main-nav { position:fixed; } .nav-indicator::after { left:30%; right:30%; bottom:.15rem; } }
 @media(prefers-reduced-motion:no-preference) { hamtry-home .site-header #main-nav a { transition:color 250ms ease; } }
 
@@ -367,57 +358,52 @@ hamtry-home .site-header #main-nav a[aria-current="page"]::after { display:none;
 .listing-grid .is-expanded::part(media),.listing-grid .is-expanded::part(summary) { display:none; }
 .listing-grid .is-expanded::part(content) { padding:0; }
 .listing-grid .is-expanded > .card-extras { display:none; }
-.detail-content { padding:1.5rem; }
-.detail-collapse { display:block; margin:0 0 1.25rem auto; border:0; border-radius:.75rem; padding:.7rem 1rem; background:var(--brand-primary); color:var(--text-inverse); font:600 .875rem var(--font-sans); }
+.detail-content { padding:var(--ui-space-6); }
+.detail-collapse { font:600 .875rem var(--font-sans); }
 .preview-copy .detail-layout { grid-template-columns:1fr; }
-.detail-layout { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); align-items:start; gap:2rem; }
-.detail-media { min-width:0; overflow:hidden; border-radius:1rem; }
+.detail-layout { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); align-items:start; gap:var(--ui-space-8); }
+.detail-media { min-width:0; overflow:hidden; border-radius:var(--ui-radius-panel); }
 .detail-info { min-width:0; }
-.detail-info .detail-summary { margin-top:0; flex-wrap:wrap; gap:.5rem; }
-.detail-info .detail-label { letter-spacing:0; font-size:.8125rem; }
-.detail-info h3 { margin-top:1.25rem; line-height:1.35; }
-.detail-info .detail-location { margin-top:.5rem; }
-.detail-owner { display:flex; align-items:center; gap:.75rem; padding-block:1.25rem; margin-top:1rem; border-block:1px solid var(--home-line); }
-.owner-avatar { display:grid; place-items:center; flex:none; width:3rem; height:3rem; border-radius:50%; background:var(--surface-interactive); color:var(--brand-primary); font-weight:700; }
+.detail-info .detail-summary { flex-wrap:wrap; }
+.detail-info h3 { line-height:1.35; }
+.detail-owner { display:flex; align-items:center; border-block:1px solid var(--home-line); }
+.owner-avatar { display:grid; place-items:center; flex:none; border-radius:var(--ui-radius-circle); background:var(--surface-interactive); color:var(--brand-primary); font-weight:700; }
 .detail-owner strong,.detail-owner small { display:block; }
 .detail-owner strong { font:600 1rem var(--font-sans); }
-.detail-owner small { margin-top:.3rem; color:var(--home-quiet); font-size:.8125rem; }
-.detail-info .detail-description { line-height:1.7; margin-block:1.25rem; }
-.detail-traits { display:flex; flex-wrap:wrap; gap:.5rem; margin-block:1.25rem; }
-.detail-traits > span { display:inline-flex; align-items:center; gap:.45rem; padding:.5rem .65rem; border-radius:.65rem; background:var(--surface-interactive); font-size:.8125rem; }
+.detail-owner small { color:var(--home-quiet); font-size:.8125rem; }
+.detail-traits { display:flex; flex-wrap:wrap; }
+.detail-traits > span { display:inline-flex; align-items:center; gap:var(--ui-space-icon-gap); padding:var(--ui-space-2) var(--ui-space-control); border-radius:var(--ui-radius-chip); background:var(--surface-interactive); font-size:.8125rem; }
 .detail-traits svg { width:1.1rem; height:1.1rem; flex:none; }
-@media(max-width:48rem) { .detail-layout { grid-template-columns:minmax(0,1fr); gap:1.25rem; } .detail-image { max-height:20rem; } }
+@media(max-width:48rem) { .detail-layout { grid-template-columns:minmax(0,1fr); gap:var(--ui-space-5); } .detail-image { max-height:20rem; } }
 
-.detail-info .detail-summary { margin-top:1.25rem; padding:1rem; border-radius:.8rem; background:var(--surface-interactive); }
+.detail-info .detail-summary { border-radius:var(--ui-radius-action); }
 .detail-owner > div { flex:1; min-width:0; }
 .contact-concept { flex:none; color:var(--brand-primary); font-size:.8125rem; font-weight:600; text-decoration:underline; text-underline-offset:.2em; cursor:default; }
-.detail-actions { display:flex; flex-wrap:wrap; align-items:center; gap:.75rem; }
-.detail-map { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:2.75rem; padding:.75rem 1rem; border:1px solid var(--home-line); border-radius:.75rem; color:var(--brand-primary); background:var(--home-paper); font:600 .875rem var(--font-sans); }
+.detail-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--ui-space-3); }
+.detail-map { display:inline-flex; align-items:center; justify-content:center; gap:var(--ui-space-2); min-height:2.75rem; padding:var(--ui-space-3) var(--ui-space-4); border:1px solid var(--home-line); border-radius:var(--ui-radius-control); color:var(--brand-primary); background:var(--home-paper); font:600 .875rem var(--font-sans); }
 .detail-map svg { width:1.15rem; height:1.15rem; }
-@media(max-width:34rem) { .detail-owner { flex-wrap:wrap; } .contact-concept { margin-left:3.75rem; } }
+@media(max-width:34rem) { .detail-owner { flex-wrap:wrap; } }
 
 .card-title { color:inherit; }
-hamtry-home .menu-button { display:grid; place-items:center; width:2.75rem; height:2.75rem; flex:none; border:0; border-radius:50%; background:var(--surface-interactive); color:var(--brand-primary); padding:.65rem; }
+hamtry-home .menu-button { display:grid; place-items:center; width:2.75rem; height:2.75rem; flex:none; border:0; border-radius:var(--ui-radius-circle); background:var(--surface-interactive); color:var(--brand-primary); padding:var(--ui-space-control); }
 .menu-button svg { width:1.4rem; height:1.4rem; }
-.header-menu { position:fixed; inset:auto; margin:0; width:min(21rem,calc(100vw - 1.5rem)); max-height:80dvh; overflow:auto; padding:.6rem; border:1px solid var(--home-line); border-radius:1.1rem; background:var(--home-paper); color:var(--brand-primary); box-shadow:0 .75rem 2rem color-mix(in srgb,var(--brand-primary) 12%,transparent); }
-.header-menu button { display:flex; align-items:center; width:100%; gap:.7rem; border:0; border-radius:.7rem; padding:1rem .7rem; color:inherit; background:transparent; font:600 .9375rem var(--font-sans); text-align:left; }
+.header-menu { position:fixed; inset:auto; margin:0; width:min(21rem,calc(100vw - 1.5rem)); max-height:80dvh; overflow:auto; padding:var(--ui-space-compact); border:1px solid var(--home-line); border-radius:var(--ui-radius-menu); background:var(--home-paper); color:var(--brand-primary); box-shadow:var(--ui-shadow-menu); }
+.header-menu button { display:flex; align-items:center; width:100%; gap:var(--ui-space-button); border:0; border-radius:var(--ui-radius-item); padding:var(--ui-space-4) var(--ui-space-button); color:inherit; background:transparent; font:600 .9375rem var(--font-sans); text-align:left; }
 .header-menu svg { width:1.35rem; height:1.35rem; flex:none; }
 .header-menu .appearance-toggle:hover { background:var(--surface-interactive); }
-.appearance-switch { margin-left:auto; flex:none; width:2.5rem; height:1.4rem; padding:.2rem; border-radius:1rem; background:var(--home-line); }
-.appearance-switch::before { content:''; display:block; width:1rem; height:1rem; border-radius:50%; background:var(--brand-primary); }
+.appearance-switch { margin-left:auto; flex:none; width:2.5rem; height:1.4rem; padding:var(--ui-space-micro); border-radius:var(--ui-radius-panel); background:var(--home-line); }
+.appearance-switch::before { content:''; display:block; width:1rem; height:1rem; border-radius:var(--ui-radius-circle); background:var(--brand-primary); }
 [aria-checked="true"] .appearance-switch { background:var(--surface-interactive); }
 [aria-checked="true"] .appearance-switch::before { transform:translateX(1.1rem); }
-.future-options { border-top:1px solid var(--home-line); padding-top:.3rem; }
+.future-options { border-top:1px solid var(--home-line); padding-top:var(--ui-space-dense); }
 .header-menu button:disabled { color:var(--home-quiet); cursor:default; }
 .header-menu small { margin-left:auto; font:400 .6875rem var(--font-sans); white-space:nowrap; }
-hamtry-home[data-appearance="dark"] { --home-paper:#151b2e; --home-line:#3b455f; --home-quiet:#b2bcd3; --brand-primary:#e5e9ff; --brand-primary-hover:#cdd5ff; --brand-primary-pressed:#bec9ff; --surface-base:#101526; --surface-subtle:#1c243c; --surface-elevated:#151b2e; --surface-interactive:#29324c; --surface-base-field:#1c243c; --text-primary:#edf0ff; --text-secondary:#b2bcd3; --text-tertiary:#a6b1cc; --text-inverse:#151b2e; --border-default:#3b455f; color-scheme:dark; }
-html[data-appearance="dark"] body { background:#151b2e; }
 @media(max-width:40rem) {
- .header-actions { gap:.4rem; }
- hamtry-home .profile-button { width:2.75rem; min-width:2.75rem; height:2.75rem; padding:.7rem; }
- .site-header .add-listing-button { padding:.65rem .75rem; font-size:.8125rem; }
+ .header-actions { gap:var(--ui-space-tight); }
+ hamtry-home .profile-button { width:2.75rem; min-width:2.75rem; height:2.75rem; padding:var(--ui-space-button); }
+ .site-header .add-listing-button { padding:var(--ui-space-control) var(--ui-space-3); font-size:.8125rem; }
 }
-@media(max-width:22rem) { hamtry-home .site-header { width:94%; gap:.3rem; } .site-header .wordmark { font-size:1.25rem; } .site-header .add-listing-button { padding:.6rem; } }
+@media(max-width:22rem) { hamtry-home .site-header { width:94%; gap:var(--ui-space-dense); } .site-header .wordmark { font-size:1.25rem; } .site-header .add-listing-button { padding:var(--ui-space-compact); } }
 @media(prefers-reduced-motion:no-preference) {
  .listing-grid :is(hamtry-property-card,hamtry-roommate-card)::part(image) { transition:transform 240ms ease,opacity 180ms ease; }
  .listing-grid :is(hamtry-property-card,hamtry-roommate-card):not(.is-expanded):hover::part(image) { transform:scale(1.025); }
@@ -426,38 +412,33 @@ html[data-appearance="dark"] body { background:#151b2e; }
 }
 
 /* Essential facts first; the complete description stays available on demand. */
-.detail-info h3 { margin-top:0; margin-bottom:.35rem; }
-.detail-info .detail-location { margin-top:0; margin-bottom:.75rem; font-size:.9375rem; }
-.detail-owner { margin-top:0; padding-block:.8rem; gap:.65rem; }
+.detail-info h3 { margin-top:0; margin-bottom:var(--ui-space-small); }
+.detail-info .detail-location { margin-top:0; margin-bottom:var(--ui-space-3); font-size:.9375rem; }
+.detail-owner { margin-top:0; padding-block:var(--ui-space-row); gap:var(--ui-space-control); }
 .owner-avatar { width:2.5rem; height:2.5rem; }
-.detail-owner small { margin-top:.15rem; }
-.detail-info .detail-summary { margin-top:.85rem; padding:.8rem 1rem; }
-.detail-info dl { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-block:1rem; }
-.detail-info dl > div { min-width:0; }
-.detail-info dt { font-size:.75rem; margin-bottom:.2rem; }
-.detail-info dd { font-weight:600; margin:0; font-size:.9375rem; }
-.detail-traits { margin-block:.75rem; gap:.4rem; }
-.detail-actions { padding-top:.75rem; margin-top:.75rem; border-top:1px solid var(--home-line); }
-@media(max-width:34rem) { .contact-concept { margin-left:3.15rem; } }
+.detail-owner small { margin-top:var(--ui-space-fine); }
+.detail-traits { margin-block:var(--ui-space-3); gap:var(--ui-space-tight); }
+.detail-actions { padding-top:var(--ui-space-3); margin-top:var(--ui-space-3); border-top:1px solid var(--home-line); }
+@media(max-width:34rem) { .contact-concept { margin-left:var(--ui-space-profile-offset); } }
 
 /* Listing details: icon-led actions, full description, and an actual date picker. */
 .detail-content { position:relative; }
-.detail-collapse { position:absolute; top:1rem; right:1rem; z-index:1; display:grid; place-items:center; width:2.75rem; height:2.75rem; padding:.65rem; margin:0; border:0; border-radius:.8rem; background:var(--brand-primary); color:var(--text-inverse); }
+.detail-collapse { position:absolute; top:1rem; right:1rem; z-index:1; display:grid; place-items:center; width:2.75rem; height:2.75rem; padding:var(--ui-space-control); margin:0; border:0; border-radius:var(--ui-radius-action); background:var(--brand-primary); color:var(--text-inverse); }
 .detail-collapse svg { width:1.35rem; height:1.35rem; }
-.detail-info h3 { padding-right:3rem; }
-.detail-info .detail-summary { display:flex; justify-content:flex-start; align-items:center; gap:.6rem; padding:0; margin-top:1.15rem; background:transparent; }
+.detail-info h3 { padding-right:var(--ui-space-12); }
+.detail-info .detail-summary { display:flex; justify-content:flex-start; align-items:center; gap:var(--ui-space-compact); padding:0; margin-top:var(--ui-space-group-wide); background:transparent; }
 .detail-summary > svg { width:1.5rem; height:1.5rem; flex:none; }
 .detail-summary .detail-price { font-size:1.6rem; }
 .price-period { color:var(--home-quiet); font-size:.9375rem; }
-.detail-info .detail-description { margin-block:1.2rem; font-size:1rem; line-height:1.7; }
-.detail-facts { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.8rem 1rem; margin-block:1.25rem; }
-.detail-facts > div { display:grid; gap:.2rem; }
+.detail-info .detail-description { margin-block:var(--ui-space-paragraph); font-size:1rem; line-height:1.7; }
+.detail-facts { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--ui-space-row) var(--ui-space-4); margin-block:var(--ui-space-5); }
+.detail-facts > div { display:grid; gap:var(--ui-space-micro); }
 .detail-size-label { color:var(--home-quiet); font-size:.75rem; }
 .detail-facts .detail-size { font:600 1.05rem var(--font-sans); }
-.detail-owner .contact-concept { display:grid; place-items:center; flex:none; width:2.75rem; height:2.75rem; margin:0; border-radius:.75rem; color:var(--brand-primary); background:var(--surface-interactive); text-decoration:none; cursor:default; }
+.detail-owner .contact-concept { display:grid; place-items:center; flex:none; width:2.75rem; height:2.75rem; margin:0; border-radius:var(--ui-radius-control); color:var(--brand-primary); background:var(--surface-interactive); text-decoration:none; cursor:default; }
 .contact-concept svg { width:1.3rem; height:1.3rem; }
-.detail-actions .detail-map { gap:.5rem; }
-@media(max-width:48rem) { .detail-info h3 { padding-right:0; } .detail-content { padding:1rem; } .detail-collapse { top:1.5rem; right:1.5rem; } }
+.detail-actions .detail-map { gap:var(--ui-space-2); }
+@media(max-width:48rem) { .detail-info h3 { padding-right:0; } .detail-content { padding:var(--ui-space-4); } .detail-collapse { top:1.5rem; right:1.5rem; } }
 @media(hover:hover) {
  .site-header #main-nav a:hover { color:var(--brand-primary); }
  .search-segment:hover { background:var(--surface-interactive); }
@@ -465,7 +446,7 @@ html[data-appearance="dark"] body { background:#151b2e; }
 }
 @media(hover:hover) and (prefers-reduced-motion:no-preference) {
  .site-header :is(.add-listing-button,.menu-button,.profile-button),.detail-collapse,.detail-map { transition:transform 180ms ease,background 180ms ease,box-shadow 180ms ease; }
- .site-header :is(.add-listing-button,.menu-button,.profile-button):hover,.detail-collapse:hover,.detail-map:hover { transform:translateY(-1px); box-shadow:0 .25rem .6rem rgb(0 0 0 / .08); }
+ .site-header :is(.add-listing-button,.menu-button,.profile-button):hover,.detail-collapse:hover,.detail-map:hover { transform:translateY(-1px); box-shadow:var(--ui-shadow-hover); }
  .site-header #main-nav a svg { transition:transform 200ms ease; }
  .site-header #main-nav a:hover svg { transform:translateY(-2px); }
  .site-header .wordmark { transition:opacity 180ms ease; }

@@ -17,5 +17,5 @@ img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--radius
 input[type=file] { font:inherit; width:100%; }
 input::file-selector-button { border:0; background:var(--brand-primary); color:var(--text-inverse); border-radius:var(--radius-md); padding:var(--spacing-2); margin-right:var(--spacing-2); cursor:pointer; }
 .add-room { margin-top:var(--spacing-3); }
-:where(button,input):focus-visible { outline:var(--border-focus-width) solid var(--brand-primary); outline-offset:.15rem; }
+:where(button,input):focus-visible { outline:var(--border-focus-width) solid var(--brand-primary); outline-offset:var(--ui-space-fine); }
 @media(max-width:30rem) { .room-heading { align-items:start; flex-direction:column; } .room-heading label { width:100%; } }
