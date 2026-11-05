@@ -45,3 +45,16 @@ input { accent-color:var(--brand-primary); }
  .explore-panel { overflow:visible; padding:1.5rem; border-right:0; }
  h1 { font-size:1.8rem; } .room-preview { max-height:60%; }
 }
+
+.map-toolbar .map-modes { margin:0; background:var(--surface-elevated); }
+:host([embedded]) { height:100%; min-height:0; }
+:host([embedded]) header,:host([embedded]) .explore-panel { display:none; }
+:host([embedded]) .immersive-shell,:host([embedded]) main { height:100%; min-height:0; }
+:host([embedded]) main { display:block; }
+:host([embedded]) .map-stage { height:100%; min-height:0; }
+:host([embedded]) .map-canvas { min-height:0; }
+:host([embedded]) .map-toolbar { right:3.5rem; }
+:host([embedded]) .map-toolbar button,:host([embedded]) .map-toolbar label { font-size:.875rem; }
+@media(max-width:40em) { :host([embedded]) .map-toolbar { left:.5rem; top:.5rem; gap:.35rem; } :host([embedded]) .map-toolbar button,:host([embedded]) .map-toolbar label { padding:.5rem .65rem; font-size:.8125rem; } :host([embedded]) .room-preview { max-height:65%; bottom:2rem; } }
+
+.map-toolbar .map-modes button { white-space:nowrap; min-height:2.5rem; border:0; padding:.55rem .75rem; }

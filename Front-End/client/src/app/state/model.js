@@ -17,9 +17,9 @@ export function findListings(items, filters, kind, saved = null) {
     && words.every(word => `${item.title} ${item.district} ${item.area} ${item.traits.join(' ')}`.toLocaleLowerCase('mn').includes(word)))
 }
 export function readRoute(hash) {
-  const path = hash.replace(/^#\/?/, '') || 'home'
+  const path = hash.replace(/^#\/?/, '') || 'rooms'
   if (path.startsWith('listing/')) return { page: 'detail', id: path.slice(8) }
-  return { page: ['home', 'map', 'rooms', 'roommates', 'saved', 'dashboard'].includes(path) ? path : 'home' }
+  return { page: ['map', 'list', 'rooms', 'roommates', 'saved', 'dashboard'].includes(path) ? path : 'rooms' }
 }
 // MapLibre-ийн Mercator зурагт тохирох [уртраг, өргөрөг]. Хоосон input-ийг 0 гэж үзэхгүй.
 export const validLocation = point => Array.isArray(point) && point.length === 2 && point.every(Number.isFinite) && Math.abs(point[0]) <= 180 && Math.abs(point[1]) <= 85

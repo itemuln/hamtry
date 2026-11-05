@@ -8,7 +8,7 @@ sheet.replaceSync(css)
 export class HamtryDoor extends HamtryElement {
   render() {
     this.root.adoptedStyleSheets = [sheet]
-    this.root.innerHTML = `<button type="button" aria-label="Хаалгыг тогшоод орох" aria-expanded="false"><span class="frame" aria-hidden="true"><span class="panel"><b>24</b><i class="handle"></i><span class="rule"></span></span></span><span class="label">Хаалгыг тогшоод орох</span></button>`
+    this.root.innerHTML = `<button type="button" aria-label="Хаалгыг тогшоод орох" aria-expanded="false"><span class="frame" aria-hidden="true"><span class="panel"><b>24</b><i class="handle"></i><span class="rule"></span></span></span></button>`
   }
   setup() {
     const button = required('button', this.root)

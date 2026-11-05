@@ -4,13 +4,16 @@ import { listings } from '../data/listings.js'
 import { money } from '../state/model.js'
 import { createAppState } from '../state/store.js'
 import css from '../explore.css?inline'
+import previewCss from '../explore-preview.css?inline'
 
 const sheet = new CSSStyleSheet()
-sheet.replaceSync(css)
+sheet.replaceSync(css + '\n' + previewCss)
 
 // Page owns navigation and fixture data; the Three scene only draws and emits intent.
 export class HamtryExplore extends HamtryElement {
   route = signal(readExploreRoute(location.hash))
+  detailsOpen = signal(false)
+  controlsOpen = signal(false)
   travel = signal(false)
   arrived = signal(null)
   night = signal(false)
@@ -28,14 +31,14 @@ export class HamtryExplore extends HamtryElement {
           <hamtry-button class="settings" variant="outline" size="sm">Тохиргоо</hamtry-button>
         </header>
         <main>
-          <section class="world" aria-labelledby="world-title">
+          <section class="world" aria-label="Хотын 3D ертөнц">
             <div class="scene-surface"><canvas aria-hidden="true"></canvas><div class="markers" aria-label="Сцен доторх газрууд"></div></div>
-            <div class="world-copy"><h1 id="world-title">Хот доторх<br>таны <em>булан.</em></h1><p class="intro">Яарах хэрэггүй. Нэг газар сонгоод,<br>шинэ орон зайгаа нээгээрэй.</p><span class="scene-note">Улаанбаатар · Уран сэтгэмжит зохиомж</span></div>
-            <div class="world-toolbar"><button class="back" type="button" hidden>Хот руу буцах</button><button class="light" type="button" aria-pressed="false">Оройн гэрэл</button><button class="reset-view" type="button">Харагдац сэргээх</button><button class="retry-scene" type="button" hidden>3D дахин ачаалах</button></div>
+            <div class="world-copy"><span class="scene-note">Улаанбаатар · Уран сэтгэмжит зохиомж</span></div>
+            <div class="world-toolbar"><button class="places-toggle" type="button" aria-expanded="false" aria-controls="controls">Газрууд</button><button class="back" type="button" hidden>Хот руу буцах</button><button class="light" type="button" aria-pressed="false">Оройн гэрэл</button><button class="reset-view" type="button">Харагдац сэргээх</button><button class="retry-scene" type="button" hidden>3D дахин ачаалах</button></div>
             <div class="loading" role="status">Таны жижиг ертөнцийг бэлдэж байна…</div>
             <div class="scene-feedback" role="status" aria-live="polite"></div>
             <div class="journey" hidden><span class="journey-dot"></span><div><strong></strong><small>Замын турш өөр сонголт хийж болно</small></div><hamtry-button class="skip-trip" variant="outline" size="sm">Шууд очих</hamtry-button></div>
-            <div class="destination"><h2 class="destination-name"></h2><p class="destination-kind"></p><p class="destination-description"></p><div class="destination-footer"><span class="trip-hint">Таны дараагийн зогсоол</span><hamtry-button class="go">Энд очъё</hamtry-button></div></div>
+            <div class="destination" hidden><button class="close-destination" type="button" aria-label="Газрын мэдээллийг хаах"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button><h2 class="destination-name"></h2><p class="destination-kind"></p><p class="destination-description"></p><div class="destination-footer"><span class="trip-hint">Таны дараагийн зогсоол</span><hamtry-button class="go">Энд очъё</hamtry-button></div></div>
             <div class="scene-caption"><span class="caption-dot"></span><span class="interaction-hint">Барилга дээр дарж сонго · Чирж харах өнцгөө өөрчил</span></div>
           </section>
           <section class="control-deck" id="controls" tabindex="-1" aria-label="Газар ба тавилга сонгох"><div class="deck-title"><span class="deck-label">ХААШАА ОЧИХ ВЭ?</span><span class="deck-counter">3 газар</span></div>
@@ -51,18 +54,20 @@ export class HamtryExplore extends HamtryElement {
   setup() {
     const $ = selector => required(selector, this.root)
     let active = true, scene, scenePending = false, inView = false
+    if (this.closest('[data-impeccable-variant]')) this.quality.set('low')
     // Салсан WebGL canvas-ийг дахин ашиглахгүй; reconnect шинэ context авна.
     const oldCanvas = $('canvas'), canvas = oldCanvas.cloneNode(false)
     oldCanvas.replaceWith(canvas)
     this.status.set('loading'); this.travel.set(false)
     const feedback = message => { $('.scene-feedback').textContent = message }
     const navigate = (mode, place = this.route.get().place) => {
-      this.travel.set(false)
+      this.travel.set(false); this.detailsOpen.set(false); this.controlsOpen.set(false)
       location.hash = `${mode}/${place}`
     }
     const selectPlace = id => {
       if (this.route.get().mode !== 'city') return
       scene?.cancelTravel(); this.travel.set(false); this.arrived.set(null)
+      this.detailsOpen.set(true); this.controlsOpen.set(false)
       location.hash = `city/${id}`
     }
     const finishTrip = id => {
@@ -94,7 +99,7 @@ export class HamtryExplore extends HamtryElement {
       scenePending = true
       try {
         const { createExploreScene } = await import('../components/explore-scene.js')
-        if (!active) return
+        if (!active || !inView) return
         scene = createExploreScene(canvas, $('.markers'), interact)
         this.scene = scene; resize(); scene.setVisible(inView && !document.hidden); this.status.set('ready')
       } catch (error) {
@@ -119,9 +124,9 @@ export class HamtryExplore extends HamtryElement {
         if (!active) return
         scene?.cancelTravel(); this.travel.set(false); this.route.set(next); flushEffects()
         feedback(next.mode === 'inside' ? 'Тавилга дээр дарж орон зайгаа нээгээрэй.' : '')
-        if (modeChanged) $(next.mode === 'inside' ? '.back' : '.go').focus()
+        if (modeChanged && inView) $(next.mode === 'inside' ? '.back' : '.places-toggle').focus()
       }
-      if (modeChanged && document.startViewTransition && !this.reduced.get()) document.startViewTransition(update)
+      if (modeChanged && inView && document.startViewTransition && !this.reduced.get()) document.startViewTransition(update)
       else update()
     })
     listen(window, 'storage', () => { const updated = createAppState(); this.app.saved.set(updated.saved.get()); this.app.published.set(updated.published.get()); this.app.role.set(updated.role.get()) })
@@ -129,6 +134,8 @@ export class HamtryExplore extends HamtryElement {
       event.preventDefault(); scene?.cancelTravel(); this.travel.set(false); this.status.set('fallback')
       feedback('3D дүрслэл түр зогслоо. Доорх удирдлагаар үргэлжлүүлээрэй.')
     })
+    listen($('.places-toggle'), 'click', () => this.controlsOpen.set(value => !value))
+    listen($('.close-destination'), 'click', () => { this.detailsOpen.set(false); $('.places-toggle').focus() })
     listen($('.go'), 'click', go)
     listen($('.skip'), 'click', event => { event.preventDefault(); $('#controls').focus() })
     listen($('.back'), 'click', () => navigate('city'))
@@ -145,6 +152,7 @@ export class HamtryExplore extends HamtryElement {
     listen(this.root, 'keydown', event => {
       if (event.key === 'Escape' && !$('.content-dialog').open && !$('.settings-dialog').open) {
         if (this.travel.get()) { scene?.cancelTravel(); this.travel.set(false); feedback('Аяллыг зогсоолоо.') }
+        else if (this.controlsOpen.get() || this.detailsOpen.get()) { this.controlsOpen.set(false); this.detailsOpen.set(false); $('.places-toggle').focus() }
         else if (this.route.get().mode === 'inside') navigate('city')
       }
     })
@@ -152,6 +160,11 @@ export class HamtryExplore extends HamtryElement {
     useEffect(() => {
       const route = this.route.get(), place = placeById(route.place), inside = route.mode === 'inside', travelling = this.travel.get()
       const state = this.status.get(), night = this.night.get(), reduced = this.reduced.get(), quality = this.quality.get()
+      const details = this.detailsOpen.get(), controls = this.controlsOpen.get()
+      this.dataset.details = String(details)
+      $('.destination').hidden = !details || inside || travelling
+      $('.control-deck').hidden = !controls && state !== 'fallback'
+      $('.places-toggle').setAttribute('aria-expanded', String(controls || state === 'fallback'))
       this.dataset.sceneState = state; this.dataset.mode = route.mode; this.dataset.night = String(night)
       canvas.hidden = state !== 'ready'
       $('.markers').hidden = state !== 'ready'

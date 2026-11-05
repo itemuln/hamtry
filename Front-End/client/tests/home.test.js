@@ -23,9 +23,8 @@ test('saved results include both listing types and empty saved means no results'
 })
 test('hash routes resolve detail, product pages and unknown routes', () => {
   assert.deepEqual(readRoute('#listing/room-2'), { page: 'detail', id: 'room-2' })
-  for (const page of ['home', 'map', 'rooms', 'roommates', 'saved', 'dashboard']) assert.deepEqual(readRoute(`#/${page}`), { page })
-  assert.deepEqual(readRoute('#unknown'), { page: 'home' })
-  assert.deepEqual(readRoute(''), { page: 'home' })
+  for (const page of ['map', 'list', 'rooms', 'roommates', 'saved', 'dashboard']) assert.deepEqual(readRoute(`#/${page}`), { page })
+  for (const hash of ['', '#', '#home', '#/home', '#unknown']) assert.deepEqual(readRoute(hash), { page: 'rooms' })
 })
 test('map coordinates reject strings, incomplete points and out-of-range locations', () => {
   assert.equal(validLocation([106.917, 47.918]), true)

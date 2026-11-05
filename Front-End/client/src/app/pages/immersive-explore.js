@@ -1,4 +1,4 @@
-import { HamtryElement, listen, onCleanup, required } from '@hamtry/library'
+import { HamtryElement, listen, onCleanup, required, signal, useEffect } from '@hamtry/library'
 import { listings } from '../data/listings.js'
 import { money, validLocation } from '../state/model.js'
 import { createAppState } from '../state/store.js'
@@ -8,21 +8,27 @@ const sheet = new CSSStyleSheet(); sheet.replaceSync(css)
 // ImmersiveMap-ийн globe → хот → marker урсгалын веб хувилбар. Swift/Metal код импортлохгүй.
 export class HamtryImmersiveExplore extends HamtryElement {
   app = createAppState()
+  entries = signal(null)
+  selection = signal('')
+  get listings() { return this.entries.get() }
+  set listings(value) { this.entries.set(value || []) }
+  get selectedId() { return this.selection.get() }
+  set selectedId(value) { this.selection.set(value || '') }
   render() {
     this.root.adoptedStyleSheets = [sheet]
     this.root.innerHTML = `<div class="immersive-shell">
-      <header><a class="brand" href="/">hamtry.</a><nav aria-label="Үндсэн цэс"><a href="/#rooms">Өрөөнүүд</a><a href="/#roommates">Хамтрагчид</a><a href="/explore.html?view=classic">Өмнөх 3D хот</a></nav></header>
+      <header><a class="brand" href="/">hamtry.</a><nav aria-label="Үндсэн цэс"><a href="/#rooms">Өрөөнүүд</a><a href="/#roommates">Хамтрагчид</a></nav></header>
       <main><aside class="explore-panel"><h1>Хот дотроос<br>орон зайгаа ол.</h1><p>Улаанбаатарыг ойроос харж, өрөөний байршлуудтай танилцаарай.</p>
-        <div class="map-modes" role="group" aria-label="Газрын зургийн харагдац"><button type="button" data-mode="city" aria-pressed="true">3D хот</button><button type="button" data-mode="flat" aria-pressed="false">2D зураг</button><button type="button" data-mode="globe" aria-pressed="false">Дэлхий</button></div>
+
         <h2>Өрөөнүүд <span class="count"></span></h2><p class="sample-note">Хичээлийн жишээ зарууд · бодит хаяг биш</p><div class="map-rooms" role="group" aria-label="Өрөөний байршил сонгох"></div>
         <p class="reference">ImmersiveMap-ийн зарчимд тулгуурласан веб хувилбар. <a href="https://github.com/artembobkin/ImmersiveMap" target="_blank" rel="noopener noreferrer">Эх төсөл ↗</a></p>
-      </aside><section class="map-stage" aria-label="Улаанбаатарын интерактив газрын зураг"><div class="map-canvas"></div><div class="map-toolbar"><button class="reset" type="button">Улаанбаатар</button><label><input class="buildings" type="checkbox" checked>3D барилгууд</label></div><p class="map-status" role="status">Газрын зураг ачаалж байна…</p><div class="room-preview" hidden><button class="close-preview" type="button" aria-label="Дэлгэрэнгүй хаах">×</button><h2></h2><p class="room-meta"></p><strong class="room-price"></strong><p class="room-description"></p><a class="room-link">Зарын дэлгэрэнгүй үзэх →</a></div></section></main></div>`
+      </aside><section class="map-stage" aria-label="Улаанбаатарын интерактив газрын зураг"><div class="map-canvas"></div><div class="map-toolbar"><div class="map-modes" role="group" aria-label="Газрын зургийн харагдац"><button type="button" data-mode="city" aria-pressed="true">3D хот</button><button type="button" data-mode="flat" aria-pressed="false">2D зураг</button><button type="button" data-mode="globe" aria-pressed="false">Дэлхий</button></div><button class="reset" type="button">Улаанбаатар</button><label><input class="buildings" type="checkbox" checked>3D барилгууд</label></div><p class="map-status" role="status">Газрын зураг ачаалж байна…</p><div class="room-preview" hidden><button class="close-preview" type="button" aria-label="Дэлгэрэнгүй хаах">×</button><h2></h2><p class="room-meta"></p><strong class="room-price"></strong><p class="room-description"></p><a class="room-link">Зарын дэлгэрэнгүй үзэх →</a></div></section></main></div>`
   }
   setup() {
     const $ = selector => required(selector, this.root)
-    const items = [...listings.filter(item => item.kind === 'rooms'), ...this.app.published.get()].filter(item => validLocation(item.location))
+    let items = []
     const status = $('.map-status'), container = $('.map-canvas'), rooms = $('.map-rooms')
-    let active = true, mapScene, selected, mode = 'city', buildings = true, loaded = false
+    let active = true, mapScene, selected, itemKey = '', mode = 'city', buildings = true, loaded = false
     const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches
     // Reconnect үед хуучин marker DOM болон canvas-ийг үлдээхгүй.
     container.replaceChildren(); rooms.replaceChildren(); $('.room-preview').hidden = true
@@ -31,7 +37,7 @@ export class HamtryImmersiveExplore extends HamtryElement {
     const select = id => {
       const item = items.find(item => item.id === id)
       if (!item) return
-      selected = id
+      selected = id; this.selectedId = id
       for (const node of rooms.children) node.setAttribute('aria-pressed', String(node.dataset.id === id))
       $('.room-preview').hidden = false
       $('.room-preview h2').textContent = item.title
@@ -45,14 +51,28 @@ export class HamtryImmersiveExplore extends HamtryElement {
         mapScene.map.flyTo({ center: item.location, zoom: 16.2, pitch: 58, bearing: -20, duration: reduced() ? 0 : 1200 })
       }
     }
-    for (const item of items) {
-      const button = document.createElement('button'); button.type = 'button'; button.dataset.id = item.id; button.setAttribute('aria-pressed', 'false')
-      const title = document.createElement('strong'); title.textContent = item.title
-      const meta = document.createElement('span'); meta.textContent = `${item.district} · ${money(item.price)}`
-      button.append(title, meta); rooms.append(button)
-      listen(button, 'click', () => select(item.id))
-    }
-    if (!items.length) rooms.textContent = 'Байршилтай зар алга. Өрөөнүүд цэснээс үзээрэй.'
+    listen(rooms, 'click', event => {
+      const button = event.target.closest('[data-id]')
+      if (button) select(button.dataset.id)
+    })
+    useEffect(() => {
+      items = (this.listings ?? [...listings.filter(item => item.kind === 'rooms'), ...this.app.published.get()]).filter(item => validLocation(item.location))
+      $('.count').textContent = `(${items.length})`
+      rooms.replaceChildren()
+      for (const item of items) {
+        const button = document.createElement('button'); button.type = 'button'; button.dataset.id = item.id; button.setAttribute('aria-pressed', String(item.id === selected))
+        const title = document.createElement('strong'); title.textContent = item.title
+        const meta = document.createElement('span'); meta.textContent = `${item.district} · ${money(item.price)}`
+        button.append(title, meta); rooms.append(button)
+      }
+      if (!items.length) rooms.textContent = 'Байршилтай зар алга. Хайлтын нөхцөлөө өөрчилж үзээрэй.'
+      if (!items.some(item => item.id === selected)) { selected = undefined; $('.room-preview').hidden = true }
+      mapScene?.update(items, selected)
+      const nextKey = items.map(item => `${item.id}:${item.location.join(',')}`).join('|')
+      if (loaded && this.hasAttribute('embedded') && itemKey !== nextKey) mapScene.fit(items)
+      itemKey = nextKey
+    })
+    useEffect(() => { selected = this.selectedId; mapScene?.update(items, selected) })
     const setMode = (next, move = true) => {
       mode = next
       for (const button of this.root.querySelectorAll('[data-mode]')) button.setAttribute('aria-pressed', String(button.dataset.mode === mode))
@@ -65,13 +85,16 @@ export class HamtryImmersiveExplore extends HamtryElement {
     for (const button of this.root.querySelectorAll('[data-mode]')) listen(button, 'click', () => setMode(button.dataset.mode))
     listen($('.buildings'), 'change', event => { buildings = event.target.checked; setMode(mode, false) })
     listen($('.reset'), 'click', () => setMode('city'))
+    this.fit = entries => { if (loaded) { setMode('city', false); mapScene.fit(entries) } }
+    onCleanup(() => { this.fit = undefined })
     listen($('.close-preview'), 'click', () => { $('.room-preview').hidden = true; rooms.querySelector(`[data-id="${selected}"]`)?.focus() })
     listen(this.root, 'keydown', event => { if (event.key === 'Escape' && !$('.room-preview').hidden) { $('.room-preview').hidden = true; rooms.querySelector(`[data-id="${selected}"]`)?.focus() } })
     const observer = new ResizeObserver(() => mapScene?.resize()); observer.observe(container)
     onCleanup(() => { active = false; observer.disconnect(); mapScene?.dispose(); mapScene = undefined })
-    const timer = setTimeout(() => { if (active && !loaded) { status.hidden = false; status.textContent = 'Зураг удаан ачаалж байна. Өрөөний жагсаалт ажиллаж байна.' } }, 12000)
+    let timer
     onCleanup(() => clearTimeout(timer))
     const load = async () => {
+      timer = setTimeout(() => { if (active && !loaded) { status.hidden = false; status.textContent = 'Зураг удаан ачаалж байна. Өрөөний жагсаалт ажиллаж байна.' } }, 12000)
       try {
         const { createApartmentMap, mapCss } = await import('../components/map-renderer.js')
         if (!active) return
@@ -90,6 +113,7 @@ export class HamtryImmersiveExplore extends HamtryElement {
           } }, before)
           loaded = true; clearTimeout(timer); status.hidden = true
           mapScene.update(items, selected); setMode(mode)
+          if (this.hasAttribute('embedded')) mapScene.fit(items)
         }, onError: () => {
           if (!active) return
           status.hidden = false; status.textContent = 'Зарим зургийн өгөгдөл ачаалагдсангүй. Интернэтээ шалгана уу. Өрөөг жагсаалтаас сонгож болно.'
@@ -100,6 +124,11 @@ export class HamtryImmersiveExplore extends HamtryElement {
         if (active) { status.hidden = false; status.textContent = 'Газрын зураг боломжгүй. Өрөөнүүдийг жагсаалтаас сонгож үзээрэй.' }
       }
     }
-    void load()
+    let started = false
+    const visibility = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !started) { started = true; void load() }
+    })
+    visibility.observe(this)
+    onCleanup(() => visibility.disconnect())
   }
 }

@@ -1,8 +1,17 @@
 # Explore entry and immersive map
 
-`/explore.html` now defaults to the native `HamtryImmersiveExplore` page in
-`pages/immersive-explore.js`, styled by `immersive-explore.css`. `?view=classic`
-loads the prior Three.js page described below. No React/Swift runtime is added.
+`/explore.html` opens the shared `hamtry-home` shell at `#map`. The ordinary
+homepage (`/`, `#rooms`) remains the room listing view; `#roommates`, `#saved`,
+and `#dashboard` retain their existing behavior. The 3D navigation link selects
+`#map` inside the same shell, preserving the header and guided search.
+
+`hamtry-immersive-map` embeds `HamtryImmersiveExplore` beneath that header,
+without its standalone sidebar/header. `listings` supplies validated filtered
+coordinates; `selectedId` updates marker selection. It fills the remaining
+viewport, exposes city/flat/globe/building controls, and links previews to the
+existing listing dialog. Initialization waits until the map becomes visible.
+`#list` is an explicit room-list route. The classic procedural city is no longer
+linked or selected by the Explore entry. No React/Swift runtime is added.
 
 Reference: https://github.com/artembobkin/ImmersiveMap (MIT, Swift 6 + Metal,
 Apple platforms only). This is a web adaptation of its globe/city/marker journey,
@@ -30,7 +39,7 @@ Verified in Chromium: Ulaanbaatar building extrusion, globe switching, room sele
 and preview link; lint/build pass. Mobile hardware, Safari/Firefox, terrain elevation,
 custom landmark models and native ImmersiveMap features have not been accepted.
 
-# Classic Three.js Explore contract
+# Archived procedural-city implementation notes
 
 - `/explore.html?view=classic` → `src/app/explore.js` → native `hamtry-explore`.
 - Page: `src/app/pages/explore.js`, `explore.css`; renderer: `components/explore-scene.js`.

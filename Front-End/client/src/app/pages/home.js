@@ -5,14 +5,23 @@ import { createAppState } from '../state/store.js'
 import { savePhotos, deletePhotos } from '../state/media-store.js'
 import { dashboardMarkup, setupDashboard, updateDashboard } from './dashboard.js'
 
-const budgets = '<option value="0">Төсөв сонгох</option><option value="700000">700,000 ₮ хүртэл</option><option value="1000000">1,000,000 ₮ хүртэл</option><option value="1500000">1,500,000 ₮ хүртэл</option>'
+const searchIcons = {
+  rooms: '<path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/>',
+  roommates: '<circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6m2 4a5 5 0 0 1 3 4v2"/>',
+  location: '<path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2"/>',
+  conditions: '<path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/>',
+  budget: '<path d="M3 7V5a2 2 0 0 1 2-2h13v4M3 7h18v14H5a2 2 0 0 1-2-2Z"/><path d="M16 12h5v5h-5Z"/>',
+  check: '<path d="m5 12 4 4L19 6"/>',
+  next: '<path d="M4 12h16m-6-6 6 6-6 6"/>',
+}
+const searchIcon = name => `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${searchIcons[name]}</svg>`
 const text = (root, selector, value) => { required(selector, root).textContent = value }
 
 // Page нь light DOM: layout/SEO нь хуудасных, дахин ашиглах controls нь Shadow DOM-той.
 export class HamtryHome extends HTMLElement {
   state = createAppState()
   cards = new Map()
-  previousPage = 'home'
+  previousPage = 'rooms'
   connectedCallback() {
     if (this.scope) return
     if (!this.rendered) { this.render(); this.rendered = true }
@@ -24,27 +33,45 @@ export class HamtryHome extends HTMLElement {
     this.innerHTML = `
       <a class="skip-link" href="#main-content">Үндсэн агуулга руу очих</a>
       <header class="site-header">
-        <a class="wordmark" href="#home" aria-label="Hamtry нүүр"><span class="brand-mark" aria-hidden="true">h.</span>hamtry<span class="brand-period">.</span></a>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Цэс нээх">☰</button>
-        <nav id="main-nav" class="main-nav" aria-label="Үндсэн цэс"><a href="/explore.html">3D ертөнц</a><a class="rooms-entry" href="#rooms" data-nav="rooms" data-room-navigation>Өрөөнүүд</a><a href="#roommates" data-nav="roommates">Хамтрагчид</a><a href="#saved" data-nav="saved">Хадгалсан <span class="saved-count">0</span></a><a href="#dashboard" data-nav="dashboard" class="dashboard-link" hidden>Миний зарууд</a></nav>
-        <button type="button" class="profile-button" data-action="profile"><span aria-hidden="true">◎</span> Миний орон зай</button>
+        <a class="wordmark" href="#rooms" aria-label="Hamtry нүүр"><span class="brand-mark" aria-hidden="true">h.</span>hamtry<span class="brand-period">.</span></a>
+        <nav id="main-nav" class="main-nav" aria-label="Үндсэн цэс"><a href="#map" data-nav="map"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5Z"/></svg><span>3D ертөнц</span></a><a href="#rooms" data-nav="home">${searchIcon('rooms')}Нүүр хуудас</a><a href="#saved" data-nav="saved"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4Z"/></svg>Хадгалсан <span class="saved-count">0</span></a><a href="#dashboard" data-nav="dashboard" class="dashboard-link" hidden>Миний зарууд</a></nav>
+        <div class="header-actions"><button type="button" class="host-button" data-action="publish">Өрөө санал болгох</button><button type="button" class="profile-button" data-action="profile" aria-label="Миний орон зай"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3"/><path d="M6 19a6 6 0 0 1 12 0"/></svg></button></div>
       </header>
+      <div class="search-dock">
+      <form class="header-search" aria-label="Өрөө эсвэл хамтрагч хайх">
+        <button type="button" class="search-segment" popovertarget="search-kind" aria-expanded="false"><span class="step-heading">${searchIcon('roommates')}Юу хайх вэ?</span><span class="search-value" data-search-summary="kind">Өрөө</span></button>
+        <button type="button" class="search-segment" popovertarget="search-district" aria-expanded="false"><span class="step-heading">${searchIcon('location')}Хаана</span><span class="search-value" data-search-summary="district">Бүх дүүрэг</span></button>
+        <button type="button" class="search-segment search-query" popovertarget="search-keywords" aria-expanded="false"><span class="step-heading">${searchIcon('conditions')}Нөхцөл <small>заавал биш</small></span><span class="search-value" data-search-summary="query">Нөхцөл сонгох</span><span class="search-compact-summary" aria-hidden="true">Нөхцөл</span></button>
+        <button type="button" class="search-segment" popovertarget="search-budget" aria-expanded="false"><span class="step-heading">${searchIcon('budget')}Төсөв</span><span class="search-value" data-search-summary="maxPrice">Төсөв сонгох</span></button>
+        <div id="search-kind" class="search-panel" popover role="dialog" aria-labelledby="kind-panel-title">
+          <h2 id="kind-panel-title">Юу хайж байна?</h2><p class="search-panel-hint">Хайх зүйлээ сонгоод эхэлье.</p>
+          <div class="search-kind-choices"><button type="button" data-search-kind="roommates" aria-pressed="false">${searchIcon('roommates')}<strong>Өрөөний хамтрагч</strong><span>Нэг хэмнэлтэй хүнээ олох</span>${searchIcon('next')}</button><button type="button" data-search-kind="rooms" aria-pressed="true">${searchIcon('rooms')}<strong>Өрөө</strong><span>Амьдрах орон зайгаа олох</span>${searchIcon('next')}</button></div>
+        </div>
+        <div id="search-district" class="search-panel" popover role="dialog" aria-labelledby="district-panel-title">
+          <div class="location-panel-heading"><h2 id="district-panel-title">Дүүргээ сонгох</h2><section class="browse-choice" aria-label="Өрөөнүүдийг харах хэлбэр"><nav class="browse-mode" aria-label="Жагсаалт эсвэл газрын зураг"><a href="#list" data-browse-view="list"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h12M9 12h12M9 18h12M3 6h1M3 12h1M3 18h1"/></svg>Өрөөнүүд</a><a href="#map" data-browse-view="map" aria-label="Газрын зураг" title="Газрын зураг"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg><span class="map-label">Газрын зураг</span></a></nav></section></div><div class="location-tools"><hamtry-button class="new-listing" data-action="publish">Өрөө нэмэх +</hamtry-button></div><fieldset class="search-options"><legend>Хаана амьдрах вэ?</legend>${[['all', 'Бүх дүүрэг'], ...districts.map(name => [name, name])].map(([value, label]) => `<label><input type="radio" name="district" value="${value}" ${value === 'all' ? 'checked' : ''}>${searchIcon('location')}<span>${label}</span></label>`).join('')}</fieldset>
+          <div class="search-panel-actions"><button type="button" data-clear-search="district">Цэвэрлэх</button><button type="button" data-search-next="search-keywords">Үргэлжлүүлэх</button></div>
+        </div>
+        <div id="search-budget" class="search-panel" popover role="dialog" aria-labelledby="budget-panel-title">
+          <h2 id="budget-panel-title">Сарын төсөв</h2><fieldset class="search-options"><legend>Түрээсийн дээд хэмжээ</legend>${[[0, 'Хязгааргүй'], [700000, '700,000 ₮ хүртэл'], [1000000, '1,000,000 ₮ хүртэл'], [1500000, '1,500,000 ₮ хүртэл']].map(([value, label]) => `<label><input type="radio" name="maxPrice" value="${value}" ${value === 0 ? 'checked' : ''}>${searchIcon('budget')}<span>${label}</span></label>`).join('')}</fieldset>
+          <div class="search-panel-actions"><button type="button" data-clear-search="maxPrice">Цэвэрлэх</button><button class="finish-search" type="submit">Хайх</button></div>
+        </div>
+        <div id="search-keywords" class="search-panel" popover role="dialog" aria-labelledby="keywords-panel-title">
+          <h2 id="keywords-panel-title">Танд юу чухал вэ?</h2><p class="search-panel-hint">Хүсвэл сонгоорой. Энэ алхмыг алгасаж болно.</p><label class="keyword-field">Хайх үг<input name="query" placeholder="Өрөө, байршил, нөхцөл" aria-label="Хайх үг" /></label>
+          <fieldset class="search-options condition-options"><legend>Хүссэн нөхцөлүүд</legend>${['Тамхи татдаггүй', 'Амьтан зөвшөөрнө', 'Тавилгатай', 'Wi-Fi', 'Цэвэрч', 'Гэрээс ажилладаг'].map(condition => `<label><input type="checkbox" name="conditions" value="${condition}">${searchIcon('check')}<span>${condition}</span></label>`).join('')}</fieldset>
+          <div class="search-panel-actions"><button type="button" data-search-skip>Алгасах</button><button type="button" class="reset-filters">Цэвэрлэх</button><button type="button" data-search-next="search-budget">Үргэлжлүүлэх</button></div>
+        </div>
+        <button type="submit" class="search-submit" aria-label="Хайх"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg></button>
+      </form>
+      </div>
       <main id="main-content">
-      <hamtry-entrance class="home-entrance" tabindex="-1"></hamtry-entrance>
       ${dashboardMarkup()}
-          <section class="listing-section page-width" id="results" aria-labelledby="results-title">
-                        <div class="section-heading"><div><h2 id="results-title">Тухтай булангаа олоорой<span class="heading-dot">.</span></h2></div><a class="all-listings" href="#map">Газрын зургаар үзэх <span aria-hidden="true">↗</span></a><hamtry-button class="new-listing" data-action="publish" hidden>Өрөө нэмэх +</hamtry-button></div>
-<section class="browse-choice" aria-label="Өрөөнүүдийг харах хэлбэр"><nav class="browse-mode" aria-label="Жагсаалт эсвэл газрын зураг"><a href="#rooms" data-browse-view="rooms"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 6h12M9 12h12M9 18h12M3 6h1M3 12h1M3 18h1"/></svg>Өрөөнүүд</a><a href="#map" data-browse-view="map" aria-label="Газрын зураг" title="Газрын зураг"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg><span class="map-label">Газрын зураг</span></a></nav></section>
-
-
-                        
-                        <form class="filter-bar" aria-label="Зарын шүүлтүүр"><hamtry-select name="maxPrice" label="Төсөв">${budgets}</hamtry-select><details class="condition-filter"><summary>Нөхцөл <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 9 6 6 6-6"/></svg></summary><fieldset><legend>Хүссэн нөхцөлүүд</legend><label><input type="checkbox" name="conditions" value="Тамхи татдаггүй"><span>Тамхи татдаггүй</span></label><label><input type="checkbox" name="conditions" value="Амьтан зөвшөөрнө"><span>Амьтан зөвшөөрнө</span></label><label><input type="checkbox" name="conditions" value="Тавилгатай"><span>Тавилгатай</span></label><label><input type="checkbox" name="conditions" value="Wi-Fi"><span>Wi-Fi</span></label><label><input type="checkbox" name="conditions" value="Цэвэрч"><span>Цэвэрч</span></label><label><input type="checkbox" name="conditions" value="Гэрээс ажилладаг"><span>Гэрээс ажилладаг</span></label></fieldset></details><button class="text-button reset-filters" type="button">Цэвэрлэх</button></form>
+          <section class="listing-section page-width" id="results" tabindex="-1" aria-label="Өрөөнүүд">
                         <div class="results-meta"><p class="result-count" role="status" aria-live="polite"></p><span>Жишээ цэгүүд + энэ хөтөчийн зарууд</span></div>
-                        <div class="browse-layout"><hamtry-apartment-map class="browse-map" hidden></hamtry-apartment-map><div class="listing-results"><div class="listing-grid"></div>
+                        <div class="browse-layout"><hamtry-immersive-map class="browse-map" embedded></hamtry-immersive-map><div class="listing-results"><p class="map-location-note" hidden>Эдгээр хамтрагчийн байршил оруулаагүй байна.</p><div class="listing-grid"></div>
                         <div class="empty-state" hidden><span aria-hidden="true">⌂</span><h3></h3><p></p><hamtry-button class="empty-action">Шүүлтүүр цэвэрлэх</hamtry-button></div></div></div>
                       </section>
                 </main>
-      <footer class="page-width"><a class="wordmark" href="#home">hamtry.</a><div><a href="/components.html">Компонентууд</a><a href="/editor.html">Дизайн систем</a></div><small>Хичээлийн туршилтын хувилбар · Бодит захиалга, төлбөр, хэрэглэгчийн бүртгэлгүй.</small></footer>
+      <footer class="page-width"><a class="wordmark" href="#rooms">hamtry.</a><div><a href="/components.html">Компонентууд</a><a href="/editor.html">Дизайн систем</a></div><small>Хичээлийн туршилтын хувилбар · Бодит захиалга, төлбөр, хэрэглэгчийн бүртгэлгүй.</small></footer>
       <div class="toast" role="status" aria-live="polite" hidden></div>
       <hamtry-dialog class="detail-dialog" heading="Зарын дэлгэрэнгүй"><div class="detail-content"></div></hamtry-dialog>
       <hamtry-dialog class="profile-dialog" heading="Миний орон зай"><p>Та өнөөдөр юу хийхийг хүсэж байна?</p><div class="role-choices"><button type="button" data-role="seeker"><span>⌕</span><strong>Өрөө, хамтрагч хайх</strong><small>Сонголтоо хайж, хадгалах</small></button><button type="button" data-role="provider"><span>⌂</span><strong>Өрөө санал болгох</strong><small>Өрөөний мэдээллээ бэлдэх</small></button></div><p class="demo-note">Энэ бол жишээ горим. Сонголт зөвхөн энэ хөтөч дээр хадгалагдана; нэвтэрсэн бүртгэл үүсэхгүй.</p></hamtry-dialog>
@@ -68,25 +95,20 @@ export class HamtryHome extends HTMLElement {
     onCleanup(() => { this.saveListing = undefined })
     listen(required('.skip-link', this), 'click', event => {
       event.preventDefault()
-      const heading = required(state.route.get().page === 'home' ? '.home-entrance' : state.route.get().page === 'dashboard' ? '#dashboard-title' : '#results-title', this)
+      const heading = required(state.route.get().page === 'dashboard' ? '#dashboard-top' : '#results', this)
       heading.tabIndex = -1; heading.focus(); heading.scrollIntoView()
     })
     const showPublish = () => {
       if (saving) return
+      for (const panel of $('.search-panel', this)) panel.hidePopover()
       required('.publish-form', this).hidden = false; required('.publish-preview', this).hidden = true
       publish.showModal()
     }
     setupDashboard(this, { showPublish, toast, listen })
     for (const node of $('[data-action]', this)) listen(node, 'click', () => node.dataset.action === 'profile' ? profile.showModal() : showPublish())
-    listen(this, 'hamtry-publish', showPublish)
-    const menu = required('.menu-toggle', this)
-    const closeMenu = () => { menu.setAttribute('aria-expanded', 'false'); this.classList.remove('menu-open') }
-    listen(menu, 'click', () => { const open = menu.getAttribute('aria-expanded') !== 'true'; menu.setAttribute('aria-expanded', String(open)); this.classList.toggle('menu-open', open) })
-    listen(this, 'keydown', event => { if (event.key === 'Escape' && this.classList.contains('menu-open')) { closeMenu(); menu.focus() } })
     listen(this, 'click', event => {
       if (!event.target.closest('.site-header nav a')) return
       for (const options of $('.room-options', this)) options.open = false
-      closeMenu()
     })
     listen(window, 'hashchange', () => {
       const route = readRoute(location.hash)
@@ -94,42 +116,91 @@ export class HamtryHome extends HTMLElement {
       const update = () => {
         if (!active) return
         state.route.set(route); flushEffects()
-        if (route.page !== 'detail' && previous.page !== 'detail') {
-          const heading = required(route.page === 'home' ? '.home-entrance' : route.page === 'dashboard' ? '#dashboard-title' : '#results-title', this)
+        if (route.page !== 'detail' && previous.page !== 'detail' && !this.querySelector('.search-panel:popover-open')) {
+          const heading = required(route.page === 'dashboard' ? '#dashboard-top' : '#results', this)
           heading.tabIndex = -1; heading.focus({ preventScroll:true })
         }
       }
-      if (route.page !== previous.page && route.page !== 'detail' && previous.page !== 'detail' && document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (!this.querySelector('.search-panel:popover-open') && route.page !== previous.page && route.page !== 'detail' && previous.page !== 'detail' && document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.startViewTransition(update)
       } else update()
-      if (route.page !== 'detail' && previous.page !== 'detail') {
+      if (route.page !== 'detail' && previous.page !== 'detail' && !this.querySelector('.search-panel:popover-open')) {
         window.scrollTo({ top: 0, behavior: 'instant' })
       }
     })
-    const filters = $('.filter-bar', this)
     const applyFilters = form => {
       const data = new FormData(form)
-      state.filters.set({ ...initialFilters, maxPrice: Number(data.get('maxPrice')), conditions: data.getAll('conditions') })
+      state.filters.set({ ...state.filters.get(), district: String(data.get('district')), query: String(data.get('query')), maxPrice: Number(data.get('maxPrice')), conditions: data.getAll('conditions') })
     }
     listen(this, 'submit', event => {
-      if (!event.target.matches('.filter-bar')) return
+      if (!event.target.matches('.header-search')) return
       event.preventDefault(); applyFilters(event.target)
+      for (const panel of $('.search-panel', this)) panel.hidePopover()
+      if (!['rooms', 'roommates', 'map', 'list'].includes(state.route.get().page)) location.hash = state.kind.get()
+      required('#results', this).focus({ preventScroll: true })
     })
     listen(this, 'change', event => {
-      const form = event.target.closest('.filter-bar')
+      const form = event.target.closest('.header-search')
       if (form) applyFilters(form)
     })
-    listen(document, 'click', event => {
-      for (const form of filters) {
-        const options = required('.condition-filter', form)
-        if (!options.contains(event.target)) options.open = false
-      }
+    const searchBar = required('.header-search', this)
+    const searchPanels = $('.search-panel', this)
+    const closeSearchPanels = () => { for (const panel of searchPanels) panel.hidePopover() }
+    const openSearchStep = id => {
+      closeSearchPanels()
+      const trigger = required(`.search-segment[popovertarget="${id}"]`, this)
+      trigger.focus({ preventScroll: true })
+      const panel = required(`#${id}`, this)
+      panel.showPopover()
+    }
+    for (const button of $('[data-search-kind]', this)) listen(button, 'click', () => {
+      state.kind.set(button.dataset.searchKind)
+      location.hash = button.dataset.searchKind
+      openSearchStep('search-district')
     })
-    listen(this, 'keydown', event => {
-      const options = event.target.closest('.condition-filter')
-      if (event.key === 'Escape' && options?.open) { options.open = false; required('summary', options).focus() }
+    for (const input of $('[name="district"]', searchBar)) listen(input, 'click', () => {
+      applyFilters(searchBar)
+      openSearchStep('search-keywords')
     })
-    for (const button of $('.reset-filters', this)) listen(button, 'click', () => state.filters.set({ ...initialFilters }))
+    for (const button of $('[data-search-next]', this)) listen(button, 'click', () => openSearchStep(button.dataset.searchNext))
+    listen(required('[data-search-skip]', this), 'click', () => {
+      state.filters.set({ ...state.filters.get(), conditions: [], query: '' })
+      openSearchStep('search-budget')
+    })
+    const searchDock = required('.search-dock', this)
+    const positionSearchPanel = panel => {
+      const trigger = required(`.search-segment[popovertarget="${panel.id}"]`, this)
+      const bar = searchBar.getBoundingClientRect(), anchor = trigger.getBoundingClientRect()
+      const top = Math.min(bar.bottom + 12, window.innerHeight - 180)
+      panel.style.top = `${Math.max(16, top)}px`
+      panel.style.left = `${Math.max(16, Math.min(anchor.left, window.innerWidth - panel.offsetWidth - 16))}px`
+      panel.style.maxHeight = `${window.innerHeight - Math.max(16, top) - 16}px`
+    }
+    for (const panel of searchPanels) listen(panel, 'toggle', event => {
+      const trigger = required(`.search-segment[popovertarget="${panel.id}"]`, this)
+      trigger.setAttribute('aria-expanded', String(event.newState === 'open'))
+      if (event.newState !== 'open') return
+      positionSearchPanel(panel)
+      const control = panel.querySelector('[data-search-kind], input')
+      control?.focus({ preventScroll: true })
+    })
+    const updateSearchDock = () => {
+      const compact = searchDock.getBoundingClientRect().top <= 0 && window.scrollY > 0
+      searchDock.classList.toggle('is-compact', compact)
+      for (const panel of searchPanels) if (panel.matches(':popover-open')) positionSearchPanel(panel)
+    }
+    listen(window, 'scroll', updateSearchDock, { passive: true })
+    listen(window, 'resize', () => { closeSearchPanels(); updateSearchDock() })
+    listen(searchBar, 'transitionend', () => {
+      for (const panel of searchPanels) if (panel.matches(':popover-open')) positionSearchPanel(panel)
+    })
+    updateSearchDock()
+    onCleanup(closeSearchPanels)
+    for (const button of $('[data-clear-search]', this)) listen(button, 'click', () => {
+      const key = button.dataset.clearSearch
+      state.filters.set({ ...state.filters.get(), [key]: initialFilters[key] })
+    })
+    listen(required('.reset-filters', this), 'click', () => state.filters.set({ ...initialFilters }))
     listen(required('.empty-action', this), 'click', () => {
       if (state.route.get().page === 'dashboard') showPublish()
       else if (state.route.get().page === 'saved') location.hash = 'rooms'
@@ -192,7 +263,7 @@ export class HamtryHome extends HTMLElement {
         state.filters.set({ ...initialFilters })
         const map = required('.browse-map', this); map.selectedId = record.id
         location.hash = 'map'
-        queueMicrotask(() => map.controller?.fit([...listings, record].filter(item => validLocation(item.location))))
+        queueMicrotask(() => map.fit?.([...listings, record].filter(item => validLocation(item.location))))
         toast('Зар ба өрөөний зургууд энэ хөтөчид хадгалагдлаа')
       } catch (error) { if (active) toast(error.message || 'Зураг хадгалж чадсангүй. Дахин оролдоно уу.') }
       finally { saving = false; confirm.disabled = false; edit.disabled = false; confirm.textContent = 'Энэ хөтөчид хадгалах' }
@@ -201,54 +272,64 @@ export class HamtryHome extends HTMLElement {
     useEffect(() => {
       const route = state.route.get()
       const page = route.page === 'detail' ? this.previousPage : route.page
-      const kind = page === 'map' ? 'rooms' : page === 'rooms' || page === 'roommates' ? page : state.kind.get()
-      const home = page === 'home', savedPage = page === 'saved', dashboard = page === 'dashboard'
+      const kind = page === 'map' || page === 'list' ? 'rooms' : page === 'rooms' || page === 'roommates' ? page : state.kind.get()
+      const savedPage = page === 'saved', dashboard = page === 'dashboard'
       required('.provider-dashboard', this).hidden = !dashboard
       updateDashboard(this, state.published.get())
-      const heading = required('#results-title', this), tag = home ? 'H2' : 'H1'
-      if (heading.tagName !== tag) {
-        const next = document.createElement(tag); next.id = 'results-title'
-        next.textContent = heading.textContent; next.tabIndex = -1; heading.replaceWith(next)
-      }
       if (route.page !== 'detail') this.previousPage = route.page
       this.dataset.page = page
-      required('.home-entrance', this).hidden = !home
-      required('#results', this).hidden = home || dashboard
-      for (const form of filters) form.hidden = home || dashboard
+      required('#results', this).hidden = dashboard
+      required('.search-dock', this).hidden = dashboard
+      if (dashboard) closeSearchPanels()
       const roomMap = page === 'map'
+      this.dataset.view = roomMap ? 'map' : 'list'
       required('.browse-map', this).hidden = !roomMap
-      required('.listing-grid', this).hidden = roomMap
-      for (const choice of $('.browse-choice', this)) choice.hidden = page !== 'rooms' && page !== 'map'
       for (const view of $('[data-browse-view]', this)) {
-        if (view.dataset.browseView === page) view.setAttribute('aria-current', 'page'); else view.removeAttribute('aria-current')
+        if ((view.dataset.browseView === 'map' && roomMap) || view.dataset.browseView === page) view.setAttribute('aria-current', 'page'); else view.removeAttribute('aria-current')
       }
-      required('.all-listings', this).hidden = !home
-      required('.new-listing', this).hidden = !dashboard && page !== 'map'
       for (const node of $('[data-nav]', this)) {
-        if (node.dataset.nav === page || (page === 'map' && node.hasAttribute('data-room-navigation'))) node.setAttribute('aria-current', 'page'); else node.removeAttribute('aria-current')
+        if (node.dataset.nav === page || (node.dataset.nav === 'home' && ['rooms', 'roommates', 'list'].includes(page))) node.setAttribute('aria-current', 'page'); else node.removeAttribute('aria-current')
       }
-      text(this, '#results-title', page === 'map' ? 'Өөрийн өрөөг олоорой.' : dashboard ? 'Миний өрөөнүүд.' : savedPage ? 'Таны хадгалсан сонголтууд.' : kind === 'roommates' ? 'Нэг хэмнэлтэй хүнээ олоорой.' : home ? 'Тухтай булангаа олоорой.' : 'Өөрийн өрөөг олоорой.')
+      required('#results', this).setAttribute('aria-label', savedPage ? 'Хадгалсан сонголтууд' : kind === 'roommates' ? 'Хамтрагчид' : 'Өрөөнүүд')
       const filter = state.filters.get(), saved = state.saved.get()
       // Control-ийн .value setter доторх getter-үүд page effect-ийн dependency болох ёсгүй.
-      untrack(() => { for (const node of $('.filter-bar [name]', this)) {
+      untrack(() => { for (const node of $('.header-search [name]', this)) {
         if (node.type === 'checkbox') node.checked = filter.conditions.includes(node.value)
+        else if (node.type === 'radio') node.checked = node.value === String(filter[node.name])
         else node.value = filter[node.getAttribute('name')]
       } })
+      text(this, '[data-search-summary="kind"]', kind === 'roommates' ? 'Хамтрагч' : 'Өрөө')
+      for (const button of $('[data-search-kind]', this)) button.setAttribute('aria-pressed', String(button.dataset.searchKind === kind))
+      required('.browse-choice', this).hidden = kind === 'roommates'
+      text(this, '[data-search-summary="district"]', filter.district === 'all' ? 'Бүх дүүрэг' : filter.district)
+      text(this, '[data-search-summary="maxPrice"]', filter.maxPrice ? money(filter.maxPrice) : 'Хязгааргүй')
+      const conditionSummary = [filter.query, filter.conditions.length ? `${filter.conditions.length} нөхцөл` : ''].filter(Boolean).join(' · ')
+      text(this, '[data-search-summary="query"]', conditionSummary || 'Сонголтоор')
+      text(this, '.search-compact-summary', conditionSummary || 'Нөхцөл')
+      for (const trigger of $('.search-segment', this)) {
+        const label = required('.step-heading', trigger).textContent.trim()
+        const summary = required('.search-value', trigger).textContent
+        trigger.setAttribute('aria-label', `${label}: ${summary}`)
+        trigger.title = `${label}: ${summary}`
+      }
+      required('[popovertarget="search-kind"] .step-heading svg', this).innerHTML = searchIcons[kind === 'roommates' ? 'roommates' : 'rooms']
       const all = [...state.published.get().map(item => this.toListing(item)), ...listings]
-      const candidates = dashboard ? all.filter(item => item.id.startsWith('local-')) : findListings(all, home ? initialFilters : filter, savedPage ? null : kind, savedPage ? saved : null)
-      const items = home ? candidates.slice(0, 3) : candidates
-      required('.browse-map', this).listings = items.filter(item => validLocation(item.location))
+      const items = dashboard ? all.filter(item => item.id.startsWith('local-')) : findListings(all, filter, savedPage ? null : kind, savedPage ? saved : null)
+      const located = items.filter(item => validLocation(item.location))
+      required('.browse-map', this).listings = located
+      required('.listing-grid', this).hidden = roomMap && Boolean(located.length)
+      required('.map-location-note', this).hidden = !roomMap || kind !== 'roommates' || Boolean(located.length) || !items.length
       if (route.page === 'detail') required('.browse-map', this).selectedId = route.id
       text(this, '.result-count', `${items.length} ${savedPage ? 'хадгалсан сонголт' : dashboard ? 'туршилтын зар' : 'сонголт'}`)
       for (const count of $('.saved-count', this)) count.textContent = saved.length
       for (const link of $('.dashboard-link', this)) link.hidden = state.role.get() !== 'provider'
       for (const button of $('[data-role]', this)) button.setAttribute('aria-pressed', String(button.dataset.role === state.role.get()))
-      const nodes = roomMap ? [] : items.map(item => {
+      const nodes = items.map(item => {
         if (!this.cards.has(item.id)) this.cards.set(item.id, this.makeCard(item))
         const card = this.cards.get(item.id); card.saved = saved.includes(item.id); return card
       })
-      required('.listing-results', this).hidden = roomMap && Boolean(items.length)
-      const ids = roomMap ? 'map-only' : items.map(item => item.id).join(',')
+      required('.listing-results', this).hidden = roomMap && Boolean(located.length)
+      const ids = items.map(item => item.id).join(',')
       // Save хийхэд grid дахин зурахгүй: keyboard focus, component state хадгалагдана.
       if (ids !== lastIds) { required('.listing-grid', this).replaceChildren(...nodes); lastIds = ids }
       const empty = required('.empty-state', this); empty.hidden = Boolean(items.length)
