@@ -10,3 +10,4 @@ export {
 } from './reactivity.js'
 export { $, query, required, on, listen, bindText, emit } from './dom.js'
 export { HamtryElement } from './element.js'
+export { createMotion } from './motion.js'

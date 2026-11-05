@@ -22,7 +22,7 @@ basemap, markers and attribution. A separate OpenFreeMap building vector source
 is extruded using `render_height` / `render_min_height` at zoom 14+. Missing height
 falls back to 6m for display; these heights are map metadata, not survey evidence.
 
-Controls: 3D city / flat map / globe, building visibility, reset to Ulaanbaatar.
+Controls: the rounded mode dropdown shows the active 2D / 3D / globe label and icon. Clicking toggles an animated choice panel; selection updates the trigger and closes it. Building visibility and reset to Ulaanbaatar remain inside the panel. Escape, outside pointer input, and leaving keyboard focus dismiss it. The panel uses scoped Anime.js WAAPI animations (200ms open / 130ms close), and room previews use 240ms entry / 130ms exit. Reopening cancels a stale close. Reduced motion skips these animations; no extra map rendering loop is added.
 Room buttons and markers share a preview with a link to the homepage detail route.
 Fixtures and validated browser-local room publications are included; people without
 coordinates are not placed on the map. Selecting a room returns to city view.

@@ -5,8 +5,8 @@ setWorkerUrl(workerUrl)
 export { mapCss }
 
 // Base tiles нь OpenFreeMap; attribution-ийг MapLibre native control харуулна.
-export function createApartmentMap(container, { pick, onSelect, onLocation, onReady, onError, showListingDetails = false }) {
-  const map = new LibreMap({ container, style: 'https://tiles.openfreemap.org/styles/positron', center: [106.917, 47.918], zoom: 12.5, attributionControl: true, cooperativeGestures: true,
+export function createApartmentMap(container, { pick, onSelect, onLocation, onReady, onError, showListingDetails = false, zoom = 12.5, pitch = 0, bearing = 0 }) {
+  const map = new LibreMap({ container, style: 'https://tiles.openfreemap.org/styles/positron', center: [106.917, 47.918], zoom, pitch, bearing, attributionControl: true, cooperativeGestures: true,
     locale: {
       'Map.Title': 'Газрын зураг', 'NavigationControl.ZoomIn': 'Газрын зураг томруулах', 'NavigationControl.ZoomOut': 'Газрын зураг жижигрүүлэх',
       'AttributionControl.ToggleAttribution': 'Газрын зургийн эх сурвалж',
@@ -93,7 +93,7 @@ export function createApartmentMap(container, { pick, onSelect, onLocation, onRe
       const points = items.map(item => item.location).filter(Boolean)
       if (!points.length) return
       const lng = points.map(point => point[0]), lat = points.map(point => point[1])
-      map.fitBounds([[Math.min(...lng), Math.min(...lat)], [Math.max(...lng), Math.max(...lat)]], { padding: 65, maxZoom: 15, duration: reduced() ? 0 : 500 })
+      map.fitBounds([[Math.min(...lng), Math.min(...lat)], [Math.max(...lng), Math.max(...lat)]], { padding: 65, maxZoom: 15, pitch: map.getPitch(), bearing: map.getBearing(), duration: reduced() ? 0 : 500 })
     },
     resize() { map.resize() },
     dispose() { clearTimeout(closeDetailsTimer); details?.remove(); markers.forEach(marker => marker.remove()); picker?.remove(); map.remove() },

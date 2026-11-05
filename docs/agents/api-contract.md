@@ -32,6 +32,25 @@ returned disposer called by the consumer. Component-owned effects clean up on
 disconnection. Use `AbortController`/generation handling in the consuming page
 for asynchronous work; the engine does not implement async effect tracking.
 
+## Owned motion
+
+`createMotion()` is a public, scoped API. Call it synchronously inside component
+`setup()` or `Scope.run()`. It imports only `animejs/waapi` and exposes:
+
+- `play(element, { opacity, transform }, { duration = 240, delay = 0, onComplete })`:
+  a finite native-WAAPI animation, with at most one owned animation per element.
+- `stop(element)`: cancels the prior animation without firing its completion.
+- `reduced`: whether reduced motion is requested or the document is hidden.
+
+Use complete CSS `transform` strings, not Anime.js individual transform aliases.
+Completion and cancellation restore the animated inline properties without
+resetting unrelated geometry styles. Preference changes and hidden tabs settle
+pending UI callbacks; disposal cancels them without late UI changes. Reduced
+motion skips animation and applies the final state immediately. There is no
+continuous application animation loop, global target selector, or persistent
+`will-change`. Capture old bounds in one batch, change layout once, then animate
+surface/icon transforms; do not tween layout properties on scroll.
+
 ## Element base, DOM and styles
 
 `HamtryElement` creates an open shadow root with `delegatesFocus: true`.
@@ -106,7 +125,10 @@ Cards toggle local state and emit intent; they do not persist listings.
 Chip toggles native button aria-pressed and emits selection. Disabled prevents toggle.
 Dialog uses native top-layer/focus/Escape, closes on backdrop/close button and emits
 its returnValue. Programmatic close() also emits the native close event; consumers
-should guard route changes. Dialog content is slotted light DOM.
+should guard route changes. Dialog content is slotted light DOM. The panel enters
+in 220ms and exits in 130ms; reduced motion is immediate. `.open` is logically
+false during exit, and `showModal()` can cancel an unfinished close. Native
+focus return and the close event occur when the actual dialog closes.
 
 Exposed parts: button, control, badge, alert, card, media (card image wrapper), dialog. Page code should consume host
 APIs/events rather than private shadow selectors. Test-only shadow inspection is

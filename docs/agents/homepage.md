@@ -28,10 +28,11 @@ an additional WebGL scene, repeated intro/provider sections, avatar creation, or
 a separate mock matching dataset. Browse routes still use the existing store,
 shared cards, forms, dialogs, saved choices and listing fixtures.
 
-Native View Transitions crossfade browse route changes and Explore's city/inside
-changes where supported; reduced motion switches immediately. Shared dialogs have
-a short entrance. No scroll hijacking or animation dependency was added.
-The skip link focuses the entrance on home and the result heading elsewhere.
+Browse routes update synchronously without full-page View Transition snapshots.
+Anime.js WAAPI provides owned, finite surface/icon transitions, search panel
+entrances, and visible card reflow/reveals. Shared dialogs animate entry and exit
+while preserving native focus and Escape. There is no scroll hijacking. The skip
+link focuses the results region or provider dashboard.
 
 Hash routes: `#home`, `#map`, `#rooms`, `#roommates`, `#saved`, `#dashboard`,
 `#listing/<id>`. Unknown routes fall back to home. Missing detail IDs go to rooms
@@ -104,3 +105,26 @@ The search controls use a flat white band with thin horizontal rules. The native
 The selected view controls pair an “Өрөөнүүд” list tab with a compact map-icon tab labeled “Газрын зураг” for assistive technology and tooltips. Filters persist across both views. The map view does not render apartment cards alongside the map.
 
 The redundant room/roommate category selector inside results is removed. The header and homepage choices navigate to those categories; the rooms list/map tabs remain.
+
+
+## Search action and roommate steps
+
+The expanded search action displays the live match count (`4 өрөө харах` or
+`3 хамтрагч харах`); the compact scrolled state retains its icon and accessible
+count label. Room search follows type → district → optional conditions → budget.
+Roommate search retains the type selector and only exposes conditions: district
+and budget triggers are hidden, those filters are reset/ignored, and both the
+conditions result action and Skip finish the search without a budget step.
+Switching back to rooms restores the full flow.
+
+
+## Animation ownership
+
+`createMotion` owns native animations through the component scope. The sticky
+search changes its layout once at the scroll threshold, then transforms separate
+background surfaces and icons for 360ms. Search steps enter in 220ms; visible
+result cards enter/reflow in 240–260ms with at most 100ms total stagger. Unchanged
+saved-card grids do not replay. Only the first eight cards are inspected for
+motion, and offscreen cards do not animate. No map canvas animation or continuous
+RAF loop was added. Reduced motion and background tabs settle immediately;
+reconnect/disconnect releases active animations and preference listeners.

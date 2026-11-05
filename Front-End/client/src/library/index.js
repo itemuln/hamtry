@@ -21,6 +21,7 @@ export {
   bindText,
   emit,
   HamtryElement,
+  createMotion,
 } from './core/index.js'
 export {
   registerComponents,
