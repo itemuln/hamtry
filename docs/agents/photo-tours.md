@@ -100,3 +100,10 @@ Build warns about lazy Three (~565 kB / 141 kB gzip) and MapLibre renderer
 bundles. Safari/Firefox, physical low-end devices, backend and deployed acceptance
 are unverified. Screenshots are under repo-root `output/playwright/`. Theme file,
 editor code and explicit Save authority were preserved; no push or deploy.
+
+`hide-single-room-label` hides the room selector when fewer than two rooms are
+present, and keeps only the photo counter in the caption. Multiple-room tours
+still show their room names and navigation. Listing details opt into this mode.
+
+The gallery's former explanatory note is removed from the UI. It remains a
+standard photo gallery with the same room and photo navigation behavior.

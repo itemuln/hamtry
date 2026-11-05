@@ -64,8 +64,6 @@ hamtry-home h1, hamtry-home h2, hamtry-home h3 { font-family: var(--font-display
 .card-extras { padding-top: var(--spacing-4); }
 .card-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
 .card-tags span { font-size: var(--type-caption); padding: .35rem .65rem; border: 1px solid var(--home-line); border-radius: 3rem; }
-.card-detail { display: flex; align-items: center; justify-content: space-between; margin-top: var(--spacing-5); padding-top: var(--spacing-4); border-top: 1px solid var(--home-line); font-size: var(--type-body-sm); font-weight: 600; }
-.card-detail:hover { text-decoration: underline; }
 .empty-state { padding: 4rem 1rem; border: 1px dashed var(--home-line); border-radius: var(--radius-xl); text-align: center; }
 .empty-state > span { display: block; font-size: 3rem; }
 .empty-state h3 { font-size: 1.7rem; }
@@ -171,8 +169,6 @@ hamtry-home .listing-section { padding-top:2rem; }
 .search-panel-actions button { border:0; background:transparent; color:inherit; padding:.75rem 1rem; font:600 1rem var(--font-sans); }
 .search-panel-actions button:first-child { text-decoration:underline; text-underline-offset:.2em; }
 .search-panel-actions button:last-child { background:var(--brand-primary); color:var(--text-inverse); border-radius:var(--radius-action); }
-.keyword-field { display:grid; gap:.6rem; font-size:1rem; }
-.keyword-field input { width:100%; box-sizing:border-box; padding:.85rem; border:1px solid var(--home-line); border-radius:var(--radius-action); background:var(--home-paper); color:var(--brand-primary); font:inherit; }
 @media(max-width:40rem) { .header-search > .search-query { border-left:0; border-top:1px solid var(--home-line); border-radius:0; } .search-panel { padding:1.25rem; } }
 
 /* Keep search reachable while its expanded layout folds into a compact pill. */
@@ -327,7 +323,7 @@ hamtry-home[data-search-kind="roommates"] .search-dock.is-compact .header-search
  hamtry-home .site-header #main-nav a { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:.25rem; min-width:0; min-height:3.75rem; padding:.3rem .2rem; font-size:.6875rem; line-height:1.3; text-align:center; -webkit-tap-highlight-color:transparent; }
  hamtry-home .site-header #main-nav a::after { display:none; }
  hamtry-home .site-header #main-nav a[data-nav="home"] { order:-1; }
- hamtry-home .site-header #main-nav a[data-nav="dashboard"] { order:1; }
+ hamtry-home .site-header #main-nav a[data-nav="publish"] { order:1; }
  hamtry-home .site-header #main-nav svg { width:1.65rem; height:1.65rem; stroke-width:1.8; }
  hamtry-home .site-header #main-nav a[aria-current="page"] svg { stroke-width:2.4; fill:color-mix(in srgb,var(--brand-primary) 10%,transparent); }
  hamtry-home .site-header #main-nav a:focus-visible { outline:2px solid var(--brand-primary); outline-offset:-4px; border-radius:.5rem; }
@@ -340,3 +336,142 @@ hamtry-home[data-search-kind="roommates"] .search-dock.is-compact .header-search
  hamtry-home .site-header #main-nav svg { transition:transform 280ms cubic-bezier(.25,.1,.25,1),fill 200ms ease; }
  hamtry-home .site-header #main-nav a:active svg { transform:scale(.9); }
 }
+
+/* A compact posting choice anchored to the primary header action. */
+.site-header .add-listing-button { display:inline-flex; align-items:center; justify-content:center; gap:.4rem; min-height:2.8rem; padding:.7rem 1rem; border:0; border-radius:1rem; background:var(--brand-primary); color:var(--text-inverse); font:600 .875rem var(--font-sans); white-space:nowrap; }
+.add-listing-button svg { width:1.15rem; height:1.15rem; }
+.listing-type-menu { position:fixed; inset:auto; margin:0; width:min(21rem,calc(100vw - 1.5rem)); padding:.5rem; border:0; border-radius:1.15rem; background:var(--brand-primary); color:var(--text-inverse); overflow:auto; box-shadow:0 .75rem 2rem color-mix(in srgb,var(--brand-primary) 20%,transparent); }
+.listing-type-menu button { display:flex; align-items:center; gap:.8rem; width:100%; padding:1rem .8rem; border:0; border-radius:.75rem; background:transparent; color:inherit; text-align:left; font:inherit; }
+.listing-type-menu button:not(:disabled):hover,.listing-type-menu button:focus-visible { background:rgb(255 255 255 / .12); }
+.listing-type-menu button:focus-visible { outline:2px solid currentColor; outline-offset:-2px; }
+.listing-type-menu button:disabled { cursor:not-allowed; color:color-mix(in srgb,var(--text-inverse) 70%,var(--brand-primary)); }
+.listing-type-menu svg { width:1.5rem; height:1.5rem; flex:none; }
+.listing-type-menu button > svg:last-child:not(:first-child) { margin-left:auto; width:1.1rem; }
+.listing-type-menu strong,.listing-type-menu small { display:block; }
+.listing-type-menu strong { font-size:.9375rem; }
+.listing-type-menu small { margin-top:.3rem; font-size:.8125rem; }
+.condition-options svg { opacity:1; }
+
+/* One shared indicator glides between destinations without moving tab content. */
+hamtry-home .site-header #main-nav { position:relative; isolation:isolate; }
+hamtry-home .site-header #main-nav a[aria-current="page"]::after { display:none; }
+.nav-indicator { position:absolute; z-index:-1; pointer-events:none; border-radius:.75rem; background:color-mix(in srgb,var(--brand-primary) 6%,transparent); transform-origin:top left; }
+.nav-indicator::after { content:''; position:absolute; inset:auto .2rem 0; height:2px; border-radius:1rem; background:var(--brand-primary); }
+@media(max-width:40rem) { hamtry-home .site-header #main-nav { position:fixed; } .nav-indicator::after { left:30%; right:30%; bottom:.15rem; } }
+@media(prefers-reduced-motion:no-preference) { hamtry-home .site-header #main-nav a { transition:color 250ms ease; } }
+
+/* Inline details grow within the existing result grid. */
+.listing-grid :is(hamtry-property-card,hamtry-roommate-card) { cursor:pointer; }
+.listing-grid .is-expanded { grid-column:1 / -1; cursor:default; transform-origin:top left; }
+.listing-grid .is-expanded::part(card) { width:100%; box-sizing:border-box; }
+.listing-grid .is-expanded::part(media),.listing-grid .is-expanded::part(summary) { display:none; }
+.listing-grid .is-expanded::part(content) { padding:0; }
+.listing-grid .is-expanded > .card-extras { display:none; }
+.detail-content { padding:1.5rem; }
+.detail-collapse { display:block; margin:0 0 1.25rem auto; border:0; border-radius:.75rem; padding:.7rem 1rem; background:var(--brand-primary); color:var(--text-inverse); font:600 .875rem var(--font-sans); }
+.preview-copy .detail-layout { grid-template-columns:1fr; }
+.detail-layout { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); align-items:start; gap:2rem; }
+.detail-media { min-width:0; overflow:hidden; border-radius:1rem; }
+.detail-info { min-width:0; }
+.detail-info .detail-summary { margin-top:0; flex-wrap:wrap; gap:.5rem; }
+.detail-info .detail-label { letter-spacing:0; font-size:.8125rem; }
+.detail-info h3 { margin-top:1.25rem; line-height:1.35; }
+.detail-info .detail-location { margin-top:.5rem; }
+.detail-owner { display:flex; align-items:center; gap:.75rem; padding-block:1.25rem; margin-top:1rem; border-block:1px solid var(--home-line); }
+.owner-avatar { display:grid; place-items:center; flex:none; width:3rem; height:3rem; border-radius:50%; background:var(--surface-interactive); color:var(--brand-primary); font-weight:700; }
+.detail-owner strong,.detail-owner small { display:block; }
+.detail-owner strong { font:600 1rem var(--font-sans); }
+.detail-owner small { margin-top:.3rem; color:var(--home-quiet); font-size:.8125rem; }
+.detail-info .detail-description { line-height:1.7; margin-block:1.25rem; }
+.detail-traits { display:flex; flex-wrap:wrap; gap:.5rem; margin-block:1.25rem; }
+.detail-traits > span { display:inline-flex; align-items:center; gap:.45rem; padding:.5rem .65rem; border-radius:.65rem; background:var(--surface-interactive); font-size:.8125rem; }
+.detail-traits svg { width:1.1rem; height:1.1rem; flex:none; }
+@media(max-width:48rem) { .detail-layout { grid-template-columns:minmax(0,1fr); gap:1.25rem; } .detail-image { max-height:20rem; } }
+
+.detail-info .detail-summary { margin-top:1.25rem; padding:1rem; border-radius:.8rem; background:var(--surface-interactive); }
+.detail-owner > div { flex:1; min-width:0; }
+.contact-concept { flex:none; color:var(--brand-primary); font-size:.8125rem; font-weight:600; text-decoration:underline; text-underline-offset:.2em; cursor:default; }
+.detail-actions { display:flex; flex-wrap:wrap; align-items:center; gap:.75rem; }
+.detail-map { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:2.75rem; padding:.75rem 1rem; border:1px solid var(--home-line); border-radius:.75rem; color:var(--brand-primary); background:var(--home-paper); font:600 .875rem var(--font-sans); }
+.detail-map svg { width:1.15rem; height:1.15rem; }
+@media(max-width:34rem) { .detail-owner { flex-wrap:wrap; } .contact-concept { margin-left:3.75rem; } }
+
+.card-title { color:inherit; }
+hamtry-home .menu-button { display:grid; place-items:center; width:2.75rem; height:2.75rem; flex:none; border:0; border-radius:50%; background:var(--surface-interactive); color:var(--brand-primary); padding:.65rem; }
+.menu-button svg { width:1.4rem; height:1.4rem; }
+.header-menu { position:fixed; inset:auto; margin:0; width:min(21rem,calc(100vw - 1.5rem)); max-height:80dvh; overflow:auto; padding:.6rem; border:1px solid var(--home-line); border-radius:1.1rem; background:var(--home-paper); color:var(--brand-primary); box-shadow:0 .75rem 2rem color-mix(in srgb,var(--brand-primary) 12%,transparent); }
+.header-menu button { display:flex; align-items:center; width:100%; gap:.7rem; border:0; border-radius:.7rem; padding:1rem .7rem; color:inherit; background:transparent; font:600 .9375rem var(--font-sans); text-align:left; }
+.header-menu svg { width:1.35rem; height:1.35rem; flex:none; }
+.header-menu .appearance-toggle:hover { background:var(--surface-interactive); }
+.appearance-switch { margin-left:auto; flex:none; width:2.5rem; height:1.4rem; padding:.2rem; border-radius:1rem; background:var(--home-line); }
+.appearance-switch::before { content:''; display:block; width:1rem; height:1rem; border-radius:50%; background:var(--brand-primary); }
+[aria-checked="true"] .appearance-switch { background:var(--surface-interactive); }
+[aria-checked="true"] .appearance-switch::before { transform:translateX(1.1rem); }
+.future-options { border-top:1px solid var(--home-line); padding-top:.3rem; }
+.header-menu button:disabled { color:var(--home-quiet); cursor:default; }
+.header-menu small { margin-left:auto; font:400 .6875rem var(--font-sans); white-space:nowrap; }
+hamtry-home[data-appearance="dark"] { --home-paper:#151b2e; --home-line:#3b455f; --home-quiet:#b2bcd3; --brand-primary:#e5e9ff; --brand-primary-hover:#cdd5ff; --brand-primary-pressed:#bec9ff; --surface-base:#101526; --surface-subtle:#1c243c; --surface-elevated:#151b2e; --surface-interactive:#29324c; --surface-base-field:#1c243c; --text-primary:#edf0ff; --text-secondary:#b2bcd3; --text-tertiary:#a6b1cc; --text-inverse:#151b2e; --border-default:#3b455f; color-scheme:dark; }
+html[data-appearance="dark"] body { background:#151b2e; }
+@media(max-width:40rem) {
+ .header-actions { gap:.4rem; }
+ hamtry-home .profile-button { width:2.75rem; min-width:2.75rem; height:2.75rem; padding:.7rem; }
+ .site-header .add-listing-button { padding:.65rem .75rem; font-size:.8125rem; }
+}
+@media(max-width:22rem) { hamtry-home .site-header { width:94%; gap:.3rem; } .site-header .wordmark { font-size:1.25rem; } .site-header .add-listing-button { padding:.6rem; } }
+@media(prefers-reduced-motion:no-preference) {
+ .listing-grid :is(hamtry-property-card,hamtry-roommate-card)::part(image) { transition:transform 240ms ease,opacity 180ms ease; }
+ .listing-grid :is(hamtry-property-card,hamtry-roommate-card):not(.is-expanded):hover::part(image) { transform:scale(1.025); }
+ .listing-grid :is(hamtry-property-card,hamtry-roommate-card):not(.is-expanded):active::part(image) { opacity:.86; }
+ .appearance-switch::before { transition:transform 220ms ease; }
+}
+
+/* Essential facts first; the complete description stays available on demand. */
+.detail-info h3 { margin-top:0; margin-bottom:.35rem; }
+.detail-info .detail-location { margin-top:0; margin-bottom:.75rem; font-size:.9375rem; }
+.detail-owner { margin-top:0; padding-block:.8rem; gap:.65rem; }
+.owner-avatar { width:2.5rem; height:2.5rem; }
+.detail-owner small { margin-top:.15rem; }
+.detail-info .detail-summary { margin-top:.85rem; padding:.8rem 1rem; }
+.detail-info dl { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-block:1rem; }
+.detail-info dl > div { min-width:0; }
+.detail-info dt { font-size:.75rem; margin-bottom:.2rem; }
+.detail-info dd { font-weight:600; margin:0; font-size:.9375rem; }
+.detail-traits { margin-block:.75rem; gap:.4rem; }
+.detail-actions { padding-top:.75rem; margin-top:.75rem; border-top:1px solid var(--home-line); }
+@media(max-width:34rem) { .contact-concept { margin-left:3.15rem; } }
+
+/* Listing details: icon-led actions, full description, and an actual date picker. */
+.detail-content { position:relative; }
+.detail-collapse { position:absolute; top:1rem; right:1rem; z-index:1; display:grid; place-items:center; width:2.75rem; height:2.75rem; padding:.65rem; margin:0; border:0; border-radius:.8rem; background:var(--brand-primary); color:var(--text-inverse); }
+.detail-collapse svg { width:1.35rem; height:1.35rem; }
+.detail-info h3 { padding-right:3rem; }
+.detail-info .detail-summary { display:flex; justify-content:flex-start; align-items:center; gap:.6rem; padding:0; margin-top:1.15rem; background:transparent; }
+.detail-summary > svg { width:1.5rem; height:1.5rem; flex:none; }
+.detail-summary .detail-price { font-size:1.6rem; }
+.price-period { color:var(--home-quiet); font-size:.9375rem; }
+.detail-info .detail-description { margin-block:1.2rem; font-size:1rem; line-height:1.7; }
+.detail-facts { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.8rem 1rem; margin-block:1.25rem; }
+.detail-facts > div { display:grid; gap:.2rem; }
+.detail-size-label { color:var(--home-quiet); font-size:.75rem; }
+.detail-facts .detail-size { font:600 1.05rem var(--font-sans); }
+.detail-owner .contact-concept { display:grid; place-items:center; flex:none; width:2.75rem; height:2.75rem; margin:0; border-radius:.75rem; color:var(--brand-primary); background:var(--surface-interactive); text-decoration:none; cursor:default; }
+.contact-concept svg { width:1.3rem; height:1.3rem; }
+.detail-actions .detail-map { gap:.5rem; }
+@media(max-width:48rem) { .detail-info h3 { padding-right:0; } .detail-content { padding:1rem; } .detail-collapse { top:1.5rem; right:1.5rem; } }
+@media(hover:hover) {
+ .site-header #main-nav a:hover { color:var(--brand-primary); }
+ .search-segment:hover { background:var(--surface-interactive); }
+ .detail-map:hover { background:var(--surface-interactive); border-color:var(--brand-primary); }
+}
+@media(hover:hover) and (prefers-reduced-motion:no-preference) {
+ .site-header :is(.add-listing-button,.menu-button,.profile-button),.detail-collapse,.detail-map { transition:transform 180ms ease,background 180ms ease,box-shadow 180ms ease; }
+ .site-header :is(.add-listing-button,.menu-button,.profile-button):hover,.detail-collapse:hover,.detail-map:hover { transform:translateY(-1px); box-shadow:0 .25rem .6rem rgb(0 0 0 / .08); }
+ .site-header #main-nav a svg { transition:transform 200ms ease; }
+ .site-header #main-nav a:hover svg { transform:translateY(-2px); }
+ .site-header .wordmark { transition:opacity 180ms ease; }
+ .site-header .wordmark:hover { opacity:.8; }
+ .search-segment { transition:background 180ms ease; }
+ .detail-actions hamtry-button::part(button) { transition:transform 180ms ease,background 180ms ease; }
+ .detail-actions hamtry-button:hover::part(button) { transform:translateY(-1px); }
+}
+@media(prefers-reduced-motion:no-preference) { .detail-collapse:active,.detail-map:active,.site-header :is(.add-listing-button,.menu-button,.profile-button):active { transform:scale(.97); } }

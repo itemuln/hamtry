@@ -102,3 +102,8 @@ the native page out of Shadow DOM merely to satisfy this tool limitation.
 Stop with `live-server stop`, which removes temporary HTML injections before a
 production build. Runtime journals and helper state are gitignored. Never commit
 the injected helper script or its token.
+
+The embedded map exposes focusListing(id) during its connected lifecycle. It
+queues a requested listing until map loading finishes, then selects its marker,
+opens its preview and flies to the stored coordinates in 3D. Reduced motion uses
+a zero-duration camera move. The method is released on disconnect.

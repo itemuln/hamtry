@@ -27,7 +27,7 @@ export class HamtryRoommateCard extends HamtryElement {
   render() {
     style(this.root)
     this.root.innerHTML =
-      '<article class="ht-listing" part="card"><div class="ht-listing-image" part="media"><img><button class="ht-save" type="button"></button></div><div class="ht-listing-content"><h3></h3><p class="location"></p><strong class="ht-budget"></strong><p class="description"></p><slot></slot></div></article>'
+      '<article class="ht-listing" part="card"><div class="ht-listing-image" part="media"><img part="image"><button class="ht-save" type="button"></button></div><div class="ht-listing-content" part="content"><h3 part="summary"><slot name="heading"><span class="heading-fallback"></span></slot></h3><p class="location" part="summary"></p><strong class="ht-budget" part="summary"></strong><p class="description" part="summary"></p><slot></slot></div></article>'
     required('article', this.root).classList.toggle(
       'ht-property',
       this.property,
@@ -45,7 +45,7 @@ export class HamtryRoommateCard extends HamtryElement {
       image.alt = this.getAttribute('image-alt') || ''
       image.loading = 'lazy'
       // Хэрэглэгчийн текстийг HTML болгон тайлбарлуулахгүйгээр оруулна.
-      required('h3', this.root).textContent = this.getAttribute('heading') || ''
+      required('.heading-fallback', this.root).textContent = this.getAttribute('heading') || ''
       required('.location', this.root).textContent =
         this.getAttribute('location') || ''
       required('strong', this.root).textContent =

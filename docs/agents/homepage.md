@@ -36,9 +36,9 @@ link focuses the results region or provider dashboard.
 
 Hash routes: `#home`, `#map`, `#rooms`, `#roommates`, `#saved`, `#dashboard`,
 `#listing/<id>`. Unknown routes fall back to home. Missing detail IDs go to rooms
-with feedback. Closing the detail modal returns to the previous browse page;
-direct detail entry defaults to home behind the modal. Browser Back follows hash
-history. Filters are in-memory and survive same-page modal navigation, not reload.
+with feedback. Collapsing the inline detail card returns to the previous browse page;
+direct detail entry defaults to the home grid. Browser Back follows hash
+history. Filters are in-memory and survive same-page detail navigation, not reload.
 Saved page currently applies the shared filters to both listing kinds.
 
 Fixtures and their map coordinates are explicitly classroom examples. Browser-local
@@ -98,7 +98,7 @@ The accepted homepage hero places the interactive Three.js room first on desktop
 
 Rooms and the map now share one navigation entry, “Өрөөнүүд.” Room results offer “Жагсаалт” and “Газрын зураг нээх”; both reuse the same filters and listings. The Rooms navigation stays current in either view.
 
-Room browsing opens the room list first, with a map-icon tab to switch to a full-width map. Search filters are budget and a native “Нөхцөл” checkbox dropdown, shared with roommate browsing. Keyword and district search inputs are removed. Selected conditions use AND matching against known listing traits; pets use the existing pets flag. Map markers still open detail dialogs.
+Room browsing opens the room list first, with a map-icon tab to switch to a full-width map. Search filters are budget and a native “Нөхцөл” checkbox dropdown, shared with roommate browsing. Keyword and district search inputs are removed. Selected conditions use AND matching against known listing traits; pets use the existing pets flag. Map markers open inline details in the map results panel.
 
 The search controls use a flat white band with thin horizontal rules. The native condition dropdown retains labeled checkboxes, outside-click dismissal, and Escape returning focus to its summary.
 
@@ -138,8 +138,8 @@ RAF loop was added. Reduced motion and background tabs settle immediately;
 reconnect/disconnect releases active animations and preference listeners.
 
 At widths up to 40rem, the same primary navigation becomes a fixed bottom bar
-(home, map, saved), with icon/label targets, active icon emphasis and a saved-count
-badge. Owner dashboard navigation remains available when enabled. Content and the
+(home, map, saved), with icon/label targets, active icon emphasis and
+a saved-count badge. The existing dashboard is accessible through the profile flow. Content and the
 full-height map reserve its height including the device safe-area inset; toasts
 sit above it. Desktop navigation remains in the header.
 
@@ -148,3 +148,66 @@ one update after the outgoing type panel exits. A cancelled selection never
 commits. The next panel is measured against the updated layout before entering.
 Desktop result grids use four columns above 65rem, two at intermediate widths,
 and one below 34rem. The three example people occupy three of the four slots.
+
+The header “Зар нэмэх” button replaces “Өрөө санал болгох”. It uses the primary
+navy color and opens a compact anchored popover beneath it, including on mobile.
+Room posting continues into the existing browser-local form; the personal
+introduction option remains disabled as “Тун удахгүй”. Native outside-click and
+Escape dismissal remain available. No additional bottom-tab destination or
+account flow is introduced. Conditions use distinct smoke-free, pet, furniture,
+Wi-Fi, cleanliness and work-from-home SVG icons with unchanged filter values.
+
+The conditions popup contains only the six icon-based preferences; its keyword
+input is removed, and form submissions explicitly use an empty query. Primary
+tabs share one decorative underline/highlight that moves in 300ms; tab content
+does not animate. The indicator follows responsive geometry and reduced motion.
+
+Listing details expand the selected card inline across the result grid, with a
+300ms opacity reveal (160ms fade-out before collapse) and scroll compensation to retain the selected card's
+vertical position. There is no detail dialog, backdrop or focus trap. Clicking
+card media/body or its title link opens it; save controls stay separate.
+“Хураах” collapses it and restores link focus. Room photo tours, person portraits,
+price, area/profession, move-in date, icon-based traits and sample owner identity
+are shown together. Example owners are fixtures, not authenticated accounts.
+Conditions omit the optional-step hint, visible fieldset legend and skip button;
+the fieldset retains its accessible label and six selectable preferences.
+
+Expanded cards use opacity only; no scale/size morph. Single-room photo labels
+are suppressed in details, while multiple-room navigation remains available.
+Monthly rent/budget sits below the owner row in the main text body. “Мессеж бичих”
+is a non-interactive concept label. Located listings expose “Газрын зураг дээр харах”,
+which switches to #map and calls the embedded map's focusListing(id); this selects
+the listing and flies to its coordinates in 3D, including after a cold map load.
+People without coordinates do not show a location action.
+
+Card titles now occupy the reusable card's `heading` slot and are native detail
+links; the separate “Дэлгэрэнгүй үзэх” row is removed. Title links retain keyboard
+access, expanded state and focus return. Card images have a 240ms hover zoom and
+a subtle pressed fade, disabled by reduced motion. The location popup no longer
+contains the redundant add-room action.
+A burger button between add-listing and profile opens a small header popover.
+Notifications, safe living and help are disabled upcoming concepts. The working
+“Харанхуй горим” switch stores light/dark in `hamtry:appearance`; startup restores
+it before mounting the app. The dark palette is scoped to Hamtry, including
+shadow-component tokens; it does not overwrite the theme editor's saved CSS.
+
+Expanded placement is calculated from each result's original index and current
+grid column count. Its CSS order puts it at the beginning of its original row;
+other cards retain their baseline order. Switching repeatedly within that row
+therefore does not create additional partial rows above the expanded card.
+Resize and filtering recompute placement. Collapse restores the baseline order.
+Detail content keeps identity, price, location, facts and traits visible; long
+descriptions show their first sentence and retain all remaining text in a native
+“Дэлгэрэнгүй тайлбар” disclosure. The owner/demo copy and save label are shorter,
+and the demo note follows the main actions. No source description is discarded.
+
+Detail controls now use an icon-only primary close action, a non-interactive
+message icon, money icon plus price and /сар, and a Map action. Full descriptions
+are visible without a disclosure; the requested opening sentence, owner role
+subtitle and demo/photo explanatory notes have been removed. Original-row
+placement and opacity transitions remain unchanged.
+The date fact is a `hamtry-move-in-picker` button. It opens an anchored calendar
+with the listing's availability as its minimum date; earlier dates and previous
+months are disabled. Month navigation, keyboard day navigation and local selection
+work. Selection does not create a booking or account. Hover feedback is restricted
+to enabled actions and respects reduced motion.

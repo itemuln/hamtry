@@ -158,7 +158,7 @@ Custom event-үүд Shadow DOM-ийн хилээр гарна. Энгийн үй
 
 Өнгө, radius, spacing-ийг [design system-ийн токеноор](design-system.md)
 өөрчилнө. Тусгай override үнэхээр хэрэгтэй бол component-ийн нээсэн
-`::part(button)`, `::part(control)`, `::part(card)`, `::part(media)` (картын зураг), `::part(alert)`,
+`::part(button)`, `::part(control)`, `::part(card)`, `::part(media)` (картын зураг), `::part(content)` (картын body), `::part(summary)` (товч мэдээлэл), `::part(alert)`,
 `::part(badge)`-ийг ашиглаж болно. Page нь компонентын private shadow selector
 эсвэл дотоод DOM бүтэц дээр бизнес логик байгуулахгүй.
 
@@ -219,3 +219,6 @@ Native button нь Enter / Space, focus outline, reduced motion дэмжинэ.
 Dialog нээгдэхдээ 220ms, хаагдахдаа 130ms хөдөлгөөнтэй. Escape, focus trap,
 хаасны дараах focus буцаах үйлдэл native хэвээр. Хаагдах хөдөлгөөн дуусаагүй
 байхад дахин нээх боломжтой. Хөдөлгөөн багасгах тохиргоотой үед шууд өөрчлөгдөнө.
+
+Картын `slot="heading"` хэсэгт гарчиг-link байрлуулж болно; байхгүй бол `heading`
+attribute-ийн текст харагдана. `::part(image)` нь зурагт хөнгөн хөдөлгөөн өгнө.

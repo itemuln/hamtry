@@ -130,6 +130,18 @@ in 220ms and exits in 130ms; reduced motion is immediate. `.open` is logically
 false during exit, and `showModal()` can cancel an unfinished close. Native
 focus return and the close event occur when the actual dialog closes.
 
-Exposed parts: button, control, badge, alert, card, media (card image wrapper), dialog. Page code should consume host
+Exposed parts: button, control, badge, alert, card, media (card image wrapper), image (card image), content (card body), summary (compact card text), dialog. Page code should consume host
 APIs/events rather than private shadow selectors. Test-only shadow inspection is
 appropriate. Always render untrusted text via textContent/properties.
+
+Listing cards expose a named `heading` slot, with the heading attribute as its
+fallback. App title links may be slotted there without nesting the save control
+inside a link. `part="image"` supports scoped image hover/press feedback.
+
+`hamtry-move-in-picker` is an app component with ISO `min` and `value` attributes.
+A missing/invalid minimum uses today's local date. Values below minimum clamp to
+minimum; user selection emits `hamtry-date-change` with `{ value: 'YYYY-MM-DD' }`.
+`close()` hides its popover, including when an inline card collapses.
+The calendar uses a native popover, restores trigger focus on selection, supports
+arrow-key day/month crossing and roving focus, and closes on Escape/outside-click,
+resize or page scroll. Listeners and motion are released with its component scope.

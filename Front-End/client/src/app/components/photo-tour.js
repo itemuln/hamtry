@@ -13,7 +13,7 @@ export class HamtryPhotoTour extends HamtryElement {
   set rooms(value) { this.data.set(value || []); this.selected.set(value?.[0]?.id || ''); this.index.set(0) }
   render() {
     this.root.adoptedStyleSheets = [sheet]
-    this.root.innerHTML = '<div class="tour"><div class="room-tabs" role="group" aria-label="Өрөө сонгох"></div><div class="viewport"><img><p class="feedback" role="status" aria-live="polite"></p></div><div class="navigation"><button class="previous" type="button" aria-label="Өмнөх зураг">←</button><p class="caption" aria-live="polite"></p><button class="next" type="button" aria-label="Дараагийн зураг">→</button></div><p class="note">Өрөөний зургууд · Энэ нь 360° эсвэл хэмжээс бүхий 3D загвар биш.</p></div>'
+    this.root.innerHTML = '<div class="tour"><div class="room-tabs" role="group" aria-label="Өрөө сонгох"></div><div class="viewport"><img><p class="feedback" role="status" aria-live="polite"></p></div><div class="navigation"><button class="previous" type="button" aria-label="Өмнөх зураг">←</button><p class="caption" aria-live="polite"></p><button class="next" type="button" aria-label="Дараагийн зураг">→</button></div></div>'
   }
   setup() {
     const step = direction => {
@@ -36,6 +36,7 @@ export class HamtryPhotoTour extends HamtryElement {
       if ([...tabs.children].map(button => button.dataset.room).join(',') !== rooms.map(room => room.id).join(',')) {
         tabs.replaceChildren(...rooms.map(room => { const button = document.createElement('button'); button.type = 'button'; button.dataset.room = room.id; button.textContent = room.name; return button }))
       }
+      tabs.hidden = this.hasAttribute('hide-single-room-label') && rooms.length < 2
       for (const button of tabs.children) button.setAttribute('aria-pressed', String(button.dataset.room === selected))
       const room = rooms.find(room => room.id === selected), photo = room?.photos[index]
       const previous = required('.previous', this.root), next = required('.next', this.root)
@@ -45,7 +46,7 @@ export class HamtryPhotoTour extends HamtryElement {
       // Захын зурагт товч disabled болоход keyboard focus-ийг ажиллах товчид үлдээнэ.
       if (focused === next && next.disabled && !previous.disabled) previous.focus()
       if (focused === previous && previous.disabled && !next.disabled) next.focus()
-      required('.caption', this.root).textContent = room ? `${room.name} · ${index + 1} / ${room.photos.length}` : 'Зураг оруулаагүй'
+      required('.caption', this.root).textContent = room ? `${tabs.hidden ? '' : room.name + ' · '}${index + 1} / ${room.photos.length}` : 'Зураг оруулаагүй'
       const image = required('img', this.root); image.alt = room ? `${room.name} — ${photo?.caption || 'өрөөний зураг'}` : ''
       image.removeAttribute('src'); this.status.set(photo ? 'loading' : 'empty')
       let active = true, url

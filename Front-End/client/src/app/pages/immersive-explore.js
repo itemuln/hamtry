@@ -38,7 +38,7 @@ export class HamtryImmersiveExplore extends HamtryElement {
     const motion = createMotion()
     let items = []
     const status = $('.map-status'), container = $('.map-canvas'), rooms = $('.map-rooms')
-    let active = true, mapScene, selected, itemKey = '', mode = 'city', buildings = true, loaded = false, previewClosing = false
+    let active = true, mapScene, selected, itemKey = '', mode = 'city', buildings = true, loaded = false, previewClosing = false, pendingFocus = ''
     const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches
     // Reconnect үед хуучин marker DOM болон canvas-ийг үлдээхгүй.
     container.replaceChildren(); rooms.replaceChildren(); $('.room-preview').hidden = true
@@ -120,6 +120,11 @@ export class HamtryImmersiveExplore extends HamtryElement {
     for (const button of this.root.querySelectorAll('[data-mode]')) listen(button, 'click', () => { setMode(button.dataset.mode); showSettings(false); settingsToggle.focus() })
     listen($('.buildings'), 'change', event => { buildings = event.target.checked; setMode(mode, false) })
     listen($('.reset'), 'click', () => setMode('city'))
+    this.focusListing = id => {
+      pendingFocus = id
+      if (loaded) select(id)
+    }
+    onCleanup(() => { this.focusListing = undefined })
     this.fit = entries => { if (loaded) { setMode('city', false); mapScene.fit(entries) } }
     onCleanup(() => { this.fit = undefined })
     const closePreview = () => {
@@ -157,6 +162,7 @@ export class HamtryImmersiveExplore extends HamtryElement {
           } }, before)
           loaded = true; clearTimeout(timer); status.hidden = true
           mapScene.update(items, selected); setMode(mode)
+          if (pendingFocus) select(pendingFocus)
         }, onError: () => {
           if (!active) return
           status.hidden = false; status.textContent = 'Зарим зургийн өгөгдөл ачаалагдсангүй. Интернэтээ шалгана уу. Өрөөг жагсаалтаас сонгож болно.'
