@@ -1,6 +1,38 @@
-# Three.js Explore contract
+# Explore entry and immersive map
 
-- `/explore.html` → `src/app/explore.js` → native `hamtry-explore`.
+`/explore.html` now defaults to the native `HamtryImmersiveExplore` page in
+`pages/immersive-explore.js`, styled by `immersive-explore.css`. `?view=classic`
+loads the prior Three.js page described below. No React/Swift runtime is added.
+
+Reference: https://github.com/artembobkin/ImmersiveMap (MIT, Swift 6 + Metal,
+Apple platforms only). This is a web adaptation of its globe/city/marker journey,
+not the ImmersiveMap engine or a Swift port. No upstream source/assets are bundled.
+
+The existing lazy `map-renderer.js` / MapLibre dependency provides OpenFreeMap
+basemap, markers and attribution. A separate OpenFreeMap building vector source
+is extruded using `render_height` / `render_min_height` at zoom 14+. Missing height
+falls back to 6m for display; these heights are map metadata, not survey evidence.
+
+Controls: 3D city / flat map / globe, building visibility, reset to Ulaanbaatar.
+Room buttons and markers share a preview with a link to the homepage detail route.
+Fixtures and validated browser-local room publications are included; people without
+coordinates are not placed on the map. Selecting a room returns to city view.
+Reduced motion skips camera flights. Map tile failures retain the keyboard-accessible
+room list. A delayed-load message appears after 12 seconds. WebGL and remote tile
+availability are required for map rendering; no API key or paid service was added.
+
+Ownership: cleanup is installed before dynamic import; disconnected pages cannot
+create maps. ResizeObserver, message timer, listeners, markers and MapLibre renderer
+are removed on disconnect. MapLibre renders on demand; no independent RAF loop.
+OpenStreetMap/OpenMapTiles/OpenFreeMap attribution remains visible in the map control.
+
+Verified in Chromium: Ulaanbaatar building extrusion, globe switching, room selection
+and preview link; lint/build pass. Mobile hardware, Safari/Firefox, terrain elevation,
+custom landmark models and native ImmersiveMap features have not been accepted.
+
+# Classic Three.js Explore contract
+
+- `/explore.html?view=classic` → `src/app/explore.js` → native `hamtry-explore`.
 - Page: `src/app/pages/explore.js`, `explore.css`; renderer: `components/explore-scene.js`.
 - Page uses HamtryElement, signals, owned listeners/effects, and existing button,
   switch, select, dialog, property-card and roommate-card components. No new runtime.

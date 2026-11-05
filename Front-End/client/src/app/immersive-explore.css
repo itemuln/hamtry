@@ -1,0 +1,47 @@
+:host { display:block; color:var(--text-primary); background:var(--surface-base); font:400 1rem/1.5 var(--font-sans); }
+* { box-sizing:border-box; }
+[hidden] { display:none!important; }
+a { color:inherit; text-underline-offset:.2em; }
+button { font:inherit; color:inherit; cursor:pointer; touch-action:manipulation; }
+:is(button,a,input):focus-visible { outline:3px solid var(--brand-accent-pink); outline-offset:3px; }
+header { height:5rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding:1rem 3%; border-bottom:1px solid var(--border-default); background:var(--surface-elevated); }
+.brand { font-size:1.8rem; font-weight:700; text-decoration:none; }
+nav { display:flex; gap:1.5rem; flex-wrap:wrap; }
+nav a { text-decoration:none; font-weight:600; }
+main { display:grid; grid-template-columns:22rem minmax(0,1fr); height:calc(100dvh - 5rem); min-height:35rem; }
+.explore-panel { padding:2rem 1.5rem; overflow:auto; background:var(--surface-elevated); border-right:1px solid var(--border-default); }
+h1 { font-family:var(--font-display); font-size:2.25rem; line-height:1.2; letter-spacing:-.025em; margin:0 0 1rem; }
+h2 { font-size:1.125rem; margin:1.5rem 0 .5rem; }
+p { color:var(--text-secondary); }
+.map-modes { display:flex; padding:.25rem; border:1px solid var(--border-default); border-radius:var(--radius-action); gap:.25rem; margin:1.5rem 0; }
+.map-modes button { flex:1; border:0; background:transparent; border-radius:var(--radius-action); padding:.65rem .35rem; }
+.map-modes [aria-pressed=true] { background:var(--brand-primary); color:var(--text-inverse); }
+.sample-note,.reference { font-size:.9375rem; }
+.map-rooms { display:grid; gap:.5rem; }
+.map-rooms button { text-align:left; padding:1rem; border:1px solid var(--border-default); border-radius:var(--radius-md); background:transparent; }
+.map-rooms button[aria-pressed=true] { background:var(--brand-accent-lime); color:var(--brand-primary); border-color:var(--brand-primary); }
+.map-rooms strong,.map-rooms span { display:block; }
+.map-rooms span { font-size:.9375rem; margin-top:.35rem; }
+.reference { margin-top:2rem; }
+.map-stage { position:relative; min-width:0; background:var(--surface-base); }
+.map-canvas { width:100%; height:100%; min-height:25rem; }
+.map-toolbar { position:absolute; left:1rem; top:1rem; display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
+.map-toolbar button,.map-toolbar label { padding:.7rem 1rem; background:var(--surface-elevated); border:1px solid var(--border-default); border-radius:var(--radius-action); }
+.map-toolbar label { cursor:pointer; }
+input { accent-color:var(--brand-primary); }
+.map-status { position:absolute; top:5rem; left:1rem; right:3.5rem; width:fit-content; max-width:calc(100% - 4.5rem); padding:.75rem 1rem; background:var(--surface-elevated); border-radius:var(--radius-md); color:var(--text-primary); }
+.room-preview { position:absolute; bottom:2.5rem; left:1rem; width:min(25rem,calc(100% - 2rem)); max-height:55%; overflow:auto; background:var(--surface-elevated); padding:1.5rem; border:1px solid var(--border-default); border-radius:var(--radius-lg); }
+.room-preview h2 { margin:0 1.5rem .75rem 0; }
+.close-preview { position:absolute; right:.5rem; top:.5rem; width:2.5rem; height:2.5rem; border:0; background:transparent; font-size:1.5rem; }
+.room-price { font-size:1.25rem; }
+.room-link { display:block; font-weight:600; margin-top:1rem; }
+.price-pin { background:var(--brand-primary); color:var(--text-inverse); border:2px solid var(--surface-elevated); padding:.45rem .7rem; border-radius:2rem; font-weight:600; white-space:nowrap; }
+.price-pin[aria-pressed=true] { background:var(--brand-accent-lime); color:var(--brand-primary); }
+@media(max-width:60em) { main { grid-template-columns:18rem minmax(0,1fr); } }
+@media(max-width:40em) {
+ header { height:auto; min-height:5rem; flex-wrap:wrap; gap:.5rem; } nav { gap:1rem; font-size:.9375rem; }
+ main { height:auto; display:flex; flex-direction:column; min-height:0; }
+ .map-stage { order:-1; height:58dvh; min-height:24rem; }
+ .explore-panel { overflow:visible; padding:1.5rem; border-right:0; }
+ h1 { font-size:1.8rem; } .room-preview { max-height:60%; }
+}

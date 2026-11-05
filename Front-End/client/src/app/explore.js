@@ -1,7 +1,10 @@
 import '../styles/base.css'
 import './explore-base.css'
 import { applyDefaultTheme, registerComponents } from '@hamtry/library'
-import { HamtryExplore } from './pages/explore.js'
+// Өмнөх процедур хотыг тусдаа сонголтоор хадгална.
+const { HamtryExplore } = new URLSearchParams(location.search).get('view') === 'classic'
+  ? await import('./pages/explore.js')
+  : { HamtryExplore: (await import('./pages/immersive-explore.js')).HamtryImmersiveExplore }
 
 applyDefaultTheme()
 registerComponents()
