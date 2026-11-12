@@ -3,14 +3,16 @@ hamtry-home .request-dialog { --home-paper: var(--ui-surface-page); --home-line:
 .request-detail-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1.5rem; font: .875rem/1.5 var(--font-sans); }
 .request-profile-panel, .request-overview { min-width: 0; }
 .request-eyebrow { font-size: .6875rem; font-weight: 600; letter-spacing: .1em; color: var(--text-secondary); margin-bottom: .75rem !important; }
-.request-profile .detail-layout { display: flex; flex-direction: column; gap: .875rem; }
-.request-profile .detail-media { display: grid; place-items: center; min-height: 7rem; border-radius: 1rem; background: var(--surface-interactive); }
+.request-profile .detail-layout { display: grid; grid-template-columns: 5.5rem minmax(0,1fr); align-items: start; gap: .5rem .875rem; }
+.request-profile .detail-media { grid-column: 1; grid-row: 1 / 4; display: grid; place-items: center; min-height: 7rem; border-radius: 1rem; background: var(--surface-interactive); }
 .request-profile .dashboard-character { flex-basis: 5.5rem; width: 5.5rem; height: 7rem; }
-.request-profile .detail-info { padding: 0; min-width: 0; }
+.request-profile .detail-info { display: contents; }
+.request-profile .detail-info > :is(h3,.detail-location,.detail-summary) { grid-column: 2; min-width: 0; }
+.request-profile .detail-info > :is(.detail-description,.detail-facts,.detail-traits) { grid-column: 1 / -1; min-width: 0; }
 .request-profile .detail-info h3 { font: 600 1.125rem/1.4 var(--font-sans); }
 .request-profile .detail-owner { display: none; }
-.request-profile .detail-location { font-size: .8125rem; margin-top: .25rem !important; }
-.request-profile .detail-summary { margin-top: .75rem; justify-content: flex-start; gap: .5rem; }
+.request-profile .detail-location { font-size: .8125rem; margin: 0 !important; }
+.request-profile .detail-summary { margin-top: 0; justify-content: flex-start; gap: .5rem; }
 .request-profile .detail-summary svg { width: 1rem; height: 1rem; }
 .request-profile .detail-summary strong { font: 600 1.125rem/1.4 var(--font-sans); }
 .request-profile .price-period { font-size: .75rem; }
@@ -36,12 +38,9 @@ hamtry-home .request-dialog { --home-paper: var(--ui-surface-page); --home-line:
 .request-meetings [data-no-request-meetings] { padding-block: .75rem; color: var(--text-secondary); font-size: .8125rem; }
 .request-feedback { font-size: .8125rem; }
 .request-decision-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-top: auto; }
-.request-dialog .request-overview button { min-height: 2.5rem; border: 1px solid var(--border-default); border-radius: .625rem; background: var(--surface-elevated); color: var(--text-primary); padding: .5rem .625rem; font: 600 .8125rem/1.4 var(--font-sans); cursor: pointer; }
-.request-dialog .request-overview [data-request-decision="accepted"] { background: var(--brand-primary); color: var(--text-inverse); border-color: var(--brand-primary); }
-.request-dialog .request-overview [data-request-decision="rejected"] { color: var(--status-error); border-color: var(--status-error); }
-.request-dialog .request-overview .request-close { background: transparent; }
-.request-overview button:hover { filter: brightness(.95); }
-.request-overview button:focus-visible { outline: 2px solid var(--brand-primary); outline-offset: 3px; }
+.request-overview hamtry-button { display: block; width: 100%; }
+.request-overview hamtry-button::part(button) { width: 100%; min-height: 2.5rem; border-radius: .625rem; font-size: .8125rem; }
+.request-overview [data-request-decision="rejected"]::part(button) { color: var(--status-error); border-color: var(--status-error); }
 .request-local-note { font-size: .6875rem; }
 .dashboard-request-empty { padding-block: 1rem; color: var(--text-secondary); }
 @media (max-width: 40rem) {

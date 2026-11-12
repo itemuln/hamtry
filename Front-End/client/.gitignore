@@ -60,3 +60,6 @@ src/plugins/impeccable-live.client.ts
 .wrangler
 .dev.vars*
 .env*
+
+# Puppeteer browser binaries
+.cache/puppeteer/

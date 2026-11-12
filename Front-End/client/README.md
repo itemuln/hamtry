@@ -88,3 +88,38 @@ uses JSX in `src/editor`. Theme routes and the built server live in `server`.
 
 See [the folder guide](../../docs/human/folder-structure.md) and
 [the UX/UI and Three.js roadmap](../../docs/human/roadmap.md) for the next steps.
+
+## Provider documents and contract PDFs
+
+The local `hamtry-navbar` component switches between `#dashboard`,
+`#dashboard/documents`, and `#dashboard/chat`. The documents section accepts
+`.docx` only (up to 20 MB), checks the OOXML package, and stores documents and
+edited versions in IndexedDB in the current browser.
+
+The editor uses the free `@docx-editor.dev/react` and `@docx-editor.dev/core`
+packages. PDF download serializes the **current editor state** to DOCX,
+uses `docx-preview` to render self-contained HTML (embedded images/fonts as
+base64), and posts that HTML to `/api/documents/pdf`. The Node route uses
+Puppeteer to print the sanitized HTML, returning `application/pdf`. It disables
+page JavaScript and blocks network/file requests during rendering. Neither the
+source nor the generated PDF is written to disk by this route.
+
+The PDF route is available in Vite dev/preview and the Node production server.
+A Chromium/Chrome installation is required on the Node host:
+
+```sh
+npm install
+npx puppeteer browsers install chrome
+npm run dev
+```
+
+Set `PUPPETEER_EXECUTABLE_PATH` to use a managed Chrome installation. An existing
+Linux Chrome in Puppeteer's standard cache can also be reused. Chromium's system
+libraries and sandbox must be available to the server user. A static-only host
+must proxy `/api/documents/pdf` to this Node service; the route does not run in a
+plain Cloudflare Worker.
+
+The uploaded contract stays in this browser; clearing browser storage removes
+it. PDF generation transmits the rendered contract to the same-origin Node
+service only. Comments, collaborative editing, signatures, and paid editor
+modules are not enabled.

@@ -1,8 +1,4 @@
 import brandHome from '../assets/dashboard/brand-home.svg'
-import homeIcon from '../assets/dashboard/nav-home.svg'
-import listingIcon from '../assets/dashboard/nav-listing.svg'
-import userIcon from '../assets/dashboard/nav-user.svg'
-import messageIcon from '../assets/dashboard/nav-message.svg'
 import searchIcon from '../assets/dashboard/search.svg'
 import bellIcon from '../assets/dashboard/bell.svg'
 import plusIcon from '../assets/dashboard/plus.svg'
@@ -13,6 +9,7 @@ import { calendarGrid } from '../state/model.js'
 import { demoListings as sampleListings, rentalRequests, requestedListing } from '../state/dashboard-requests.js'
 import { meetingSheetMarkup, setupMeetingSheet } from './meeting-sheet.js'
 import { requestDetailsMarkup, setupRequestDetails, updateRequestRows } from './request-details.js'
+import { documentsMarkup, setupDocuments } from './contract-documents.js'
 
 const icon = (src, alt = '') => `<img src="${src}" alt="${alt}">`
 
@@ -22,23 +19,26 @@ export function dashboardMarkup() {
     <header class="dashboard-mobile-header"><a href="#rooms">hamtry</a></header>
     <div class="dashboard-layout">
       <div class="dashboard-workspace">
-        <header class="dashboard-utility"><a class="dashboard-brand" href="#rooms">${icon(brandHome)}<span>hamtry</span></a><label class="dashboard-search">${icon(searchIcon)}<span class="sr-only">Зар, хүсэлт хайх</span><input type="search" placeholder="Зар, хүсэлт, хүн хайх…"></label><button class="dashboard-icon-button" type="button" data-notifications data-dashboard-scroll="dashboard-messages" aria-label="Мэдэгдэл">${icon(bellIcon)}<span class="dashboard-count" data-notification-count>7</span></button><button class="dashboard-profile" type="button" data-dashboard-profile>Миний орон зай</button></header>
-        <div class="dashboard-heading"><hamtry-button class="dashboard-add" data-dashboard-publish>${icon(plusIcon)}Шинэ зар нэмэх</hamtry-button></div>
+        <header class="dashboard-utility"><a class="dashboard-brand" href="#rooms">${icon(brandHome)}<span>hamtry</span></a><hamtry-navbar class="provider-navbar" label="Түрээслүүлэгчийн үндсэн цэс"></hamtry-navbar><button class="dashboard-icon-button" type="button" data-notifications data-dashboard-scroll="dashboard-messages" aria-label="Мэдэгдэл">${icon(bellIcon)}<span class="dashboard-count" data-notification-count>7</span></button><button class="dashboard-profile" type="button" data-dashboard-profile>Миний орон зай</button></header>
+        <div class="dashboard-home-panel" data-provider-section="home"><div class="dashboard-heading"><label class="dashboard-search">${icon(searchIcon)}<span class="sr-only">Зар, хүсэлт хайх</span><input type="search" placeholder="Зар, хүсэлт, хүн хайх…"></label><hamtry-button class="dashboard-add" data-dashboard-publish>${icon(plusIcon)}Шинэ зар нэмэх</hamtry-button></div>
         <div class="dashboard-metrics" aria-label="Товч мэдээлэл"><article><strong>Идэвхтэй зар</strong><b data-listing-count>04</b><small>2 байр · 2 хажуу өрөө</small></article><article class="dashboard-metric-new-requests"><strong>Шинэ хүсэлт</strong><b data-request-count>3</b><small data-request-summary>3 хүсэлт хариу хүлээж байна</small></article><article class="dashboard-views-metric"><strong>Зарын үзэлт</strong><b>248</b><small>Энэ 7 хоног · +18%</small><div class="dashboard-views-chart" data-views-chart role="img" aria-label="Сүүлийн 4 долоо хоногийн зарын үзэлт: 164, 190, 210, 248. Жишээ мэдээлэл."></div></article><article class="dashboard-metric-unread-messages"><strong>Уншаагүй мессеж</strong><b data-unread-count>3</b><small data-unread-summary>2 хүнээс шинэ мессеж</small></article></div>
         <div class="dashboard-columns"><div class="dashboard-main-column">
           <section class="dashboard-panel dashboard-listings" id="dashboard-listings" aria-labelledby="dashboard-listings-title"><div class="dashboard-panel-heading"><h2 id="dashboard-listings-title">Миний зарууд</h2><button type="button" data-listings-all>Бүгдийг харах</button></div><div class="dashboard-filters" role="group" aria-label="Зарын төлөв"><hamtry-chip selected data-filter="all">Бүгд <span data-all-count>2</span></hamtry-chip><hamtry-chip data-filter="active">Идэвхтэй <span data-active-count>2</span></hamtry-chip><hamtry-chip data-filter="draft">Ноорог 0</hamtry-chip></div><p class="dashboard-map-hint">Газрын зураг дээрх тэмдэг дээр дарж зарыг харна.</p><hamtry-immersive-map class="dashboard-property-map" embedded aria-label="Миний заруудын газрын зураг"></hamtry-immersive-map><p class="dashboard-empty" hidden>Илэрц олдсонгүй.</p></section>
-          ${messagesMarkup()}
+
           <section class="dashboard-panel dashboard-inquiries" id="dashboard-inquiries" aria-labelledby="dashboard-inquiries-title"><div class="dashboard-panel-heading"><h2 id="dashboard-inquiries-title" tabindex="-1">Хариу хүлээсэн хүсэлтүүд <span class="dashboard-count" data-request-count>3</span></h2><button type="button" data-requests-all>Бүгдийг харах</button></div><div class="dashboard-inquiry-list">${rentalRequests.map(request => { const person = people.find(person => person.id === request.person); return `<div class="dashboard-inquiry" data-request-id="${request.id}">${characterMarkup(person.id)}<span class="dashboard-inquiry-name"><strong>${person.name}</strong><small>${requestedListing(person.id, sampleListings).title}</small><small data-inquiry-state>Хариу хүлээж байна</small></span><time>${request.received}</time><hamtry-button variant="outline" data-request-open="${request.id}">Хариу өгөх</hamtry-button></div>` }).join('')}</div><p class="dashboard-request-empty" role="status" hidden></p></section>
         </div><div class="dashboard-side-column">
           <section class="dashboard-panel dashboard-calendar" aria-label="Уулзалтын хуанли"><div class="dashboard-calendar-head"><h2></h2><div><button type="button" data-month="-1" aria-label="Өмнөх сар">‹</button><button type="button" data-month="1" aria-label="Дараах сар">›</button></div></div><div class="dashboard-weekdays"><span>Да</span><span>Мя</span><span>Лх</span><span>Пү</span><span>Ба</span><span>Бя</span><span>Ня</span></div><div class="dashboard-days"></div><hamtry-button class="dashboard-schedule" data-meeting-open>＋ &nbsp; Уулзалт товлох</hamtry-button></section>
           ${viewingsMarkup()}
           ${verificationMarkup()}
         </div></div>
+        </div>
+        ${documentsMarkup()}
+        <section class="provider-chat" data-provider-section="chat" aria-label="Чат" hidden><h1 tabindex="-1">Чат</h1>${messagesMarkup()}</section>
         <p class="dashboard-demo-note">Жишээ мэдээлэл: хүсэлт, үзэлт, уулзалтын тов бодит үйлчилгээтэй холбогдоогүй.</p>
       </div>
     </div>
     <footer class="dashboard-footer"><strong>hamtry</strong><nav aria-label="Нэмэлт холбоос"><button type="button" data-demo="Тухай">Тухай</button> · <button type="button" data-demo="Тусламж">Тусламж</button> · <button type="button" data-demo="Аюулгүй байдал">Аюулгүй байдал</button> · <button type="button" data-demo="Нууцлал">Нууцлал</button> · <button type="button" data-demo="Үйлчилгээний нөхцөл">Үйлчилгээний нөхцөл</button></nav><small>© 2026 Roomies · Загварын жишээ. Хүмүүс, байр, тохиолдлын хувь болон баталгаажуулалтын төлөв нь демо мэдээлэл.</small></footer>
-    <nav class="dashboard-mobile-nav" aria-label="Гар утасны цэс"><button type="button" data-dashboard-scroll="dashboard-top" aria-current="page">${icon(homeIcon)}Нүүр</button><button type="button" data-dashboard-scroll="dashboard-listings">${icon(listingIcon)}Зарууд</button><button type="button" data-dashboard-scroll="dashboard-inquiries">${icon(userIcon)}Хүсэлт</button><button type="button" data-dashboard-scroll="dashboard-messages">${icon(messageIcon)}Мессеж</button><button type="button" data-dashboard-profile>${icon(userIcon)}Би</button></nav>
+
     ${meetingSheetMarkup()}
     ${requestDetailsMarkup()}
   </section>`
@@ -60,6 +60,13 @@ function renderCalendar(root, month) {
 
 export function setupDashboard(root, { showPublish, toast, listen }) {
   const dashboard = root.querySelector('.provider-dashboard')
+  const navbar = dashboard.querySelector('.provider-navbar')
+  navbar.items = [
+    { id: 'home', label: 'Нүүр хуудас', icon: 'home', href: '#dashboard' },
+    { id: 'documents', label: 'Баримт бичиг', icon: 'document', href: '#dashboard/documents' },
+    { id: 'chat', label: 'Чат', icon: 'chat', href: '#dashboard/chat' },
+  ]
+  setupDocuments(dashboard, listen)
   let active = true, unmountViewsChart
   onCleanup(() => { active = false; unmountViewsChart?.() })
   void import('./dashboard-views-chart.js').then(({ mountViewsChart }) => {
@@ -104,6 +111,7 @@ export function setupDashboard(root, { showPublish, toast, listen }) {
   for (const button of dashboard.querySelectorAll('[data-dashboard-publish]')) listen(button, 'click', showPublish)
   for (const button of dashboard.querySelectorAll('[data-dashboard-profile]')) listen(button, 'click', () => root.querySelector('.profile-dialog').showModal())
   for (const button of dashboard.querySelectorAll('[data-dashboard-scroll]')) listen(button, 'click', () => {
+    if (button.dataset.dashboardScroll === 'dashboard-messages') { location.hash = 'dashboard/chat'; return }
     const target = dashboard.querySelector(`#${button.dataset.dashboardScroll}`)
     target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' })
     target.querySelector('h2')?.focus({ preventScroll: true })
@@ -124,6 +132,9 @@ export function setupDashboard(root, { showPublish, toast, listen }) {
 
 export function updateDashboard(root, published, filter = root.querySelector('.dashboard-filters [selected]')?.dataset.filter || 'all') {
   const dashboard = root.querySelector('.provider-dashboard')
+  const section = root.state.route.get().section || 'home'
+  for (const panel of dashboard.querySelectorAll('[data-provider-section]')) panel.hidden = panel.dataset.providerSection !== section
+  dashboard.querySelector('.provider-navbar').active = section
   const entries = published.length ? published.map(item => ({ ...item, detail: item.district })) : sampleListings
   dashboard.querySelector('[data-listing-count]').textContent = String(entries.length).padStart(2, '0')
   dashboard.querySelector('[data-all-count]').textContent = entries.length

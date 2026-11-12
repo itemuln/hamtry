@@ -14,8 +14,8 @@ export function requestDetailsMarkup() {
         <div class="request-property"><span>Сонирхож буй өрөө</span><strong data-request-listing></strong><small data-request-received></small></div>
         <section class="request-meetings" aria-labelledby="request-meetings-title"><h3 id="request-meetings-title">Товлосон уулзалт</h3><ul data-request-meetings></ul><p data-no-request-meetings hidden>Одоогоор уулзалт товлоогүй байна.</p></section>
         <p class="request-feedback" role="status" aria-live="polite"></p>
-        <div class="request-decision-actions"><button type="button" data-request-decision="accepted">✓ Зөвшөөрөх</button><button type="button" data-request-decision="rejected">Татгалзах</button></div>
-        <button type="button" class="request-close" data-request-close>Хаах</button>
+        <div class="request-decision-actions"><hamtry-button type="button" size="sm" data-request-decision="accepted">✓ Зөвшөөрөх</hamtry-button><hamtry-button type="button" size="sm" variant="outline" data-request-decision="rejected">Татгалзах</hamtry-button></div>
+        <hamtry-button type="button" size="sm" variant="ghost" class="request-close" data-request-close>Хаах</hamtry-button>
         <small class="request-local-note">Жишээ хүсэлт · Бодит хэрэглэгчид мэдэгдэл илгээхгүй.</small>
       </section>
     </div>

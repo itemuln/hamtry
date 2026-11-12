@@ -195,3 +195,18 @@ hamtry-home footer.dashboard-footer small { grid-column: 1/-1; flex-basis: auto;
   .dashboard-inquiry { grid-template-columns:var(--size-avatar-lg) minmax(0,1fr) 6.25rem; }
   .dashboard-messages .dashboard-panel-heading button { width:auto; padding:var(--spacing-2); }
 }
+
+/* Shared local navbar follows the selected rooms-navigation treatment. */
+.dashboard-utility { min-height: 3.75rem; height: auto; padding-bottom: .5rem; border-bottom: 1px solid var(--border-default); }
+.provider-navbar { flex: 1; min-width: 0; }
+.dashboard-heading .dashboard-search { flex: 1; margin-right: auto; }
+.dashboard-heading { align-items: center; }
+@media (max-width: 48rem) {
+  .dashboard-utility { order: 0; width: 100%; flex-wrap: wrap; gap: .5rem; }
+  .provider-navbar { flex: 1 0 100%; }
+  .dashboard-home-panel, .contract-documents, .provider-chat { order: 1; width: 100%; }
+  .dashboard-heading { flex-direction: row; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
+  .dashboard-heading .dashboard-search { width: 100%; flex: 1 0 100%; }
+  .dashboard-heading .dashboard-add { width: auto; }
+  .dashboard-layout { padding-bottom: 1rem; }
+}

@@ -19,6 +19,7 @@ export function findListings(items, filters, kind, saved = null) {
 }
 export function readRoute(hash) {
   const path = hash.replace(/^#\/?/, '') || 'rooms'
+  if (path === 'dashboard/documents' || path === 'dashboard/chat') return { page: 'dashboard', section: path.split('/')[1] }
   if (path.startsWith('listing/')) return { page: 'detail', id: path.slice(8) }
   return { page: ['map', 'list', 'rooms', 'roommates', 'saved', 'dashboard'].includes(path) ? path : 'rooms' }
 }

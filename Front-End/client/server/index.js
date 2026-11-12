@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, extname, resolve, sep } from 'node:path'
 import { livenessRoute } from './liveness-proxy.js'
 import { themeRoute } from './theme-store.js'
+import { pdfRoute } from './document-pdf.js'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../dist')
 const serverDirectory = dirname(fileURLToPath(import.meta.url))
 const localPython = resolve(serverDirectory, '../../../Back-End/liveness/.venv/bin/python')
@@ -43,6 +44,7 @@ const types = {
 }
 const server = createServer(async (req, res) => {
   if (livenessRoute(req, res)) return
+  if (pdfRoute(req, res)) return
   if (await themeRoute(req, res, true)) return
   if (req.method !== 'GET') {
     res.writeHead(405).end()
