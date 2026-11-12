@@ -11,6 +11,14 @@ test('meeting message warns only when unanswered for over seven days', () => {
   assert.equal(overdueMeetingMessage({ person: 'anu', sentAt: sentAt - 1 }, meetings, now), false)
   assert.equal(overdueMeetingMessage({ person: 'nomin' }, meetings, now), false)
 })
+
+test('published WebP covers survive reload while external URLs are excluded', () => {
+  const listing = { id: 'local-webp', title: 'Өрөө', district: 'Хан-Уул', price: 800000, description: 'Зурагтай' }
+  const restore = cover => parseDemo({ version: 1, published: [{ ...listing, cover }] }).published[0].cover
+  assert.equal(restore('data:image/webp;base64,YQ=='), 'data:image/webp;base64,YQ==')
+  assert.equal(restore('https://example.test/photo.webp'), '')
+  assert.equal(restore('data:image/webp;base64,' + 'A'.repeat(400001)), '')
+})
 test('calendar starts on Monday and handles short months', () => {
   assert.deepEqual(calendarGrid(2026, 9).slice(0, 5), [null, null, null, 1, 2])
   assert.equal(calendarGrid(2028, 1).at(-1), 29)

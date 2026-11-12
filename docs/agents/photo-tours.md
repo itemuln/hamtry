@@ -20,13 +20,13 @@ All extend `HamtryElement` and own open Shadow DOM. Product components stay in
   renderer. Initial style-load/WebGL failure preserves cards and coordinate fields.
   First browse load fits available pins; filtered updates reuse markers and viewport.
 - `hamtry-room-editor`: `.value` gives sanitized draft room metadata; `.records`
-  gives prepared in-memory photo records `{id,blob,cover,caption}`; `.cover` first
+  gives prepared in-memory photo records `{id,blob,mapBlob,cover,caption}`; `.cover` first
   thumbnail; `.busy`; `.validate()` and `.reset()`. Maximum 6 rooms/12 total photos,
   each room named with >=1 photo. Native file inputs, JPG/PNG/WebP <=10 MB each.
   Serial preparation and pending state; late results ignored after disconnect.
 - `hamtry-photo-tour`: `.rooms = [{id,name,photos:[{id,caption}]}]` resets selection
   to first room/photo. Set only when changing detail content, never on each save.
-  Trusted internal fixture/draft photos can use `src`; persisted photos cannot.
+  Trusted internal fixture photos can use `src` and drafts can use `blob`; persisted photos cannot.
   Native room buttons and previous/next, arrow keys, pressed/disabled/alt/status.
   IndexedDB Blob lookup with cancellation; object URL revoked on effect cleanup.
   `data-tour-state`: idle/loading/ready/empty/missing. Missing photo has recovery text.
@@ -38,16 +38,15 @@ filters and only rooms are pins. Fixture locations are examples, not verified
 addresses. Old/malformed metadata without valid coordinates cannot become pins.
 
 `hamtry-demo-v1` localStorage schema stays version 1, but published metadata now
-includes `location`, `cover` (bounded JPEG data URL only), `rooms`. `parseDemo`
+includes `location`, `cover` (bounded JPEG/WebP data URL only), `rooms`. `parseDemo`
 whitelists fields, finite Mercator coordinates (lng +-180, lat +-85), caps room/
 photo IDs/counts/text and discards persisted src/blob/external URLs. 20 local
 listings max. `state/media-store.js`: IndexedDB `hamtry-media-v1`, version 1,
-`photos` keyPath id; entries `{id,blob}`. Photo preparation uses createImageBitmap,
-1600-max JPEG .82, white alpha background and 360-max JPEG thumbnail .7. Originals
+`photos` keyPath id; entries `{id,blob,mapBlob}`; older records use the detail Blob for map previews. Photo preparation decodes once and generates each version directly from the bitmap: 1920px detail (.84), 960px map (.8), 720px cover (.78), without upscaling. Cover metadata remains capped at 400,000 characters, reducing to 540/360px if necessary. Native WebP is preferred; an on-demand WASM WebP encoder runs in the worker when native encoding is unavailable, followed by an explicit JPEG fallback. WebP preserves transparency; JPEG composites white. Originals
 are untouched. No cross-origin or backend photo publication.
 
 Publish validates native form + room editor, creates draft, previews using in-memory
-thumbnail src. Confirm is guarded/disabled while pending: save all photos in one
+full Blob. Confirm is guarded/disabled while pending: save all photos in one
 IDB transaction -> update published/role -> explicit metadata persist. Metadata
 failure restores state and deletes just-written photos; draft stays for retry.
 Success resets form/editor/picker, clears filters, highlights the new pin and opens
@@ -107,3 +106,5 @@ still show their room names and navigation. Listing details opt into this mode.
 
 The gallery's former explanatory note is removed from the UI. It remains a
 standard photo gallery with the same room and photo navigation behavior.
+
+Details preserve the image proportions with a 70dvh/48rem maximum height; card and map thumbnails retain their landscape crops. See [workers-offline.md](workers-offline.md) for worker cancellation and service-worker boundaries.

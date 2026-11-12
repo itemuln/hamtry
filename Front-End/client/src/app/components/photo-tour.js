@@ -53,6 +53,7 @@ export class HamtryPhotoTour extends HamtryElement {
       // Effect солигдоход өмнөх object URL-ийг чөлөөлж, хоцорсон async үр дүнг үл тооно.
       onCleanup(() => { active = false; if (url) URL.revokeObjectURL(url) })
       if (!photo) return
+      if (photo.blob) { url = URL.createObjectURL(photo.blob); image.src = url; this.status.set('ready'); return }
       if (photo.src) { image.src = photo.src; this.status.set('ready'); return }
       void readPhoto(photo.id).then(blob => {
         if (!active) return

@@ -23,3 +23,5 @@ for (const [name, component] of [['hamtry-immersive-map', HamtryImmersiveExplore
   if (!customElements.get(name)) customElements.define(name, component)
 }
 if (!customElements.get('hamtry-home')) customElements.define('hamtry-home', HamtryHome)
+
+void import('./offline/register.js').then(({ registerOffline }) => registerOffline())

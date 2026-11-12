@@ -218,3 +218,9 @@ appearance switch now sets its data attribute and CSS owns color-scheme. The
 dashboard message surface follows surface-elevated instead of fixed white.
 Overridden duplicate declarations, retired detail selectors and the unused map
 menu CSS keyframe are removed without changing animation ownership.
+
+### Map property preview
+
+Selecting a map marker opens an inline overlay with the listing photo, title, location, monthly price, size, available date, traits, full description and owner when supplied. The redundant listing-details link is removed. The token-styled panel scrolls within the map, enters in 380 ms and exits in 200 ms through the shared motion lifecycle; reduced motion is handled by createMotion. Closing returns focus to the marker.
+
+Room cards use the native `compact-preview` attribute: title, location and price remain visible; hover/focus reveals supporting metadata below through a 300 ms grid-row transition. Collapsed cards align to the grid row start. Expanded detail content remains visible and interactive; no pointer-events suppression is applied.

@@ -1,11 +1,11 @@
+import { api } from '../../../Back-End/api/src/app.js'
 import savedTheme from '../theme/hamtry-theme.json' with { type: 'json' }
 import { exportTheme, parseOverrides, themeCss } from '../src/library/design-system/theme.js'
 
 const theme = parseOverrides(savedTheme)
-const maxBody = 1600000
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     let path
     try {
       path = decodeURIComponent(new URL(request.url).pathname)
@@ -28,49 +28,7 @@ export default {
         headers: { 'Content-Type': json ? 'application/json' : 'text/css', 'Cache-Control': 'no-store' },
       })
     }
-    if (path.startsWith('/api/liveness/')) {
-      if (!['GET', 'POST'].includes(request.method)) {
-        return new Response('Method not allowed.', { status: 405, headers: { Allow: 'GET, POST' } })
-      }
-      // ML inference нь VPS дээр хэвээр; client-ээс upstream хаяг авахгүй.
-      const upstream = new URL(env.LIVENESS_ORIGIN)
-      upstream.pathname = path
-      upstream.search = new URL(request.url).search
-      try {
-        const chunks = []
-        let size = 0
-        if (request.body) {
-          const reader = request.body.getReader()
-          while (true) {
-            const { done, value } = await reader.read()
-            if (done) break
-            size += value.byteLength
-            if (size > maxBody) {
-              await reader.cancel()
-              return new Response('Request is too large.', { status: 413 })
-            }
-            chunks.push(value)
-          }
-        }
-        const response = await fetch(upstream, {
-          method: request.method,
-          headers: { 'Content-Type': request.headers.get('Content-Type') || 'application/json' },
-          body: request.method === 'POST' ? new Blob(chunks) : undefined,
-          redirect: 'manual',
-          signal: AbortSignal.timeout(125000),
-        })
-        if (response.status >= 300 && response.status < 400) {
-          await response.body?.cancel()
-          return Response.json({ detail: 'Selfie backend returned an unexpected redirect.' }, { status: 502 })
-        }
-        return new Response(response.body, {
-          status: response.status,
-          headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
-        })
-      } catch {
-        return Response.json({ detail: { code: 'unavailable', message: 'Selfie шалгах backend ажиллахгүй байна. Дахин оролдоорой.' } }, { status: 503 })
-      }
-    }
+    if (path.startsWith('/api/v1/') || path.startsWith('/api/auth/') || path.startsWith('/api/liveness/')) return api.fetch(request, env, ctx)
     if (path === '/healthz') {
       return Response.json({ status: 'ok', service: 'hamtry-web' })
     }

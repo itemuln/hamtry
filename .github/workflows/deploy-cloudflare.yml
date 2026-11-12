@@ -29,9 +29,13 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: Front-End/client/package-lock.json
+      - name: Install Hono API dependencies
+        run: npm ci --prefix ../../Back-End/api
       - run: npm ci
       - run: npm run lint
       - run: npm test
+      - run: npm run api:test
+      - run: npm run lint --prefix ../../Back-End/api
       - run: npm run build
       - name: Deploy Worker and assets
         run: npm run deploy
@@ -44,6 +48,8 @@ jobs:
           origin=https://hamtry.23b1num3285.workers.dev
           curl --fail --silent --show-error --retry 5 --retry-delay 2 --retry-all-errors "$origin/healthz"
           curl --fail --silent --show-error "$origin/" > /dev/null
+          curl --fail --silent --show-error "$origin/api/v1/health"
+          curl --fail --silent --show-error "$origin/api/v1/listings?limit=1" > /dev/null
           curl --fail --silent --show-error "$origin/api/theme" > /dev/null
           curl --fail --silent --show-error "$origin/hamtry-theme.css" > /dev/null
           test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' "$origin/editor.html")" = 404
@@ -52,7 +58,7 @@ jobs:
       - name: Report selfie backend availability
         run: |
           status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -X POST https://hamtry.23b1num3285.workers.dev/api/liveness/sessions) || status=unreachable
-          if [ "$status" != 200 ]; then
+          if [ "$status" != 200 ] && [ "$status" != 401 ] && [ "$status" != 403 ]; then
             echo "::warning::Selfie backend is unavailable (HTTP $status). It remains hosted on the VPS."
           fi
           printf 'Selfie backend session endpoint: %s\n' "$status" >> "$GITHUB_STEP_SUMMARY"

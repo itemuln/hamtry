@@ -1,0 +1,25 @@
+PRAGMA foreign_keys = ON;
+CREATE TABLE user (id TEXT PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL UNIQUE, emailVerified INTEGER NOT NULL DEFAULT 0, image TEXT, role TEXT NOT NULL DEFAULT 'user' CHECK(role IN ('user','admin')), createdAt TEXT NOT NULL, updatedAt TEXT NOT NULL);
+CREATE TABLE session (id TEXT PRIMARY KEY, expiresAt TEXT NOT NULL, token TEXT NOT NULL UNIQUE, createdAt TEXT NOT NULL, updatedAt TEXT NOT NULL, ipAddress TEXT, userAgent TEXT, userId TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE);
+CREATE INDEX session_user ON session(userId);
+CREATE TABLE account (id TEXT PRIMARY KEY, accountId TEXT NOT NULL, providerId TEXT NOT NULL, userId TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, accessToken TEXT, refreshToken TEXT, idToken TEXT, accessTokenExpiresAt TEXT, refreshTokenExpiresAt TEXT, scope TEXT, password TEXT, createdAt TEXT NOT NULL, updatedAt TEXT NOT NULL, UNIQUE(providerId,accountId));
+CREATE INDEX account_user ON account(userId);
+CREATE TABLE verification (id TEXT PRIMARY KEY, identifier TEXT NOT NULL, value TEXT NOT NULL, expiresAt TEXT NOT NULL, createdAt TEXT NOT NULL, updatedAt TEXT NOT NULL);
+CREATE INDEX verification_identifier ON verification(identifier);
+CREATE TABLE rateLimit (id TEXT PRIMARY KEY, key TEXT NOT NULL UNIQUE, count INTEGER NOT NULL, lastRequest INTEGER NOT NULL);
+CREATE TABLE profiles (user_id TEXT PRIMARY KEY REFERENCES user(id) ON DELETE CASCADE, bio TEXT NOT NULL DEFAULT '', occupation TEXT NOT NULL DEFAULT '', updated_at INTEGER NOT NULL);
+CREATE TABLE listings (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL REFERENCES user(id), kind TEXT NOT NULL CHECK(kind IN ('rooms','roommates')), status TEXT NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','published','archived')), title TEXT NOT NULL, description TEXT NOT NULL, district TEXT NOT NULL, area TEXT NOT NULL DEFAULT '', price INTEGER NOT NULL CHECK(price>0 AND price<=100000000), size TEXT NOT NULL DEFAULT '', available TEXT NOT NULL, latitude REAL CHECK(latitude BETWEEN -85 AND 85), longitude REAL CHECK(longitude BETWEEN -180 AND 180), conditions TEXT NOT NULL DEFAULT '[]' CHECK(json_valid(conditions)), demo INTEGER NOT NULL DEFAULT 0 CHECK(demo IN (0,1)), created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL, CHECK((latitude IS NULL)=(longitude IS NULL)));
+CREATE INDEX listing_search ON listings(status,kind,district,price);
+CREATE INDEX listing_owner ON listings(owner_id,created_at);
+CREATE INDEX listing_cursor ON listings(status,created_at,id);
+CREATE INDEX listing_location ON listings(status,latitude,longitude);
+CREATE TABLE rooms (id TEXT PRIMARY KEY, listing_id TEXT NOT NULL REFERENCES listings(id) ON DELETE CASCADE, name TEXT NOT NULL, position INTEGER NOT NULL CHECK(position>=0), UNIQUE(listing_id,position));
+CREATE TABLE photos (id TEXT PRIMARY KEY, listing_id TEXT NOT NULL REFERENCES listings(id) ON DELETE CASCADE, room_id TEXT NOT NULL REFERENCES rooms(id) ON DELETE CASCADE, owner_id TEXT NOT NULL REFERENCES user(id), object_key TEXT NOT NULL UNIQUE, variant TEXT NOT NULL CHECK(variant IN ('detail','card','map')), mime TEXT NOT NULL CHECK(mime IN ('image/jpeg','image/png','image/webp')), bytes INTEGER NOT NULL CHECK(bytes BETWEEN 1 AND 10485760), width INTEGER NOT NULL CHECK(width>0 AND width<=20000), height INTEGER NOT NULL CHECK(height>0 AND height<=20000), caption TEXT NOT NULL DEFAULT '', position INTEGER NOT NULL CHECK(position BETWEEN 0 AND 11), created_at INTEGER NOT NULL, UNIQUE(room_id,position,variant));
+CREATE INDEX photo_listing ON photos(listing_id,room_id,position);
+CREATE TABLE saved_listings (user_id TEXT NOT NULL REFERENCES user(id) ON DELETE CASCADE, listing_id TEXT NOT NULL REFERENCES listings(id) ON DELETE CASCADE, created_at INTEGER NOT NULL, PRIMARY KEY(user_id,listing_id));
+CREATE TABLE verification_checks (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES user(id), upstream_id TEXT NOT NULL UNIQUE, status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','processing','passed','failed')), created_at INTEGER NOT NULL, completed_at INTEGER);
+CREATE INDEX verification_user ON verification_checks(user_id,created_at);
+CREATE TABLE reports (id TEXT PRIMARY KEY, reporter_id TEXT NOT NULL REFERENCES user(id), listing_id TEXT NOT NULL REFERENCES listings(id), reason TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'open' CHECK(status IN ('open','resolved')), created_at INTEGER NOT NULL, UNIQUE(reporter_id,listing_id));
+CREATE INDEX report_queue ON reports(status,created_at);
+
+CREATE TRIGGER enforce_photo_limit BEFORE INSERT ON photos WHEN NEW.variant='detail' AND NOT EXISTS(SELECT 1 FROM photos WHERE room_id=NEW.room_id AND position=NEW.position AND variant='detail') AND (SELECT COUNT(*) FROM photos WHERE listing_id=NEW.listing_id AND variant='detail')>=12 BEGIN SELECT RAISE(ABORT,'Photo limit reached'); END;

@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "hamtry-api-local",
+  "main": "server/api-local.js",
+  "compatibility_date": "2026-10-22",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [{"binding":"DB","database_name":"hamtry-db-local","database_id":"00000000-0000-0000-0000-000000000000","migrations_dir":"../../Back-End/api/migrations"}],
+  "r2_buckets": [{"binding":"PHOTOS","bucket_name":"hamtry-photos-local"}],
+  "vars": {"APP_ORIGIN":"http://localhost:5173","DEV_ORIGIN":"http://127.0.0.1:8787","LIVENESS_ORIGIN":"http://127.0.0.1:8001"}
+}

@@ -3,7 +3,9 @@
   "name": "hamtry",
   "main": "server/worker.js",
   "compatibility_date": "2026-10-22",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "workers_dev": true,
   "upload_source_maps": true,
   "assets": {
@@ -14,7 +16,25 @@
     "run_worker_first": true
   },
   "vars": {
-    "LIVENESS_ORIGIN": "https://hamtry.srv1869478.hstgr.cloud"
+    "LIVENESS_ORIGIN": "https://hamtry.srv1869478.hstgr.cloud",
+    "APP_ORIGIN": "https://hamtry.23b1num3285.workers.dev"
   },
-  "observability": { "enabled": true }
+  "observability": {
+    "enabled": true
+  },
+  "account_id": "d16cb0e8898a64f55a4e1fc8924fed03",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "hamtry-db",
+      "database_id": "ab67921f-9738-42c2-91af-f8c644cdd175",
+      "migrations_dir": "../../Back-End/api/migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "PHOTOS",
+      "bucket_name": "hamtry-photos"
+    }
+  ]
 }

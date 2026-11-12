@@ -37,3 +37,7 @@ passing local checks as production acceptance, deployment, or publication.
 - [Ordered implementation plan](roadmap.md)
 
 - [VPS deployment](deployment.md)
+
+- [Workers and offline behavior](workers-offline.md): image/selfie worker lifecycle, WASM and production-only service worker.
+
+- [Hono/D1/R2 backend](backend.md): plain SQL, authentication, ownership, media and same-origin frontend integration.

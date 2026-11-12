@@ -1,3 +1,4 @@
+import { testDatabase } from '../../../Back-End/api/tests/d1.js'
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import worker from '../server/worker.js'
@@ -27,24 +28,15 @@ test('Worker blocks editor aliases and internal backend routes before asset look
   assert.equal(new URL(assetRequest.url).pathname, '/index.html')
 })
 
-test('Selfie proxy forwards bounded JSON to the fixed origin without cookies', async t => {
-  let upstream
-  let options
-  t.mock.method(globalThis, 'fetch', async (url, init) => {
-    upstream = url
-    options = init
-    return Response.json({ session: 'test-session' })
-  })
-  const response = await worker.fetch(request('/api/liveness/sessions?test=1', {
-    method: 'POST', body: '{}', headers: { Cookie: 'private=test', Authorization: 'Bearer private' },
-  }), env)
-  assert.deepEqual(await response.json(), { session: 'test-session' })
-  assert.equal(upstream.href, 'https://inference.example/api/liveness/sessions?test=1')
-  assert.deepEqual(options.headers, { 'Content-Type': 'text/plain;charset=UTF-8' })
-  assert.equal(options.redirect, 'manual')
-  assert.equal(await options.body.text(), '{}')
-  assert.equal((await worker.fetch(request('/api/liveness/sessions', { method: 'POST', body: 'a'.repeat(1600001) }), env)).status, 413)
-  assert.equal(globalThis.fetch.mock.callCount(), 1)
+test('Selfie verification requires a session and never forwards unauthenticated frames', async t => {
+  const fetchMock = t.mock.method(globalThis, 'fetch', async () => { throw new Error('must not forward') })
+  const DB = testDatabase(); t.after(() => DB.close())
+  const authEnv = { ...env, DB, AUTH_SECRET: 'test-only-not-a-real-secret-'.repeat(3), APP_ORIGIN: origin }
+  const response = await worker.fetch(request('/api/liveness/sessions', { method: 'POST', body: '{}', headers: { Origin: origin, 'Content-Type': 'application/json' } }), authEnv)
+  assert.equal(response.status, 401)
+  assert.equal(fetchMock.mock.callCount(), 0)
+  assert.equal((await worker.fetch(request('/api/liveness/verify', { method: 'POST', body: 'a'.repeat(1600001), headers: { Origin: origin } }), authEnv)).status, 413)
+  assert.equal((await worker.fetch(request('/api/v1/listings', { method: 'POST', body: '{}', headers: { Origin: 'https://other.example' } }), authEnv)).status, 403)
 })
 
 test('Selfie proxy reports an upstream failure and rejects redirects', async t => {

@@ -554,3 +554,12 @@
   .ht-dialog[open]::backdrop { animation: ht-backdrop-arrive 180ms ease-out; }
   @keyframes ht-backdrop-arrive { from { opacity:0; } to { opacity:1; } }
 }
+
+/* Нэмэлт мэдээлэл доош нээгдэнэ; дэлгэсэн зарын товчнууд идэвхтэй хэвээр байна. */
+:host([compact-preview]) .ht-listing-content { padding:var(--ui-space-4); gap:var(--ui-space-2); }
+:host([compact-preview]) h3 { font-size:1.125rem; line-height:1.4; }
+:host([compact-preview]) .ht-card-peek { display:grid; grid-template-rows:0fr; opacity:0; visibility:hidden; width:100%; }
+:host([compact-preview]) .ht-card-peek-inner { min-height:0; overflow:hidden; }
+:host([compact-preview]:not(.is-expanded):is(:hover,:focus-within)) .ht-card-peek { grid-template-rows:1fr; opacity:1; visibility:visible; }
+:host([compact-preview].is-expanded) :is(.ht-card-peek,.ht-card-peek-inner) { display:contents; opacity:1; visibility:visible; overflow:visible; }
+@media(prefers-reduced-motion:no-preference) { :host([compact-preview]) .ht-card-peek { transition:grid-template-rows 300ms cubic-bezier(.16,1,.3,1),opacity 220ms ease,visibility 300ms; } }

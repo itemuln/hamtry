@@ -109,7 +109,7 @@ export function setupVerification(root, listen) {
       expiresAt = performance.now() + (created.expires_in || 180) * 1000
       const { createDetector } = await import('./selfie-detector.js')
       if (id !== request) return
-      const loaded = await createDetector()
+      const loaded = await createDetector({ signal: controller.signal })
       if (id !== request) { loaded.close(); return }
       detector = loaded
       stage = 'capture'; render()
@@ -125,7 +125,7 @@ export function setupVerification(root, listen) {
     try {
       const response = await fetch(`/api/liveness${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.any([signal, AbortSignal.timeout(120000)]) })
       const data = await response.json()
-      if (!response.ok) throw Object.assign(new Error('api'), { userMessage: data.detail?.message || 'Шалгах үйлчилгээ ажиллахгүй байна. Дахин оролдоорой.' })
+      if (!response.ok) throw Object.assign(new Error('api'), { userMessage: data.detail?.message || data.error?.message || 'Шалгах үйлчилгээ ажиллахгүй байна. Дахин оролдоорой.' })
       return data
     } catch (error) {
       if (error.name === 'AbortError') throw error
@@ -140,7 +140,7 @@ export function setupVerification(root, listen) {
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
     return canvas.toDataURL('image/jpeg', .85).split(',')[1]
   }
-  function track(sequence, id) {
+  async function track(sequence, id) {
     if (id !== request || stage !== 'capture') return
     if (performance.now() > expiresAt) {
       stop(); stage = 'error'; render('Шалгалтын хугацаа дууслаа. Дахин эхлүүлээрэй.'); return
@@ -148,7 +148,8 @@ export function setupVerification(root, listen) {
     try {
       if (video.readyState >= 2 && video.currentTime !== lastFrame) {
         lastFrame = video.currentTime
-        const result = detector.detectForVideo(video, performance.now())
+        const result = await detector.detectForVideo(video, performance.now())
+        if (id !== request || stage !== 'capture') return
         const pose = facePose(result.faceLandmarks, { width: video.videoWidth, height: video.videoHeight }, viewport.getBoundingClientRect())
         const state = sequence.update(pose, performance.now())
         dialog.querySelector('.selfie-guide').dataset.aligned = String(pose.valid)
@@ -162,6 +163,7 @@ export function setupVerification(root, listen) {
       // Bound inference to ~8 fps instead of processing every camera frame.
       timer = setTimeout(() => track(sequence, id), 120)
     } catch {
+      if (id !== request) return
       stop(); stage = 'error'; render('Нүүр илрүүлэлт тасарлаа. Камераа дахин нээгээд оролдоорой.')
     }
   }

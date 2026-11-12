@@ -1,3 +1,4 @@
+import { workerClient } from '../workers/client.js'
 // Зураг localStorage-д багтахгүй. Blob-ууд IndexedDB-д, metadata app store-д хадгалагдана.
 function openDatabase() {
   return new Promise((resolve, reject) => {
@@ -19,27 +20,19 @@ async function transaction(mode, run) {
     catch (error) { tx.abort(); db.close(); reject(error) }
   })
 }
-export const savePhotos = records => transaction('readwrite', store => records.forEach(record => store.put({ id: record.id, blob: record.blob })))
+export const savePhotos = records => transaction('readwrite', store => records.forEach(record => store.put({ id: record.id, blob: record.blob, mapBlob: record.mapBlob })))
 export const deletePhotos = ids => transaction('readwrite', store => ids.forEach(id => store.delete(id)))
-export const readPhoto = id => transaction('readonly', (store, set) => { store.get(id).onsuccess = event => set(event.target.result?.blob) })
+export const readPhoto = (id, variant = 'detail') => transaction('readonly', (store, set) => { store.get(id).onsuccess = event => { const photo = event.target.result; set(variant === 'map' ? photo?.mapBlob || photo?.blob : photo?.blob) } })
 
-// Original файлыг өөрчлөхгүй; preview-д зориулж багасгасан JPEG үүсгэнэ.
-export async function preparePhoto(file) {
-  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) throw new Error('JPG, PNG эсвэл WebP зураг сонгоно уу.')
-  if (file.size > 10 * 1024 * 1024) throw new Error('Нэг зураг 10 MB-аас бага байх ёстой.')
-  let bitmap
-  try { bitmap = await createImageBitmap(file) }
-  catch { throw new Error('Зургийг уншиж чадсангүй. Өөр JPG, PNG эсвэл WebP зураг сонгоно уу.') }
-  try {
-    const canvas = document.createElement('canvas')
-    const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height))
-    canvas.width = Math.max(1, Math.round(bitmap.width * scale)); canvas.height = Math.max(1, Math.round(bitmap.height * scale))
-    const context = canvas.getContext('2d'); context.fillStyle = 'white'; context.fillRect(0, 0, canvas.width, canvas.height); context.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
-    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', .82))
-    if (!blob) throw new Error('Зургийг бэлдэж чадсангүй.')
-    const cover = document.createElement('canvas'), ratio = Math.min(1, 360 / Math.max(canvas.width, canvas.height))
-    cover.width = Math.max(1, Math.round(canvas.width * ratio)); cover.height = Math.max(1, Math.round(canvas.height * ratio))
-    cover.getContext('2d').drawImage(canvas, 0, 0, cover.width, cover.height)
-    return { id: `photo-${crypto.randomUUID()}`, blob, cover: cover.toDataURL('image/jpeg', .7), caption: file.name.slice(0, 120) }
-  } finally { bitmap.close() }
+export async function preparePhoto(file, { signal } = {}) {
+  if (signal?.aborted) throw new DOMException('Цуцлагдлаа.', 'AbortError')
+  if (typeof Worker !== 'function' || typeof OffscreenCanvas !== 'function') {
+    const { processPhoto } = await import('./photo-processing.js')
+    return processPhoto(file)
+  }
+  const client = workerClient(new Worker(new URL('../workers/photos.worker.js', import.meta.url), { type: 'module', name: 'hamtry-photos' }))
+  const abort = () => client.close(new DOMException('Цуцлагдлаа.', 'AbortError'))
+  signal?.addEventListener('abort', abort, { once: true })
+  try { return await client.request('prepare', { file }) }
+  finally { signal?.removeEventListener('abort', abort); client.close() }
 }

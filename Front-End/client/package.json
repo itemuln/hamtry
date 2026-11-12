@@ -11,13 +11,17 @@
     "start": "node server/index.js",
     "test": "node --test tests/*.test.js",
     "deploy": "wrangler deploy",
-    "preview:cloudflare": "wrangler dev"
+    "preview:cloudflare": "wrangler dev",
+    "api:dev": "wrangler dev --config wrangler.local.jsonc --port 8787",
+    "api:migrate": "wrangler d1 migrations apply hamtry-db-local --local --config wrangler.local.jsonc",
+    "api:test": "npm --prefix ../../Back-End/api test"
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",
     "@fontsource/literata": "^5.3.0",
     "@fontsource/manrope": "^5.3.0",
     "@fontsource/source-sans-3": "^5.3.1",
+    "@jsquash/webp": "^1.5.0",
     "@mediapipe/tasks-vision": "^1.1.1",
     "@docx-editor.dev/core": "^2.36.0",
     "@docx-editor.dev/react": "^2.36.0",

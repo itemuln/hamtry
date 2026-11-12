@@ -47,8 +47,8 @@ export function parseDemo(value) {
     published: Array.isArray(value.published) ? value.published.filter(item => item && typeof item.id === 'string' && item.id.startsWith('local-') && typeof item.title === 'string' && typeof item.district === 'string' && Number.isFinite(item.price) && item.price > 0 && item.price <= 100000000 && typeof item.description === 'string').slice(0, 20).map(item => ({
       id: item.id.slice(0, 100), title: item.title.slice(0, 100), district: item.district.slice(0, 50), price: item.price, description: item.description.slice(0, 1500),
       location: validLocation(item.location) ? [...item.location] : null,
-      // Зөвхөн бидний JPEG thumbnail. Blob болон гаднын src/url нь metadata-д орохгүй.
-      cover: typeof item.cover === 'string' && item.cover.length <= 400000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(item.cover) ? item.cover : '',
+      // Зөвхөн бидний JPEG/WebP thumbnail. Blob болон гаднын src/url нь metadata-д орохгүй.
+      cover: typeof item.cover === 'string' && item.cover.length <= 400000 && /^data:image\/(?:jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(item.cover) ? item.cover : '',
       rooms: restoreRooms(item.rooms),
     })) : [],
   }

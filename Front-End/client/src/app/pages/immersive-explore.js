@@ -1,4 +1,5 @@
 import { HamtryElement, createMotion, listen, onCleanup, required, signal, useEffect } from '@hamtry/library'
+import { readPhoto } from '../state/media-store.js'
 import { listings } from '../data/listings.js'
 import { money, validLocation } from '../state/model.js'
 import { createAppState } from '../state/store.js'
@@ -23,7 +24,7 @@ export class HamtryImmersiveExplore extends HamtryElement {
 
         <h2>Өрөөнүүд <span class="count"></span></h2><p class="sample-note">Хичээлийн жишээ зарууд · бодит хаяг биш</p><div class="map-rooms" role="group" aria-label="Өрөөний байршил сонгох"></div>
         <p class="reference">ImmersiveMap-ийн зарчимд тулгуурласан веб хувилбар. <a href="https://github.com/artembobkin/ImmersiveMap" target="_blank" rel="noopener noreferrer">Эх төсөл ↗</a></p>
-      </aside><section class="map-stage" aria-label="Улаанбаатарын интерактив газрын зураг"><div class="map-canvas"></div><div class="map-toolbar"><div class="map-modes" role="group" aria-label="Газрын зургийн харагдац"><button type="button" data-mode="city" aria-pressed="true">3D</button><button type="button" data-mode="flat" aria-pressed="false">2D</button></div></div><p class="building-legend"><span aria-hidden="true"></span>Зартай барилга <small>Зааж эсвэл дарж үзээрэй</small></p><p class="map-status" role="status">Газрын зураг ачаалж байна…</p><div class="room-preview" hidden><button class="close-preview" type="button" aria-label="Дэлгэрэнгүй хаах">×</button><h2></h2><p class="room-meta"></p><strong class="room-price"></strong><p class="room-description"></p><a class="room-link">Зарын дэлгэрэнгүй үзэх →</a></div></section></main></div>`
+      </aside><section class="map-stage" aria-label="Улаанбаатарын интерактив газрын зураг"><div class="map-canvas"></div><div class="map-toolbar"><div class="map-modes" role="group" aria-label="Газрын зургийн харагдац"><button type="button" data-mode="city" aria-pressed="true">3D</button><button type="button" data-mode="flat" aria-pressed="false">2D</button></div></div><p class="building-legend"><span aria-hidden="true"></span>Зартай барилга <small>Зааж эсвэл дарж үзээрэй</small></p><p class="map-status" role="status">Газрын зураг ачаалж байна…</p><div class="room-preview" role="region" aria-label="Сонгосон өрөө" hidden><button class="close-preview" type="button" aria-label="Дэлгэрэнгүй хаах"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><article class="map-property"><img class="room-image" alt=""><div class="property-copy"><h2></h2><p class="room-meta"></p><strong class="room-price"></strong><div class="room-facts"></div><p class="room-description"></p><div class="room-owner"></div></div></article></div></section></main></div>`
   }
   setup() {
     const $ = selector => required(selector, this.root)
@@ -31,6 +32,9 @@ export class HamtryImmersiveExplore extends HamtryElement {
     let items = []
     const status = $('.map-status'), container = $('.map-canvas'), rooms = $('.map-rooms')
     let active = true, mapScene, buildings, selected, itemKey = '', mode = 'city', loaded = false, previewClosing = false, pendingFocus = ''
+    let photoRevision = 0, photoUrl
+    const releasePhoto = () => { photoRevision++; if (photoUrl) URL.revokeObjectURL(photoUrl); photoUrl = undefined }
+    onCleanup(releasePhoto)
     const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches
     // Reconnect үед хуучин marker DOM болон canvas-ийг үлдээхгүй.
     container.replaceChildren(); rooms.replaceChildren(); $('.room-preview').hidden = true
@@ -44,12 +48,31 @@ export class HamtryImmersiveExplore extends HamtryElement {
       selected = id; this.selectedId = id
       for (const node of rooms.children) node.setAttribute('aria-pressed', String(node.dataset.id === id))
       $('.room-preview').hidden = false
-      $('.room-preview h2').textContent = item.title
-      $('.room-meta').textContent = [item.district, item.area, item.size].filter(Boolean).join(' · ')
-      $('.room-price').textContent = `${money(item.price)} / сар`
-      $('.room-description').textContent = item.description
-      $('.room-link').href = `/#listing/${encodeURIComponent(item.id)}`
-      if (reveal) motion.play($('.room-preview'), { opacity: [.6, 1], transform: ['translateY(12px)', 'none'] }, { duration: 240 })
+      {
+        const card = $('.map-property')
+        card.querySelector('h2').textContent = item.title
+        card.querySelector('.room-meta').textContent = [item.district, item.area].filter(Boolean).join(' · ')
+        card.querySelector('.room-price').textContent = `${money(item.price)} / сар`
+        card.querySelector('.room-description').textContent = item.description || ''
+        const image = card.querySelector('.room-image')
+        image.hidden = !item.image
+        if (item.image) image.src = item.mapImage || item.image
+        else image.removeAttribute('src')
+        image.alt = item.imageAlt || item.title
+        releasePhoto()
+        const revision = photoRevision, photoId = item.rooms?.[0]?.photos?.[0]?.id
+        if (photoId && !item.remote) void readPhoto(photoId, 'map').then(blob => {
+          if (!active || revision !== photoRevision || !blob) return
+          photoUrl = URL.createObjectURL(blob); image.src = photoUrl; image.hidden = false
+        }).catch(() => { /* Thumbnail нь зураг хадгалалтаас олдохгүй үед хэвээр үлдэнэ. */ })
+        const facts = card.querySelector('.room-facts')
+        facts.replaceChildren()
+        for (const value of [item.size, item.available, ...(item.traits || [])].filter(Boolean)) {
+          const chip = document.createElement('span'); chip.textContent = value; facts.append(chip)
+        }
+        card.querySelector('.room-owner').textContent = item.owner || ''
+      }
+      if (reveal) motion.play($('.room-preview'), { opacity: [.35, 1], transform: ['translateY(10px)', 'none'] }, { duration: 380 })
       mapScene?.update(items, id)
       buildings?.update(items, id)
       if (loaded) {
@@ -106,9 +129,10 @@ export class HamtryImmersiveExplore extends HamtryElement {
       const preview = $('.room-preview')
       if (preview.hidden || previewClosing) return
       previewClosing = true
+      photoRevision++
       motion.play(preview, { opacity: [1, 0], transform: ['none', 'translateY(6px)'] }, {
-        duration: 130,
-        onComplete: () => { previewClosing = false; preview.hidden = true; container.querySelector(`[data-id="${selected}"]`)?.focus() },
+        duration: 200,
+        onComplete: () => { previewClosing = false; preview.hidden = true; releasePhoto(); container.querySelector(`[data-id="${selected}"]`)?.focus() },
       })
     }
     listen($('.close-preview'), 'click', closePreview)

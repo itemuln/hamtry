@@ -16,6 +16,7 @@ export class HamtryRoommateCard extends HamtryElement {
     'price',
     'description',
     'saved',
+    'compact-preview',
   ]
   property = false
   get saved() {
@@ -26,16 +27,13 @@ export class HamtryRoommateCard extends HamtryElement {
   }
   render() {
     style(this.root)
-    this.root.innerHTML =
-      '<article class="ht-listing" part="card"><div class="ht-listing-image" part="media"><img part="image"><button class="ht-save" type="button"></button></div><div class="ht-listing-content" part="content"><h3 part="summary"><slot name="heading"><span class="heading-fallback"></span></slot></h3><p class="location" part="summary"></p><strong class="ht-budget" part="summary"></strong><p class="description" part="summary"></p><slot></slot></div></article>'
-    required('article', this.root).classList.toggle(
-      'ht-property',
-      this.property,
-    )
+    this.root.innerHTML = `<article class="ht-listing ${this.property ? 'ht-property' : ''}" part="card"><div class="ht-listing-image" part="media"><img part="image"><button class="ht-save" type="button"></button></div><div class="ht-listing-content" part="content"><h3 part="summary"><slot name="heading"><span class="heading-fallback"></span></slot></h3><p class="location" part="summary"></p><strong class="ht-budget" part="summary"></strong><div class="ht-card-peek" part="peek"><div class="ht-card-peek-inner"><p class="description" part="summary"></p><slot></slot></div></div></div></article>`
   }
+
   setup() {
-    const image = required('img', this.root)
-    const button = required('button', this.root)
+    const card = required('article', this.root)
+    const image = required('img', card)
+    const button = required('button', card)
     useEffect(() => {
       this.attributesChanged.get()
       const source = this.getAttribute('image')
@@ -45,12 +43,12 @@ export class HamtryRoommateCard extends HamtryElement {
       image.alt = this.getAttribute('image-alt') || ''
       image.loading = 'lazy'
       // Хэрэглэгчийн текстийг HTML болгон тайлбарлуулахгүйгээр оруулна.
-      required('.heading-fallback', this.root).textContent = this.getAttribute('heading') || ''
-      required('.location', this.root).textContent =
+      required('.heading-fallback', card).textContent = this.getAttribute('heading') || ''
+      required('.location', card).textContent =
         this.getAttribute('location') || ''
-      required('strong', this.root).textContent =
+      required('strong', card).textContent =
         this.getAttribute('price') || ''
-      required('.description', this.root).textContent =
+      required('.description', card).textContent =
         this.getAttribute('description') || ''
       button.textContent = this.saved ? '♥' : '♡'
       button.setAttribute('aria-pressed', String(this.saved))

@@ -456,3 +456,17 @@ hamtry-home .menu-button { display:grid; place-items:center; width:2.75rem; heig
  .detail-actions hamtry-button:hover::part(button) { transform:translateY(-1px); }
 }
 @media(prefers-reduced-motion:no-preference) { .detail-collapse:active,.detail-map:active,.site-header :is(.add-listing-button,.menu-button,.profile-button):active { transform:scale(.97); } }
+
+.listing-grid :is(hamtry-property-card,hamtry-roommate-card)[compact-preview] .card-extras { padding-top:var(--ui-space-2); }
+
+.listing-grid :is(hamtry-property-card,hamtry-roommate-card)[compact-preview]:not(.is-expanded) { align-self:start; }
+
+.account-section { margin-bottom:var(--ui-space-5); }
+.account-form { display:grid; gap:var(--ui-space-4); }
+.account-form label { display:grid; gap:var(--ui-space-2); font-weight:600; }
+.account-form input { box-sizing:border-box; width:100%; min-height:var(--size-touch); padding:var(--ui-space-3); background:var(--surface-base); color:var(--text-primary); border:1px solid var(--border-default); border-radius:var(--ui-radius-control); font:inherit; }
+.account-form button,.account-logout,.load-more { min-height:var(--size-touch); border:0; padding:var(--ui-space-3) var(--ui-space-4); border-radius:var(--ui-radius-control); background:var(--brand-primary); color:var(--text-inverse); font:600 var(--type-body-sm)/1.4 var(--font-sans); cursor:pointer; }
+.account-form .account-mode { background:var(--surface-interactive); color:var(--text-primary); }
+.account-feedback { margin:0; color:var(--text-secondary); }
+.load-more { display:block; margin:var(--ui-space-6) auto; }
+.load-more[hidden] { display:none; }

@@ -30,8 +30,9 @@ export class HamtryRoomEditor extends HamtryElement {
   }
   setup() {
     let active = true
+    const uploads = new AbortController()
     this.pending.set(0)
-    onCleanup(() => { active = false })
+    onCleanup(() => { active = false; uploads.abort() })
     const update = (id, callback) => this.rooms.set(rooms => rooms.map(room => room.id === id ? callback(room) : room))
     listen(required('.add-room', this.root), 'click', () => {
       if (this.rooms.get().length >= 6) return
@@ -58,7 +59,7 @@ export class HamtryRoomEditor extends HamtryElement {
       this.pending.set(count => count + 1); this.message.set('Зураг бэлдэж байна…')
       try {
         for (const file of files) {
-          const photo = await preparePhoto(file)
+          const photo = await preparePhoto(file, { signal: uploads.signal })
           if (!active) return
           update(id, room => ({ ...room, photos: [...room.photos, photo] }))
         }
