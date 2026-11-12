@@ -5,7 +5,7 @@ export function createAppState() {
   let initial
   try { initial = parseDemo(JSON.parse(localStorage.getItem(key))) }
   catch { initial = parseDemo(null) }
-  const state = { backend: signal(false), connection: signal('loading'), detail: signal(null), detailError: signal(null), user: signal(null), catalog: signal(null), remoteSaved: signal([]), nextCursor: signal(null), loading: signal(false), route: signal(readRoute(location.hash)), filters: signal({ ...initialFilters }), kind: signal('rooms'), saved: signal(initial.saved), role: signal(initial.role), published: signal(initial.published) }
+  const state = { backend: signal(false), connection: signal('loading'), detail: signal(null), detailError: signal(null), user: signal(null), catalog: signal(null), remoteSaved: signal([]), nextCursor: signal(null), loading: signal(false), route: signal(readRoute(location.hash)), filters: signal({ ...initialFilters }), kind: signal('rooms'), saved: signal(initial.saved.filter(id => !/^(room|person)-\d+$/.test(id))), role: signal(initial.role), published: signal([]) }
   // UI үйлдэл хийхэд л бичнэ. Account/backend хадгалалт гэж үзэхгүй.
   state.persist = () => {
     if (state.backend.get()) return true

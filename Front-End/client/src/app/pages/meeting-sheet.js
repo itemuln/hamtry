@@ -85,7 +85,7 @@ export function setupMeetingSheet(dashboard, { listen, getListings, onScheduled 
     if (!field('person').value) {
       sheet.querySelector('[data-contact-search]').value = ''; searchContacts()
       error.textContent = 'Баруун талын жагсаалтаас уулзах хүнээ сонгоно уу.'; error.hidden = false
-      sheet.querySelector('input[name="person"]').focus()
+      sheet.querySelector('input[name="person"]')?.focus()
       return
     }
     if (!form.reportValidity()) return

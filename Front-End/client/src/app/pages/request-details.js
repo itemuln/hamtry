@@ -1,7 +1,6 @@
 import { onCleanup } from '@hamtry/library'
-import { listings } from '../data/listings.js'
 import { people, meetings } from './dashboard-attention.js'
-import { demoListings, rentalRequests, requestStatus, pendingRequests, decideRequest, meetingsForRequest } from '../state/dashboard-requests.js'
+import { rentalRequests, requestStatus, pendingRequests, decideRequest, meetingsForRequest } from '../state/dashboard-requests.js'
 import './request-details.css'
 
 const statusLabels = { pending: 'Хариу хүлээж байна', accepted: 'Зөвшөөрсөн', rejected: 'Татгалзсан' }
@@ -60,7 +59,8 @@ export function setupRequestDetails(root, { listen, onDecision }) {
   for (const button of dashboard.querySelectorAll('[data-request-open]')) listen(button, 'click', () => {
     selected = rentalRequests.find(item => item.id === button.dataset.requestOpen)
     const person = people.find(item => item.id === selected.person)
-    const profile = listings.find(item => item.id === person.profileId)
+    const profile = (root.state.catalog.get() || []).find(item => item.id === person?.profileId)
+    if (!profile) return
     const profileRoot = dialog.querySelector('.request-profile')
     root.renderDetail(profileRoot, profile, false)
     const availability = document.createElement('div')
@@ -70,7 +70,7 @@ export function setupRequestDetails(root, { listen, onDecision }) {
     profileRoot.querySelector('hamtry-move-in-picker').replaceWith(availability)
     const character = dashboard.querySelector(`.meeting-contact [data-person="${person.id}"]`).cloneNode(true)
     profileRoot.querySelector('.detail-media').replaceChildren(character)
-    text('[data-request-listing]', [...demoListings, ...root.state.published.get()].find(item => item.id === selected.listingId)?.title || 'Зар идэвхгүй байна')
+    text('[data-request-listing]', root.state.published.get().find(item => item.id === selected.listingId)?.title || 'Зар идэвхгүй байна')
     text('[data-request-received]', `Хүсэлт ирсэн: ${selected.received}`)
     const appointments = meetingsForRequest(selected, meetings)
     const list = dialog.querySelector('[data-request-meetings]')
