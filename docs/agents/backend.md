@@ -23,3 +23,5 @@ Browser tests use local, disposable synthetic accounts only. No local fixtures,
 credentials or developer secret should be copied into production auth. Production
 classroom seeds have explicit demo flags and cannot sign in. R2 remains private;
 photo access is mediated by publication status or owner sessions.
+
+Origin validation is shared by Hono and Better Auth. `TRUSTED_ORIGINS` is an explicit comma-separated local allowlist (both localhost and 127.0.0.1 on ports 5173/8787); production uses `https://hamtry.site` as `APP_ORIGIN` and explicitly trusts the Workers address, without local origins.

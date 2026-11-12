@@ -50,6 +50,8 @@ export function useTheme() {
         body: JSON.stringify(exportTheme(next)),
       })
       if (!response.ok) throw new Error(await response.text())
+      localStorage.setItem('hamtry-theme-saved', String(Date.now()))
+      window.dispatchEvent(new Event('hamtry-theme-saved'))
       saved.current = next
       pending.current = JSON.stringify(current.current) !== JSON.stringify(next)
       setHasChanges(pending.current)
@@ -82,12 +84,13 @@ export function useTheme() {
   const retryLoad = useCallback(() => void load(), [load])
   useEffect(() => {
     const initial = setTimeout(() => void load(), 0)
-    const timer = setInterval(() => {
-      if (!pending.current && !saving.current) void load()
-    }, 2000)
+    const onSaved = event => {
+      if (event.key === 'hamtry-theme-saved' && !pending.current && !saving.current) void load()
+    }
+    window.addEventListener('storage', onSaved)
     return () => {
       clearTimeout(initial)
-      clearInterval(timer)
+      window.removeEventListener('storage', onSaved)
     }
   }, [load])
   useEffect(() => {

@@ -553,8 +553,11 @@ export class HamtryHome extends HTMLElement {
     listen(window, 'resize', () => { if (expandedCard) placeExpandedCard(expandedCard) })
     const setExpandedCard = (card, item) => {
       if (expandedCard === card) { if (card) placeExpandedCard(card); return }
-      const anchor = card || expandedCard, anchorBefore = anchor?.getBoundingClientRect()
+      const anchor = card || expandedCard
+      const anchorBefore = (expandedCard || card)?.getBoundingClientRect()
       if (expandedCard) {
+        motion.stop(expandedCard)
+        motion.stop(expandedCard.querySelector('.detail-content'))
         expandedCard.querySelector('hamtry-move-in-picker')?.close()
         expandedCard.classList.remove('is-expanded')
         expandedCard.style.order = String(Number(expandedCard.dataset.resultIndex || 0) * 2)
@@ -578,11 +581,12 @@ export class HamtryHome extends HTMLElement {
         link.setAttribute('aria-expanded', 'true'); link.setAttribute('aria-controls', content.id)
       }
       // Grid дахин байрлахад сонгосон card-ийн viewport өндөр хэвээр үлдэнэ.
-      if (anchorBefore && anchor?.isConnected && anchorBefore.bottom > 0 && anchorBefore.top < innerHeight) {
-        const shift = anchor.getBoundingClientRect().top - anchorBefore.top
+      if (anchorBefore && anchor?.isConnected && (card || (anchorBefore.bottom > 0 && anchorBefore.top < innerHeight))) {
+        const targetTop = card ? Math.max(searchDock.getBoundingClientRect().bottom, Math.min(anchorBefore.top, innerHeight / 3)) : anchorBefore.top
+        const shift = anchor.getBoundingClientRect().top - targetTop
         if (Math.abs(shift) > 1) window.scrollBy({ top: shift, behavior: 'instant' })
       }
-      if (anchor?.isConnected) motion.play(anchor, { opacity: [0, 1] }, { duration: 300, ease: 'cubic-bezier(.25,.1,.25,1)' })
+      if (card) motion.play(required('.detail-content', card), { opacity: [.35, 1] }, { duration: 300, ease: 'cubic-bezier(.25,.1,.25,1)' })
       if (card) required('.detail-collapse', card).focus({ preventScroll: true })
       else if (anchor?.isConnected) required('.card-title', anchor).focus({ preventScroll: true })
     }
