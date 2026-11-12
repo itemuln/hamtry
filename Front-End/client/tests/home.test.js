@@ -1,6 +1,16 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { calendarGrid, findListings, initialFilters, parseDemo, readRoute, validLocation } from '../src/app/state/model.js'
+import { calendarGrid, findListings, initialFilters, overdueMeetingMessage, parseDemo, readRoute, validLocation } from '../src/app/state/model.js'
+test('meeting message warns only when unanswered for over seven days', () => {
+  const now = Date.UTC(2026, 10, 11)
+  const sentAt = now - 7 * 86400000
+  const meetings = [{ person: 'nomin' }]
+  assert.equal(overdueMeetingMessage({ person: 'nomin', sentAt }, meetings, now), false)
+  assert.equal(overdueMeetingMessage({ person: 'nomin', sentAt: sentAt - 1 }, meetings, now), true)
+  assert.equal(overdueMeetingMessage({ person: 'nomin', sentAt: sentAt - 1, repliedAt: now }, meetings, now), false)
+  assert.equal(overdueMeetingMessage({ person: 'anu', sentAt: sentAt - 1 }, meetings, now), false)
+  assert.equal(overdueMeetingMessage({ person: 'nomin' }, meetings, now), false)
+})
 test('calendar starts on Monday and handles short months', () => {
   assert.deepEqual(calendarGrid(2026, 9).slice(0, 5), [null, null, null, 1, 2])
   assert.equal(calendarGrid(2028, 1).at(-1), 29)

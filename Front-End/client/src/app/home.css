@@ -54,7 +54,7 @@ hamtry-home h1, hamtry-home h2, hamtry-home h3 { font-family: var(--font-display
 .profile-button { border: 0; padding: var(--ui-space-control-wide) var(--ui-space-group); background: var(--brand-accent-lime); color: var(--brand-primary); border-radius: var(--ui-radius-dock); font-weight: 600; white-space: nowrap; }
 .profile-button span { margin-right: var(--ui-space-small); }
 .listing-section { padding-block: var(--ui-space-22); min-height: 34rem; scroll-margin-top: 2rem; }
-.publish-form { --surface-base: var(--home-paper); --border-default: var(--home-line); }
+.publish-form { --surface-base: var(--home-paper, var(--ui-surface-page)); --border-default: var(--home-line, var(--ui-border-line)); }
 .text-button { border: 0; background: none; color: var(--home-quiet); text-decoration: underline; font-size: var(--type-body-sm); min-height: 2.75rem; }
 .results-meta { display: flex; flex-wrap: wrap; gap: var(--ui-space-2) var(--ui-space-6); justify-content: space-between; align-items: center; font-size: var(--type-caption); color: var(--home-quiet); margin-bottom: var(--spacing-4); }
 .results-meta p { margin: 0; }
@@ -73,7 +73,7 @@ hamtry-home footer p { color: var(--home-quiet); font-size: var(--type-body-sm);
 hamtry-home footer div { margin-left: auto; display: flex; gap: var(--spacing-6); font-size: var(--type-caption); }
 hamtry-home footer small { flex-basis: 100%; padding-top: var(--spacing-5); border-top: 1px solid var(--home-line); color: var(--home-quiet); font-size: var(--type-caption); }
 .toast { position: fixed; bottom: var(--spacing-6); left: 50%; transform: translateX(-50%); z-index: 20; background: var(--brand-primary); color: var(--text-inverse); padding: var(--ui-space-4) var(--ui-space-6); border-radius: var(--ui-radius-pill); box-shadow: var(--shadow-lg); width: max-content; max-width: 90%; font-size: var(--type-body-sm); }
-hamtry-home hamtry-dialog { --text-primary: var(--brand-primary); --surface-elevated: var(--home-paper); --border-default: var(--home-line); }
+hamtry-home hamtry-dialog { --text-primary: var(--brand-primary); --surface-elevated: var(--home-paper, var(--ui-surface-page)); --border-default: var(--home-line, var(--ui-border-line)); }
 .detail-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: var(--radius-lg); }
 .detail-summary { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-4); margin-top: var(--spacing-5); }
 .detail-summary strong { font-size: 1.5rem; font-family: var(--font-display); }
@@ -390,7 +390,7 @@ hamtry-home .menu-button { display:grid; place-items:center; width:2.75rem; heig
 .header-menu { position:fixed; inset:auto; margin:0; width:min(21rem,calc(100vw - 1.5rem)); max-height:80dvh; overflow:auto; padding:var(--ui-space-compact); border:1px solid var(--home-line); border-radius:var(--ui-radius-menu); background:var(--home-paper); color:var(--brand-primary); box-shadow:var(--ui-shadow-menu); }
 .header-menu button { display:flex; align-items:center; width:100%; gap:var(--ui-space-button); border:0; border-radius:var(--ui-radius-item); padding:var(--ui-space-4) var(--ui-space-button); color:inherit; background:transparent; font:600 .9375rem var(--font-sans); text-align:left; }
 .header-menu svg { width:1.35rem; height:1.35rem; flex:none; }
-.header-menu .appearance-toggle:hover { background:var(--surface-interactive); }
+.header-menu button:not(:disabled):hover { background:var(--surface-interactive); }
 .appearance-switch { margin-left:auto; flex:none; width:2.5rem; height:1.4rem; padding:var(--ui-space-micro); border-radius:var(--ui-radius-panel); background:var(--home-line); }
 .appearance-switch::before { content:''; display:block; width:1rem; height:1rem; border-radius:var(--ui-radius-circle); background:var(--brand-primary); }
 [aria-checked="true"] .appearance-switch { background:var(--surface-interactive); }

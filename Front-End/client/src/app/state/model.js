@@ -1,6 +1,7 @@
 // Browser-оос хамааралгүй хайлтын дүрэм. Тест нь зөвхөн бодит filter/route behavior шалгана.
 export const initialFilters = { district: 'all', maxPrice: 0, query: '', pets: false, conditions: [] }
 export const money = value => new Intl.NumberFormat('mn-MN').format(value) + ' ₮'
+export const overdueMeetingMessage = (message, meetings, now = Date.now()) => Number.isFinite(message.sentAt) && !message.repliedAt && now - message.sentAt > 7 * 86400000 && meetings.some(meeting => meeting.person === message.person)
 export function calendarGrid(year, month) {
   const blanks = (new Date(year, month, 1).getDay() + 6) % 7
   const days = new Date(year, month + 1, 0).getDate()
