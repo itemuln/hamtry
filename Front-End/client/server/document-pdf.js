@@ -54,7 +54,7 @@ export async function renderPdf(html) {
 export function createPdfRoute({ render = renderPdf } = {}) {
   let busy = false
   return (req, res) => {
-    if (new URL(req.url, 'http://localhost').pathname !== '/api/documents/pdf') return false
+    if (new URL(req.url, 'http://hamtry.site').pathname !== '/api/documents/pdf') return false
     if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); json(res,405,'Зөвхөн POST хүсэлт хүлээн авна.'); return true }
     if (req.headers.origin) {
       let sameOrigin = false
