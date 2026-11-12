@@ -59,6 +59,16 @@ input { accent-color:var(--brand-primary); }
 
 .map-toolbar .map-modes button { white-space:nowrap; min-height:2.5rem; border:0; padding:var(--ui-space-label-gap) var(--ui-space-3); }
 
+.map-toolbar { z-index:2; }
+.building-legend { position:absolute; top:4.75rem; left:1rem; margin:0; padding:var(--ui-space-2) var(--ui-space-3); border-radius:var(--radius-md); background:var(--surface-elevated); color:var(--text-primary); font-size:.8125rem; pointer-events:none; box-shadow:var(--ui-shadow-pin); }
+.building-legend > span { display:inline-block; width:.65rem; height:.65rem; margin-right:var(--ui-space-1); border-radius:var(--ui-radius-chip); background:var(--brand-primary); }
+.building-legend small { display:block; color:var(--text-secondary); }
+.price-pin:focus-visible { outline:3px solid var(--brand-accent-lime); outline-offset:3px; }
+@media(hover:hover) and (pointer:fine) {
+ .price-pin { transition:background-color 180ms ease,color 180ms ease; }
+ .price-pin:hover { background:var(--brand-accent-lime); color:var(--brand-primary); }
+}
+
 /* Compact map configuration: one hover/touch trigger and three view choices. */
 .map-settings { position:relative; }
 .map-toolbar .map-settings-toggle { place-items:center; background:var(--surface-elevated); border:1px solid var(--border-default); box-shadow:var(--ui-shadow-pin); }

@@ -8,7 +8,7 @@ and `#dashboard` retain their existing behavior. The 3D navigation link selects
 `hamtry-immersive-map` embeds `HamtryImmersiveExplore` beneath that header,
 without its standalone sidebar/header. `listings` supplies validated filtered
 coordinates; `selectedId` updates marker selection. It fills the remaining
-viewport, exposes city/flat/globe/building controls, and links previews to the
+viewport, exposes 3D/2D controls, and links previews to the
 existing listing dialog. Initialization waits until the map becomes visible.
 `#list` is an explicit room-list route. The classic procedural city is no longer
 linked or selected by the Explore entry. No React/Swift runtime is added.
@@ -22,10 +22,10 @@ basemap, markers and attribution. A separate OpenFreeMap building vector source
 is extruded using `render_height` / `render_min_height` at zoom 14+. Missing height
 falls back to 6m for display; these heights are map metadata, not survey evidence.
 
-Controls: the rounded mode dropdown shows the active 2D / 3D / globe label and icon. Clicking toggles an animated choice panel; selection updates the trigger and closes it. Building visibility and reset to Ulaanbaatar remain inside the panel. Escape, outside pointer input, and leaving keyboard focus dismiss it. The panel uses scoped Anime.js WAAPI animations (200ms open / 130ms close), and room previews use 240ms entry / 130ms exit. Reopening cancels a stale close. Reduced motion skips these animations; no extra map rendering loop is added.
+Controls: 3D and 2D select the map mode. Room previews retain scoped Anime.js WAAPI entry (240ms) and exit (130ms), with reduced-motion handling.
 Room buttons and markers share a preview with a link to the homepage detail route.
 Fixtures and validated browser-local room publications are included; people without
-coordinates are not placed on the map. Selecting a room returns to city view.
+coordinates are not placed on the map. Selecting a room preserves the current map mode.
 Reduced motion skips camera flights. Map tile failures retain the keyboard-accessible
 room list. A delayed-load message appears after 12 seconds. WebGL and remote tile
 availability are required for map rendering; no API key or paid service was added.
@@ -105,5 +105,38 @@ the injected helper script or its token.
 
 The embedded map exposes focusListing(id) during its connected lifecycle. It
 queues a requested listing until map loading finishes, then selects its marker,
-opens its preview and flies to the stored coordinates in 3D. Reduced motion uses
+opens its preview and flies to the stored coordinates in the current mode. Reduced motion uses
 a zero-duration camera move. The method is released on disconnect.
+
+The flat mode is now “2D · Дагуул”: full-color Esri World Imagery raster tiles,
+with Esri/imagery-provider attribution, no saturation filter and no building
+extrusion. The raster layer is visible only in flat mode. Room selection and
+embedded fit retain satellite mode. Imagery is fetched only when visible and
+requires connectivity; room lists remain usable on tile failure.
+
+3D city uses the light vector basemap with a theme `surface-base` background,
+opaque, vertically shaded buildings and warm directional lighting. Unlisted
+buildings use `border-default`, and listed buildings use `brand-primary`. These are extruded
+map footprints, not photogrammetry or satellite-textured building facades.
+
+Map toolbar is limited to 3D and 2D.
+Custom landmark facade work was reverted. Vector ground and shaded standard
+extrusions remain; there is no globe or separate building toggle in this toolbar.
+
+`components/listing-buildings.js` matches filtered listing coordinates against
+loaded OpenFreeMap building Polygon/MultiPolygon footprints, excluding holes and
+`hide_3d` features. All loaded footprints become separate GeoJSON features;
+only containing footprints receive brand-primary colour;
+unmatched coordinates retain markers without inventing a building association.
+Duplicate tile geometries are collapsed; multiple listings share a footprint.
+Merged MultiPolygon features are split into individual polygons before matching,
+so unrelated buildings in the same vector feature keep their original colour.
+Every building can be hovered independently, including buildings without listings.
+Map hover uses the polygon feature id; marker hover/focus and selection use listing
+ids. Both emphasize the relevant building with brand-accent-lime.
+Feature-state colour interpolation lasts 180ms, retargets from the current value,
+and settles immediately for reduced motion. No height distortion or idle RAF loop.
+Click/tap opens the existing listing preview for listed buildings; unlisted
+buildings do not invent a listing or open an empty preview. Markers retain keyboard access.
+2D hides the building layer. Source/move listeners, theme listeners and pending
+frames are released before the owned MapLibre instance is removed.
