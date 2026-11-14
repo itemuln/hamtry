@@ -225,6 +225,11 @@ Selecting a map marker opens an inline overlay with the listing photo, title, lo
 
 Room cards use the native `compact-preview` attribute: title, location and price remain visible; hover/focus reveals supporting metadata below through a 300 ms grid-row transition. Collapsed cards align to the grid row start. Expanded detail content remains visible and interactive; no pointer-events suppression is applied.
 
+Inline selection cancels the previous card fade before switching, fades only detail content, and clamps scroll anchoring below the sticky search dock so a selected room cannot open above the visible area.
+
+Marketplace and dashboard render backend records or empty states only. No sample people, messages, meetings, view metrics, listings, fake owners, or fixture-photo fallback are shipped. Backend failure does not publish browser-only listings. Search districts and authored map destinations remain configuration.
+
 ### Contract document deletion
 
 The documents section provides a separate delete button for each browser-local DOCX. Confirmation names the file. Deletion waits for an in-flight autosave, cancels pending opens and saves, removes the IndexedDB record, and closes the editor when deleting the current document. Other files remain intact.
+

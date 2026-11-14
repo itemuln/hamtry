@@ -22,4 +22,8 @@ async function refresh() {
   }
 }
 await refresh()
-setInterval(refresh, 2000)
+// Theme хадгалсан үед л бусад цонх болон энэ хуудсыг шинэчилнэ.
+window.addEventListener('storage', event => {
+  if (event.key === 'hamtry-theme-saved') void refresh()
+})
+window.addEventListener('hamtry-theme-saved', () => void refresh())

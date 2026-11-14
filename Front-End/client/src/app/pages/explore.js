@@ -1,6 +1,6 @@
 import { HamtryElement, listen, onCleanup, required, signal, flushEffects, untrack, useEffect } from '@hamtry/library'
 import { places, placeById, readExploreRoute } from '../data/places.js'
-import { listings } from '../data/listings.js'
+import { request } from '../state/api.js'
 import { money } from '../state/model.js'
 import { createAppState } from '../state/store.js'
 import css from '../explore.css?inline'
@@ -204,13 +204,13 @@ export class HamtryExplore extends HamtryElement {
       if (!this.app.toggleSaved(card.dataset.id)) feedback('Сонголт энэ удаа хадгалагдсангүй. Хөтөчийн хадгалах эрхийг шалгаарай.')
     })
   }
-  showContent(action) {
+  async showContent(action) {
     const dialog = required('.content-dialog', this.root), content = required('.content', this.root)
     content.replaceChildren()
     if (action === 'desk') {
       dialog.setAttribute('heading', 'Өөрийн өрөөг санал болгох')
       const paragraph = document.createElement('p')
-      paragraph.textContent = 'Өрөөний байршил, зураг, түрээсээ бэлдээд Hamtry-ийн зарын хэсэгт урьдчилан хараарай. Зар зөвхөн энэ хөтөчид хадгалагдана.'
+      paragraph.textContent = 'Өрөөний байршил, зураг, түрээсээ бэлдээд Hamtry-ийн зарын хэсэгт урьдчилан хараарай. Нэвтэрсэн бүртгэлээрээ зарыг нийтлээрэй.'
       const link = document.createElement('a'); link.className = 'content-link'; link.href = '/#dashboard'; link.textContent = 'Өрөөний зар бэлдэх →'
       // Provider сонголт нь өмнөх page-ийн browser-local dashboard-ийг нээнэ.
       link.addEventListener('click', event => { this.app.role.set('provider'); if (!this.app.persist()) { event.preventDefault(); paragraph.textContent = 'Сонголтоо хадгалж чадсангүй. Хөтөчийн хадгалах эрхийг шалгаад дахин оролдоорой.' } })
@@ -218,9 +218,14 @@ export class HamtryExplore extends HamtryElement {
     } else {
       const saved = action === 'shelf', roommates = action === 'menu'
       dialog.setAttribute('heading', saved ? 'Таны хадгалсан булангууд' : roommates ? 'Нэг шинэ танил' : 'Таны дараагийн орон зай')
-      const note = document.createElement('p'); note.className = 'content-note'; note.textContent = 'Хичээлийн жишээ зарууд · Сонголт зөвхөн энэ хөтөчид хадгалагдана.'
+      const note = document.createElement('p'); note.className = 'content-note'; note.textContent = 'Ачаалж байна…'
       const grid = document.createElement('div'); grid.className = 'content-grid'
-      const items = saved ? listings.filter(item => this.app.saved.get().includes(item.id)) : listings.filter(item => item.kind === (roommates ? 'roommates' : 'rooms'))
+      content.append(note, grid); dialog.showModal()
+      let items
+      try {
+        items = (await request(saved ? '/api/v1/saved' : `/api/v1/listings?kind=${roommates ? 'roommates' : 'rooms'}`)).data
+        note.textContent = ''
+      } catch (error) { note.textContent = error.message; return }
       for (const item of items) {
         const card = document.createElement(item.kind === 'rooms' ? 'hamtry-property-card' : 'hamtry-roommate-card')
         for (const [key, value] of Object.entries({ heading: item.title, image: item.image, 'image-alt': item.imageAlt, location: `${item.district} · ${item.area}`, price: `${money(item.price)} / сар`, description: item.size })) card.setAttribute(key, value)
@@ -230,8 +235,7 @@ export class HamtryExplore extends HamtryElement {
       }
       if (!items.length) { const empty = document.createElement('p'); empty.textContent = 'Тавиур тань одоохондоо хоосон. Өрөө эсвэл хамтрагчийн зүрхэн товчоор сонголтоо хадгалаарай.'; grid.append(empty) }
       if (saved && this.app.published.get().some(item => this.app.saved.get().includes(item.id))) { const link = document.createElement('a'); link.className = 'content-link'; link.href = '/#saved'; link.textContent = 'Өөрийн заруудтай бүх хадгалсан сонголт →'; grid.append(link) }
-      content.append(note, grid)
     }
-    dialog.showModal()
+    if (!dialog.open) dialog.showModal()
   }
 }

@@ -17,7 +17,8 @@
   },
   "vars": {
     "LIVENESS_ORIGIN": "https://hamtry.srv1869478.hstgr.cloud",
-    "APP_ORIGIN": "https://hamtry.23b1num3285.workers.dev"
+    "APP_ORIGIN": "https://hamtry.site",
+    "TRUSTED_ORIGINS": "https://hamtry.23b1num3285.workers.dev"
   },
   "observability": {
     "enabled": true

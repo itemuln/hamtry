@@ -33,7 +33,7 @@ try {
   const room=(await call(`/api/v1/listings/${draft.id}/rooms`,{method:'POST',cookie:a,body:{name:'Зочны өрөө',position:0}},201)).data.data
   const upload=(blob)=>{const form=new FormData();form.set('roomId',room.id);form.set('position','0');form.set('caption','Local fixture');for(const variant of ['detail','card','map'])form.set(variant,blob,'photo.png');return form}
   await call(`/api/v1/listings/${draft.id}/photos`,{method:'POST',cookie:a,body:upload(new Blob(['<svg/>'],{type:'image/png'}))},422)
-  const bytes=readFileSync(resolve(client,'public/demo/room.png'))
+  const bytes=readFileSync(resolve(client,'tests/fixtures/room.png'))
   const media=(await call(`/api/v1/listings/${draft.id}/photos`,{method:'POST',cookie:a,body:upload(new Blob([bytes],{type:'image/png'}))},201)).data.data
   await call(`/api/v1/media/${media[0].id}`,{cookie:b},404)
   await call(`/api/v1/media/${media[0].id}`,{cookie:a})

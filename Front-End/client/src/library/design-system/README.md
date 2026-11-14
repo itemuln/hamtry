@@ -32,7 +32,7 @@ Use `.type-heading-h1`, `.type-body-md`, `.type-label-md`, etc. for typography.
 Click **Edit variables**. Click **Save changes** to persist edits to the authoritative
 `Front-End/client/theme/hamtry-theme.json` file through `PUT /api/theme`.
 The showcase loads that file through `GET /api/theme`, and other open pages
-refresh within two seconds. Edits preview locally until saved; other pages keep the saved theme.
+refresh when the editor saves the theme, using the browser storage event rather than polling. Edits preview locally until saved; other pages keep the saved theme.
 The server serializes writes and atomically replaces the file. Failed saves are
 shown in the editor; click **Save changes** to retry. A failed initial load blocks editing.
 Reset creates a draft that also requires **Save changes**.

@@ -1,9 +1,8 @@
 import { Scope, $, createMotion, listen, onCleanup, required, untrack, useEffect, flushEffects } from '@hamtry/library'
-import { districts, listings, roomImage } from '../data/listings.js'
+import { districts } from '../data/search-options.js'
 import { findListings, initialFilters, money, readRoute, validLocation } from '../state/model.js'
 import { createAppState } from '../state/store.js'
 import { request, currentUser, publishListing } from '../state/api.js'
-import { savePhotos, deletePhotos } from '../state/media-store.js'
 import { dashboardMarkup, setupDashboard, updateDashboard } from './dashboard.js'
 
 const searchIcons = {
@@ -90,15 +89,13 @@ export class HamtryHome extends HTMLElement {
                 </main>
       <footer class="page-width"><a class="wordmark" href="#rooms">hamtry.</a><div><a href="/components.html">Компонентууд</a><a href="/editor.html">Дизайн систем</a></div></footer>
       <div class="toast" role="status" aria-live="polite" hidden></div>
-      <hamtry-dialog class="profile-dialog" heading="Миний орон зай"><section class="account-section" hidden><form class="account-form"><label class="account-name" hidden>Таны нэр<input name="name" autocomplete="name" maxlength="80"></label><label>И-мэйл<input name="email" type="email" autocomplete="email" required maxlength="254"></label><label>Нууц үг<input name="password" type="password" autocomplete="current-password" required minlength="10" maxlength="128"></label><p class="account-feedback" role="status"></p><button class="account-submit" type="submit">Нэвтрэх</button><button class="account-mode" type="button">Шинэ бүртгэл үүсгэх</button></form><div class="account-current" hidden><strong class="account-display-name"></strong><p class="account-email"></p><button class="account-logout" type="button">Гарах</button></div></section><p>Та өнөөдөр юу хийхийг хүсэж байна?</p><div class="role-choices"><button type="button" data-role="seeker"><span>⌕</span><strong>Өрөө, хамтрагч хайх</strong><small>Сонголтоо хайж, хадгалах</small></button><button type="button" data-role="provider"><span>⌂</span><strong>Өрөө санал болгох</strong><small>Өрөөний мэдээллээ бэлдэх</small></button></div><p class="demo-note">Энэ бол жишээ горим. Сонголт зөвхөн энэ хөтөч дээр хадгалагдана; нэвтэрсэн бүртгэл үүсэхгүй.</p></hamtry-dialog>
+      <hamtry-dialog class="profile-dialog" heading="Миний орон зай"><section class="account-section" hidden><form class="account-form"><label class="account-name" hidden>Таны нэр<input name="name" autocomplete="name" maxlength="80"></label><label>И-мэйл<input name="email" type="email" autocomplete="email" required maxlength="254"></label><label>Нууц үг<input name="password" type="password" autocomplete="current-password" required minlength="10" maxlength="128"></label><p class="account-feedback" role="status"></p><button class="account-submit" type="submit">Нэвтрэх</button><button class="account-mode" type="button">Шинэ бүртгэл үүсгэх</button></form><div class="account-current" hidden><strong class="account-display-name"></strong><p class="account-email"></p><button class="account-logout" type="button">Гарах</button></div></section><p>Та өнөөдөр юу хийхийг хүсэж байна?</p><div class="role-choices"><button type="button" data-role="seeker"><span>⌕</span><strong>Өрөө, хамтрагч хайх</strong><small>Сонголтоо хайж, хадгалах</small></button><button type="button" data-role="provider"><span>⌂</span><strong>Өрөө санал болгох</strong><small>Өрөөний мэдээллээ бэлдэх</small></button></div><p class="demo-note">Үйлчилгээтэй холбогдож байна. Холболтгүй бол хуудсаа дахин ачаална уу.</p></hamtry-dialog>
       <div id="header-menu" class="header-menu" popover="auto" role="dialog" aria-label="Цэс"><button type="button" class="dashboard-menu-button">${searchIcon('dashboard')}<span>Дашбоард руу орох</span></button><button type="button" class="appearance-toggle" role="switch" aria-checked="false">${searchIcon('moon')}<span>Харанхуй горим</span><span class="appearance-switch" aria-hidden="true"></span></button><div class="future-options" aria-label="Тун удахгүй"><button type="button" disabled>${searchIcon('bell')}<span>Мэдэгдэл</span><small>Тун удахгүй</small></button><button type="button" disabled>${searchIcon('shield')}<span>Аюулгүй амьдрах</span><small>Тун удахгүй</small></button><button type="button" disabled>${searchIcon('help')}<span>Тусламж</span><small>Тун удахгүй</small></button></div></div>
       <div id="listing-type-menu" class="listing-type-menu" popover="auto" role="dialog" aria-label="Зар нэмэх"><button type="button" data-post-kind="room">${searchIcon('rooms')}<span><strong>Өрөөгөө санал болгох</strong><small>Өрөөний зар нэмэх</small></span>${searchIcon('next')}</button><button type="button" disabled>${searchIcon('roommates')}<span><strong>Өөрийгөө танилцуулах</strong><small>Тун удахгүй</small></span></button></div>
-      <hamtry-dialog class="publish-dialog" heading="Өрөөгөө санал болгох"><p class="demo-note">Зар ба зургууд зөвхөн энэ хөтөчид хадгалагдана. Бусад хэрэглэгчид хараахан харагдахгүй.</p><form class="publish-form"><hamtry-input name="title" label="Зарын гарчиг" required maxlength="100" placeholder="Жишээ: Гэрэлтэй хувийн өрөө"></hamtry-input><hamtry-select name="district" label="Дүүрэг" required>${districts.map(name => `<option>${name}</option>`).join('')}</hamtry-select><hamtry-input name="price" type="number" label="Сарын түрээс (₮)" required min="1" max="100000000" step="1" placeholder="750000"></hamtry-input><hamtry-input name="available" type="date" label="Нүүх боломжтой өдөр" required></hamtry-input><fieldset class="location-fields"><legend>Байрны байршил</legend><p>Газрын зураг дээр дарж цэгээ сонгоно уу. Эсвэл координатаа оруулж болно.</p><hamtry-apartment-map pick-location></hamtry-apartment-map><div class="coordinates"><hamtry-input name="latitude" type="number" label="Өргөрөг" required min="-85" max="85" step="any" placeholder="47.918"></hamtry-input><hamtry-input name="longitude" type="number" label="Уртраг" required min="-180" max="180" step="any" placeholder="106.917"></hamtry-input></div></fieldset><hamtry-room-editor></hamtry-room-editor><hamtry-textarea name="description" label="Өрөө ба хамтын амьдралын нөхцөл" required maxlength="1500" placeholder="Өрөө, хамтын хэсэг, нүүх хугацаа, хэрэглээний зардлын талаар…"></hamtry-textarea><hamtry-button type="submit">Урьдчилан харах ↗</hamtry-button></form><div class="publish-preview" hidden><div class="preview-copy"></div><div class="dialog-actions"><hamtry-button variant="secondary" class="edit-draft">Засах</hamtry-button><hamtry-button class="confirm-publish">Энэ хөтөчид хадгалах</hamtry-button></div></div></hamtry-dialog>`
+      <hamtry-dialog class="publish-dialog" heading="Өрөөгөө санал болгох"><p class="demo-note">Зар нийтлэхийн тулд үйлчилгээтэй холбогдож нэвтэрнэ үү.</p><form class="publish-form"><hamtry-input name="title" label="Зарын гарчиг" required maxlength="100" placeholder="Жишээ: Гэрэлтэй хувийн өрөө"></hamtry-input><hamtry-select name="district" label="Дүүрэг" required>${districts.map(name => `<option>${name}</option>`).join('')}</hamtry-select><hamtry-input name="price" type="number" label="Сарын түрээс (₮)" required min="1" max="100000000" step="1" placeholder="750000"></hamtry-input><hamtry-input name="available" type="date" label="Нүүх боломжтой өдөр" required></hamtry-input><fieldset class="location-fields"><legend>Байрны байршил</legend><p>Газрын зураг дээр дарж цэгээ сонгоно уу. Эсвэл координатаа оруулж болно.</p><hamtry-apartment-map pick-location></hamtry-apartment-map><div class="coordinates"><hamtry-input name="latitude" type="number" label="Өргөрөг" required min="-85" max="85" step="any" placeholder="47.918"></hamtry-input><hamtry-input name="longitude" type="number" label="Уртраг" required min="-180" max="180" step="any" placeholder="106.917"></hamtry-input></div></fieldset><hamtry-room-editor></hamtry-room-editor><hamtry-textarea name="description" label="Өрөө ба хамтын амьдралын нөхцөл" required maxlength="1500" placeholder="Өрөө, хамтын хэсэг, нүүх хугацаа, хэрэглээний зардлын талаар…"></hamtry-textarea><hamtry-button type="submit">Урьдчилан харах ↗</hamtry-button></form><div class="publish-preview" hidden><div class="preview-copy"></div><div class="dialog-actions"><hamtry-button variant="secondary" class="edit-draft">Засах</hamtry-button><hamtry-button class="confirm-publish">Зар нийтлэх</hamtry-button></div></div></hamtry-dialog>`
   }
   setup() {
     const { state } = this
-    const entry = state.route.get()
-    if (entry.page === 'detail' && listings.find(item => item.id === entry.id)?.kind === 'roommates') this.previousPage = 'roommates'
     const motion = createMotion()
     let toastTimer, draft, draftRecords = [], saving = false, active = true, lastIds = null, lastSearchLabel, detailId, expandedCard
     const profile = required('.profile-dialog', this), publish = required('.publish-dialog', this), listingType = required('#listing-type-menu', this)
@@ -151,9 +148,9 @@ export class HamtryHome extends HTMLElement {
       accountForm.hidden = Boolean(user); required('.account-current', this).hidden = !user
       required('.account-display-name', this).textContent = user?.name || ''; required('.account-email', this).textContent = user?.email || ''
       required('.profile-dialog .role-choices', this).hidden = enabled && !user
-      required('.profile-dialog .demo-note', this).textContent = enabled ? 'Бүртгэлээрээ нэвтэрч зар нийтэлж, сонголтоо хадгалаарай.' : 'Энэ бол жишээ горим. Сонголт зөвхөн энэ хөтөч дээр хадгалагдана; нэвтэрсэн бүртгэл үүсэхгүй.'
-      required('.publish-dialog > .demo-note', this).textContent = enabled ? 'Нийтэлсэн зар бусад хэрэглэгчдэд харагдана. Байршил болон зургаа шалгаарай.' : 'Зар ба зургууд зөвхөн энэ хөтөчид хадгалагдана. Бусад хэрэглэгчид хараахан харагдахгүй.'
-      required('.confirm-publish', this).textContent = enabled ? 'Зар нийтлэх' : 'Энэ хөтөчид хадгалах'
+      required('.profile-dialog .demo-note', this).textContent = enabled ? 'Бүртгэлээрээ нэвтэрч зар нийтэлж, сонголтоо хадгалаарай.' : 'Үйлчилгээтэй холбогдож байна. Холболтгүй бол хуудсаа дахин ачаална уу.'
+      required('.publish-dialog > .demo-note', this).textContent = enabled ? 'Нийтэлсэн зар бусад хэрэглэгчдэд харагдана. Байршил болон зургаа шалгаарай.' : 'Зар нийтлэхийн тулд үйлчилгээтэй холбогдож нэвтэрнэ үү.'
+      required('.confirm-publish', this).textContent = enabled ? 'Зар нийтлэх' : 'Зар нийтлэх'
     })
     const fetchCatalog = async (cursor = null) => {
       const revision = ++searchRevision, filter = state.filters.get(), route = state.route.get()
@@ -195,7 +192,7 @@ export class HamtryHome extends HTMLElement {
     void request('/api/v1/health', { signal: apiController.signal }).then(async health => {
       if (!active || health.service !== 'hamtry-api') return
       state.connection.set('server'); state.backend.set(true); await loadAccount()
-    }).catch(error => { if (active) state.connection.set('local'); if (active && error.status !== 404 && error.name !== 'AbortError') toast('Backend холбогдсонгүй. Хөтөчийн жишээ горим ажиллаж байна.') })
+    }).catch(error => { if (active) state.connection.set('error'); if (active && error.status !== 404 && error.name !== 'AbortError') toast('Үйлчилгээтэй холбогдож чадсангүй. Хуудсаа дахин ачаална уу.') })
     const save = async id => {
       if (state.backend.get() && state.user.get()) {
         try { await request(`/api/v1/saved/${encodeURIComponent(id)}`, { method: state.saved.get().includes(id) ? 'DELETE' : 'PUT' }) } catch (error) { toast(error.message); return }
@@ -228,6 +225,8 @@ export class HamtryHome extends HTMLElement {
     })
     const showPublish = () => {
       if (saving) return
+      if (!state.backend.get()) { toast('Үйлчилгээтэй холбогдож чадсангүй. Дахин оролдоно уу.'); return }
+      if (!state.user.get()) { profile.showModal(); return }
       closeSearchPanels()
       required('.publish-form', this).hidden = false; required('.publish-preview', this).hidden = true
       publish.showModal()
@@ -496,8 +495,8 @@ export class HamtryHome extends HTMLElement {
     listen(required('.edit-draft', this), 'click', () => { showPublish(); required('[name="title"]', this).focus() })
     listen(required('.confirm-publish', this), 'click', async () => {
       if (!draft || saving) return
-      if (state.published.get().length >= 20) { toast('Туршилтын 20 зарын хязгаарт хүрсэн байна.'); return }
-      const record = draft, photos = draftRecords, previous = state.published.get(), previousRole = state.role.get()
+      if (state.published.get().length >= 20) { toast('20 зарын хязгаарт хүрсэн байна.'); return }
+      const record = draft, photos = draftRecords, previous = state.published.get()
       const confirm = required('.confirm-publish', this), edit = required('.edit-draft', this)
       saving = true; confirm.disabled = true; edit.disabled = true; confirm.textContent = 'Хадгалж байна…'
       try {
@@ -509,24 +508,9 @@ export class HamtryHome extends HTMLElement {
           draft = undefined; draftRecords = []; publish.close(); publishForm.reset(); roomEditor.reset(); picker.location = null
           state.filters.set({ ...initialFilters }); location.hash = `listing/${saved.id}`; toast('Зар нийтлэгдлээ.'); return
         }
-        // Эхлээд зураг, дараа нь metadata. Хадгалалт бүтэлгүйтвэл зар нэмэгдсэн гэж харуулахгүй.
-        await savePhotos(photos)
-        if (!active) { await deletePhotos(photos.map(photo => photo.id)); return }
-        state.published.set([record, ...previous]); state.role.set('provider')
-        if (!state.persist()) {
-          state.published.set(previous); state.role.set(previousRole)
-          await deletePhotos(photos.map(photo => photo.id))
-          throw new Error('Хөтөчийн хадгалалт дүүрсэн байна. Зар хадгалагдсангүй.')
-        }
-        draft = undefined; draftRecords = []
-        publish.close(); publishForm.reset(); roomEditor.reset(); picker.location = null
-        state.filters.set({ ...initialFilters })
-        const map = required('.browse-map', this); map.selectedId = record.id
-        location.hash = 'map'
-        queueMicrotask(() => map.fit?.([...listings, record].filter(item => validLocation(item.location))))
-        toast('Зар ба өрөөний зургууд энэ хөтөчид хадгалагдлаа')
+        throw new Error('Үйлчилгээтэй холбогдсонгүй. Зар нийтлэгдээгүй.')
       } catch (error) { if (active) toast(error.message || 'Зураг хадгалж чадсангүй. Дахин оролдоно уу.') }
-      finally { saving = false; confirm.disabled = false; edit.disabled = false; confirm.textContent = state.backend.get() ? 'Зар нийтлэх' : 'Энэ хөтөчид хадгалах' }
+      finally { saving = false; confirm.disabled = false; edit.disabled = false; confirm.textContent = state.backend.get() ? 'Зар нийтлэх' : 'Зар нийтлэх' }
     })
     listen(this, 'click', event => {
       if (event.target.closest('.detail-save')) save(detailId)
@@ -553,8 +537,11 @@ export class HamtryHome extends HTMLElement {
     listen(window, 'resize', () => { if (expandedCard) placeExpandedCard(expandedCard) })
     const setExpandedCard = (card, item) => {
       if (expandedCard === card) { if (card) placeExpandedCard(card); return }
-      const anchor = card || expandedCard, anchorBefore = anchor?.getBoundingClientRect()
+      const anchor = card || expandedCard
+      const anchorBefore = (expandedCard || card)?.getBoundingClientRect()
       if (expandedCard) {
+        motion.stop(expandedCard)
+        motion.stop(expandedCard.querySelector('.detail-content'))
         expandedCard.querySelector('hamtry-move-in-picker')?.close()
         expandedCard.classList.remove('is-expanded')
         expandedCard.style.order = String(Number(expandedCard.dataset.resultIndex || 0) * 2)
@@ -578,11 +565,12 @@ export class HamtryHome extends HTMLElement {
         link.setAttribute('aria-expanded', 'true'); link.setAttribute('aria-controls', content.id)
       }
       // Grid дахин байрлахад сонгосон card-ийн viewport өндөр хэвээр үлдэнэ.
-      if (anchorBefore && anchor?.isConnected && anchorBefore.bottom > 0 && anchorBefore.top < innerHeight) {
-        const shift = anchor.getBoundingClientRect().top - anchorBefore.top
+      if (anchorBefore && anchor?.isConnected && (card || (anchorBefore.bottom > 0 && anchorBefore.top < innerHeight))) {
+        const targetTop = card ? Math.max(searchDock.getBoundingClientRect().bottom, Math.min(anchorBefore.top, innerHeight / 3)) : anchorBefore.top
+        const shift = anchor.getBoundingClientRect().top - targetTop
         if (Math.abs(shift) > 1) window.scrollBy({ top: shift, behavior: 'instant' })
       }
-      if (anchor?.isConnected) motion.play(anchor, { opacity: [0, 1] }, { duration: 300, ease: 'cubic-bezier(.25,.1,.25,1)' })
+      if (card) motion.play(required('.detail-content', card), { opacity: [.35, 1] }, { duration: 300, ease: 'cubic-bezier(.25,.1,.25,1)' })
       if (card) required('.detail-collapse', card).focus({ preventScroll: true })
       else if (anchor?.isConnected) required('.card-title', anchor).focus({ preventScroll: true })
     }
@@ -637,7 +625,7 @@ export class HamtryHome extends HTMLElement {
         trigger.title = `${label}: ${summary}`
       }
       required('[popovertarget="search-kind"] .step-heading svg', this).innerHTML = searchIcons[kind === 'roommates' ? 'roommates' : 'rooms']
-      const catalog = state.catalog.get() ?? listings
+      const catalog = state.catalog.get() ?? []
       const all = [...new Map([...state.published.get().map(item => this.toListing(item)), ...catalog, ...state.remoteSaved.get(), ...(route.page === 'detail' && state.detail.get() ? [state.detail.get()] : [])].map(item => [item.id, item])).values()]
       const searchFilter = kind === 'roommates' ? { ...filter, district: 'all', maxPrice: 0 } : filter
       const visibleListings = all.filter(item => !item.remote || item.status === 'published' || dashboard)
@@ -655,7 +643,7 @@ export class HamtryHome extends HTMLElement {
       required('.listing-grid', this).hidden = roomMap && Boolean(located.length) && route.page !== 'detail'
       required('.map-location-note', this).hidden = !roomMap || kind !== 'roommates' || Boolean(located.length) || !items.length
       if (route.page === 'detail') required('.browse-map', this).selectedId = route.id
-      text(this, '.result-count', `${items.length} ${savedPage ? 'хадгалсан сонголт' : dashboard ? 'туршилтын зар' : 'сонголт'}`)
+      text(this, '.result-count', `${items.length} ${savedPage ? 'хадгалсан сонголт' : dashboard ? 'зар' : 'сонголт'}`)
       for (const count of $('.saved-count', this)) { count.textContent = saved.length; count.dataset.empty = String(saved.length === 0) }
       for (const button of $('[data-role]', this)) button.setAttribute('aria-pressed', String(button.dataset.role === state.role.get()))
       const nodes = items.map((item, index) => {
@@ -685,7 +673,7 @@ export class HamtryHome extends HTMLElement {
           })
         }
       }
-      const empty = required('.empty-state', this); empty.hidden = Boolean(items.length)
+      const empty = required('.empty-state', this); empty.hidden = Boolean(items.length) || state.connection.get() === 'loading' || state.loading.get()
       text(empty, 'h3', savedPage ? 'Таалагдсан сонголтоо энд хадгалаарай.' : dashboard ? 'Таны анхны зар энд харагдана.' : 'Тохирох сонголт олдсонгүй.')
       text(empty, 'p', savedPage ? 'Өрөө эсвэл хамтрагчийн картын зүрхэн дээр дараарай.' : dashboard ? 'Өрөөний мэдээллээ бэлдэж, урьдчилан хараад хадгалаарай.' : 'Төсөв, нөхцөлөө өөрчилж эсвэл шүүлтүүрээ цэвэрлээд үзээрэй.')
       text(empty, '.empty-action', savedPage ? 'Өрөөнүүд үзэх' : dashboard ? 'Анхны өрөөгөө нэмэх' : 'Шүүлтүүр цэвэрлэх')
@@ -716,7 +704,7 @@ export class HamtryHome extends HTMLElement {
   }
   toListing(item) {
     if (item.remote) return item
-    return { ...item, kind: 'rooms', image: item.cover || roomImage, imageAlt: item.cover ? 'Таны байрны эхний өрөөний зураг' : 'Туршилтын зарын жишээ интерьер', area: this.state.backend.get() ? '' : 'Таны туршилтын зар', size: '', available: item.available?.replaceAll('-', '.') || 'Тохиролцоно', owner: this.state.user.get()?.name || 'Та', traits: this.state.backend.get() ? [] : ['Энэ хөтөчийн зар'], pets: false }
+    return { ...item, kind: 'rooms', image: item.cover || '', imageAlt: item.cover ? 'Таны байрны эхний өрөөний зураг' : '', area: '', size: '', available: item.available?.replaceAll('-', '.') || 'Тохиролцоно', owner: this.state.user.get()?.name || 'Та', traits: [], pets: false }
   }
   makeCard(item) {
     const card = document.createElement(item.kind === 'rooms' ? 'hamtry-property-card' : 'hamtry-roommate-card')
@@ -749,7 +737,7 @@ export class HamtryHome extends HTMLElement {
       tour.rooms = item.rooms?.length ? item.rooms.map(room => ({ ...room, photos: room.photos.map(photo => {
         const preview = previewRecords.find(record => record.id === photo.id)
         return preview ? { ...photo, blob: preview.blob } : photo
-      }) })) : item.id.startsWith('local-') ? [] : [{ id: 'example-room', name: 'Өрөө', photos: [{ src: item.image, caption: 'Жишээ интерьер' }] }]
+      }) })) : []
       media.append(tour)
     } else { const image = document.createElement('img'); image.className = 'detail-image'; image.src = item.image; image.alt = item.imageAlt; media.append(image) }
     required('.detail-summary', root).setAttribute('aria-label', item.kind === 'rooms' ? 'Сарын түрээс' : 'Сарын төсөв')
@@ -761,7 +749,7 @@ export class HamtryHome extends HTMLElement {
     text(root, '.detail-size-label', item.kind === 'rooms' ? 'Талбай' : 'Мэргэжил')
     text(root, '.detail-size', item.size)
     required('.detail-size', root).parentElement.hidden = !item.size
-    const owner = item.kind === 'roommates' ? item.title.split(',')[0] : item.owner || (item.id.startsWith('local-') ? 'Та' : 'Жишээ эзэн')
+    const owner = item.kind === 'roommates' ? item.title.split(',')[0] : item.owner || ''
     text(root, '.owner-name', owner)
     text(root, '.owner-avatar', owner.slice(0, 1))
     text(root, '.owner-description', item.kind === 'roommates' ? item.size : '')

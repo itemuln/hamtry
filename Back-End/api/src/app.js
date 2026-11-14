@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { bodyLimit } from 'hono/body-limit'
 import { requestId } from 'hono/request-id'
-import { createAuth } from './auth.js'
+import { createAuth, trustedOrigins } from './auth.js'
 import { listingRoutes, registerListingWrites, hydrate, missing } from './features/listings.js'
 import { registerMedia } from './features/media.js'
 import { profileSchema, jsonBody } from './validation.js'
@@ -20,7 +20,7 @@ api.use('*', async (c, next) => {
   c.header('Cache-Control', 'no-store'); c.header('X-Content-Type-Options', 'nosniff')
   if (!c.env.DB && c.req.path !== '/api/liveness/health') return c.json({ error: { code: 'DATABASE_UNAVAILABLE', message: 'Өгөгдлийн сан тохируулагдаагүй байна.' } }, 503)
   if (!['GET','HEAD','OPTIONS'].includes(c.req.method)) {
-    const allowed = [new URL(c.req.url).origin, c.env.APP_ORIGIN, c.env.DEV_ORIGIN].filter(Boolean)
+    const allowed = trustedOrigins(c.env, new URL(c.req.url).origin)
     if (!allowed.includes(c.req.header('Origin'))) return c.json({ error: { code: 'INVALID_ORIGIN', message: 'Хүсэлтийн эх сурвалж буруу байна.' } }, 403)
   }
   await next()

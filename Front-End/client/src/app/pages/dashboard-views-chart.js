@@ -2,14 +2,7 @@ import { createElement as h } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 
-const views = [
-  { week: '1-р', count: 164 },
-  { week: '2-р', count: 190 },
-  { week: '3-р', count: 210 },
-  { week: '4-р', count: 248 },
-]
-
-export function mountViewsChart(container) {
+export function mountViewsChart(container, views = []) {
   const root = createRoot(container)
   root.render(h(ResponsiveContainer, { width: '100%', height: '100%' },
     h(AreaChart, { data: views, margin: { top: 4, right: 2, bottom: 0, left: 2 } },

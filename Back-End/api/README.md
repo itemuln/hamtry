@@ -10,8 +10,6 @@ npm ci --prefix Back-End/api
 cd Front-End/client
 npm ci
 npm run api:migrate
-# Optional classroom examples, not real users:
-npx wrangler d1 execute hamtry-db-local --local --config wrangler.local.jsonc --file ../../Back-End/api/seeds/demo.sql
 npm run dev
 ```
 
@@ -68,8 +66,8 @@ constraints enforce relational ownership, unique variants, money/status bounds,
 and the 12-photo limit. Archival retains owner data for recovery; permanent
 retention/garbage collection policy is future work.
 
-The seven classroom examples have `demo=1`, synthetic users without credentials,
-and existing fixture images. No verification or account ownership is fabricated.
+Migration 0002 archives the former `demo=1` classroom records. No examples are
+seeded or used as frontend fallbacks; real accounts and listings are preserved.
 Browser-local drafts are not automatically uploaded or overwritten by login.
 Publishing is explicit, and retry reuses the same server draft.
 
