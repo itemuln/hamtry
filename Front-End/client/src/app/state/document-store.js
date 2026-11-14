@@ -40,3 +40,4 @@ async function transaction(mode, action) {
 export const listDocuments = async () => (await transaction('readonly', store => store.getAll())).map(record => ({ id: record.id, name: record.name, size: record.size, updatedAt: record.updatedAt })).sort((a,b) => b.updatedAt - a.updatedAt)
 export const getDocument = id => transaction('readonly', store => store.get(id))
 export const putDocument = record => transaction('readwrite', store => store.put(record))
+export const deleteDocument = id => transaction('readwrite', store => store.delete(id))

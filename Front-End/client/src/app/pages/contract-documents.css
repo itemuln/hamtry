@@ -21,6 +21,11 @@
 .contract-file > span:nth-child(2) { display: flex; flex: 1; flex-direction: column; min-width: 0; gap: .25rem; }
 .contract-file strong { font-size: .8125rem; overflow-wrap: anywhere; }
 .contract-file small, .contract-no-files { color: var(--text-secondary); font-size: .75rem; }
+.contract-file-row { display: flex; align-items: center; gap: .5rem; min-width: 0; }
+.contract-file-row .contract-file { flex: 1; min-width: 0; }
+.contract-file-delete { flex: none; padding: .5rem; border: 1px solid var(--border-default); border-radius: .5rem; background: var(--surface-elevated); color: var(--status-error); font: inherit; font-size: .75rem; cursor: pointer; }
+.contract-file-delete:hover { background: var(--status-error-subtle); border-color: var(--status-error); }
+.contract-file-delete:focus-visible { outline: 2px solid var(--brand-primary); outline-offset: 3px; }
 .contract-editor-panel { border: 1px solid var(--border-default); border-radius: 1rem; overflow: hidden; }
 .contract-editor-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; padding: .875rem 1rem; background: var(--surface-elevated); border-bottom: 1px solid var(--border-default); }
 .contract-editor-actions > div { display: flex; align-items: center; gap: .75rem; min-width: 0; }

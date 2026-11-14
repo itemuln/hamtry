@@ -224,3 +224,7 @@ menu CSS keyframe are removed without changing animation ownership.
 Selecting a map marker opens an inline overlay with the listing photo, title, location, monthly price, size, available date, traits, full description and owner when supplied. The redundant listing-details link is removed. The token-styled panel scrolls within the map, enters in 380 ms and exits in 200 ms through the shared motion lifecycle; reduced motion is handled by createMotion. Closing returns focus to the marker.
 
 Room cards use the native `compact-preview` attribute: title, location and price remain visible; hover/focus reveals supporting metadata below through a 300 ms grid-row transition. Collapsed cards align to the grid row start. Expanded detail content remains visible and interactive; no pointer-events suppression is applied.
+
+### Contract document deletion
+
+The documents section provides a separate delete button for each browser-local DOCX. Confirmation names the file. Deletion waits for an in-flight autosave, cancels pending opens and saves, removes the IndexedDB record, and closes the editor when deleting the current document. Other files remain intact.

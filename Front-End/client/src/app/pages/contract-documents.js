@@ -1,5 +1,5 @@
 import { onCleanup } from '@hamtry/library'
-import { readDocx, listDocuments, putDocument, getDocument } from '../state/document-store.js'
+import { readDocx, listDocuments, putDocument, getDocument, deleteDocument } from '../state/document-store.js'
 import './contract-documents.css'
 
 const fileIcon = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H5v18h14V8Z"/><path d="M14 3v6h5M8 13h8M8 17h5"/></svg>'
@@ -19,9 +19,14 @@ export function setupDocuments(root, listen) {
   const saveButton = page.querySelector('[data-contract-save]'), pdfButton = page.querySelector('[data-contract-pdf]')
   const mount = page.querySelector('.contract-editor-mount'), dropzone = page.querySelector('.contract-dropzone')
   let active = true, editor, current, dirty = false, revision = 0, ready = false, timer, saving, exporting = false, importing = false
-  let request = 0
+  let request = 0, deleting = false
   const report = message => { if (!active) return; error.textContent = message; error.hidden = !message }
-  const controls = () => { saveButton.disabled = !ready || exporting || Boolean(saving); pdfButton.disabled = !ready || exporting || Boolean(saving); page.querySelector('[data-contract-upload]').disabled = importing || exporting }
+  const controls = () => {
+    saveButton.disabled = !ready || exporting || deleting || Boolean(saving)
+    pdfButton.disabled = !ready || exporting || deleting || Boolean(saving)
+    page.querySelector('[data-contract-upload]').disabled = importing || exporting || deleting
+    page.querySelectorAll('[data-document-delete]').forEach(button => { button.disabled = importing || exporting || deleting })
+  }
   const refreshList = async () => {
     const documents = await listDocuments()
     if (!active) return
@@ -34,11 +39,17 @@ export function setupDocuments(root, listen) {
       button.innerHTML = `${fileIcon}<span><strong></strong><small></small></span><span aria-hidden="true">↗</span>`
       button.querySelector('strong').textContent = document.name
       button.querySelector('small').textContent = `${(document.size / 1024).toFixed(0)} KB · ${new Date(document.updatedAt).toLocaleDateString('mn-MN')}`
-      list.append(button)
+      const row = window.document.createElement('div'); row.className = 'contract-file-row'
+      const remove = window.document.createElement('button'); remove.type = 'button'; remove.className = 'contract-file-delete'
+      remove.dataset.documentDelete = document.id; remove.textContent = 'Устгах'
+      remove.setAttribute('aria-label', `${document.name} устгах`)
+      remove.disabled = importing || exporting || deleting
+      row.append(button, remove); list.append(row)
     }
   }
   const saveCurrent = async (force = false) => {
     if (saving) await saving
+    if (deleting) return current?.buffer
     if (!editor || !current || !ready) throw new Error('Editor бэлэн болоогүй байна.')
     if (!dirty && !force) return current.buffer
     const document = current, version = revision
@@ -47,7 +58,7 @@ export function setupDocuments(root, listen) {
       const buffer = await editor.save()
       const record = { ...document, buffer, size: buffer.byteLength, updatedAt: Date.now() }
       await putDocument(record)
-      if (active && current.id === document.id) {
+      if (active && current?.id === document.id) {
         current = record; dirty = revision !== version
         status.textContent = dirty ? 'Шинэ өөрчлөлт хадгалагдаж байна…' : 'Хадгалсан'
         await refreshList()
@@ -60,15 +71,16 @@ export function setupDocuments(root, listen) {
     finally { saving = null; if (active) controls() }
   }
   const changed = () => {
-    if (!active || !ready) return
+    if (!active || !ready || deleting) return
     dirty = true; revision++; status.textContent = 'Өөрчлөлттэй'
     clearTimeout(timer)
     timer = setTimeout(() => { void saveCurrent().catch(failure => report(failure.message)) }, 1000)
   }
   const openDocument = async id => {
-    if (importing || exporting) return
+    if (importing || exporting || deleting) return
     if (current?.id === id) return
     if (dirty) await saveCurrent()
+    if (deleting || !active) return
     const ticket = ++request
     const record = await getDocument(id)
     if (!record) throw new Error('Баримт бичиг олдсонгүй.')
@@ -82,13 +94,43 @@ export function setupDocuments(root, listen) {
     editor = mountContractEditor(mount, record.buffer, {
       name: record.name, onChange: changed, onSave: () => { void saveCurrent(true).catch(failure => report(failure.message)) },
       onOpen: () => input.click(),
-      onReady: () => { if (active && current.id === record.id) { ready = true; status.textContent = 'Хадгалсан'; controls() } },
+      onReady: () => { if (active && current?.id === record.id) { ready = true; status.textContent = 'Хадгалсан'; controls() } },
       onError: failure => { if (active) { ready = false; controls(); report(`Гэрээг нээж чадсангүй. ${failure.message || ''}`) } },
     })
     await refreshList()
   }
+  const removeDocument = async id => {
+    if (deleting || importing || exporting) return
+    const record = await getDocument(id)
+    if (!active || !record || deleting || importing || exporting) return
+    if (!window.confirm(`“${record.name}” файлыг устгах уу? Энэ үйлдлийг буцаах боломжгүй.`)) return
+    deleting = true; request++; clearTimeout(timer); report(''); controls()
+    mount.inert = true
+    try {
+      // Хадгалалт дууссаны дараа устгаж, файлыг дахин үүсэхээс хамгаална.
+      if (saving) await saving.catch(() => {})
+      await deleteDocument(id)
+      if (!active) return
+      if (current?.id === id) {
+        ready = false; dirty = false; current = null
+        editor?.dispose(); editor = null; mount.replaceChildren()
+        page.querySelector('.contract-editor-panel').hidden = true
+        page.querySelector('[data-document-name]').textContent = ''
+        status.textContent = ''
+      }
+      await refreshList()
+      page.querySelector('[data-contract-upload]').focus()
+    } catch (failure) { report(`Файлыг устгаж чадсангүй. ${failure.message}`) }
+    finally {
+      deleting = false; mount.inert = false
+      if (active) {
+        controls()
+        if (dirty) timer = setTimeout(() => { void saveCurrent().catch(failure => report(failure.message)) }, 1000)
+      }
+    }
+  }
   const upload = async file => {
-    if (!file || importing || exporting) return
+    if (!file || importing || exporting || deleting) return
     importing = true; report(''); controls()
     try {
       const buffer = await readDocx(file)
@@ -106,10 +148,15 @@ export function setupDocuments(root, listen) {
   listen(dropzone, 'dragover', event => { event.preventDefault(); dropzone.dataset.dragging = 'true' })
   listen(dropzone, 'dragleave', () => { delete dropzone.dataset.dragging })
   listen(dropzone, 'drop', event => { event.preventDefault(); delete dropzone.dataset.dragging; void upload(event.dataTransfer.files[0]) })
-  listen(page.querySelector('.contract-file-list'), 'click', event => { const button = event.target.closest('[data-document-id]'); if (button) void openDocument(button.dataset.documentId).catch(failure => report(failure.message)) })
+  listen(page.querySelector('.contract-file-list'), 'click', event => {
+    const remove = event.target.closest('[data-document-delete]')
+    if (remove) { void removeDocument(remove.dataset.documentDelete).catch(failure => report(failure.message)); return }
+    const button = event.target.closest('[data-document-id]')
+    if (button) void openDocument(button.dataset.documentId).catch(failure => report(failure.message))
+  })
   listen(saveButton, 'click', () => { report(''); void saveCurrent(true).catch(failure => report(failure.message)) })
   listen(pdfButton, 'click', async () => {
-    if (!ready || exporting) return
+    if (!ready || exporting || deleting) return
     exporting = true; report(''); controls(); pdfButton.textContent = 'PDF үүсгэж байна…'
     try {
       const buffer = await saveCurrent(true)
