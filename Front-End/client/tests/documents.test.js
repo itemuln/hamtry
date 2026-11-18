@@ -3,6 +3,13 @@ import assert from 'node:assert/strict'
 import JSZip from 'jszip'
 import { docxFileError, readDocx, MAX_DOCX_SIZE } from '../src/app/state/document-store.js'
 import { readRoute } from '../src/app/state/model.js'
+import { placeholderText } from '../src/app/state/document-keys.js'
+
+test('contract keys insert only simple DOCX placeholder paths', () => {
+  assert.equal(placeholderText(' tenant.name '), '{tenant.name}')
+  assert.equal(placeholderText('_date2'), '{_date2}')
+  for (const key of ['', '2tenant', 'tenant-name', 'tenant name', 'tenant..name', 'x'.repeat(81)]) assert.equal(placeholderText(key), null)
+})
 
 const file = (name, buffer = new ArrayBuffer(8)) => ({ name, size: buffer.byteLength, arrayBuffer: async () => buffer })
 test('contract imports accept only nonempty DOCX within the file-size limit', () => {

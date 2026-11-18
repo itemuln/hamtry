@@ -1,31 +1,49 @@
 import { onCleanup } from '@hamtry/library'
 import { readDocx, listDocuments, putDocument, getDocument, deleteDocument } from '../state/document-store.js'
+import { placeholderText } from '../state/document-keys.js'
 import './contract-documents.css'
 
 const fileIcon = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H5v18h14V8Z"/><path d="M14 3v6h5M8 13h8M8 17h5"/></svg>'
+const deleteIcon = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 7V4h4v3m4 0-1 14H7L6 7m4 4v6m4-6v6"/></svg>'
 export function documentsMarkup() {
   return `<section class="contract-documents" data-provider-section="documents" aria-labelledby="documents-title" hidden>
-    <header class="contract-heading"><div><p class="contract-eyebrow">ТҮРЭЭСЛҮҮЛЭГЧИЙН ОРОН ЗАЙ</p><h1 id="documents-title" tabindex="-1">Баримт бичиг, гэрээ</h1><p>Гэрээгээ байршуулж, засаад PDF хэлбэрээр татаарай.</p></div><hamtry-button size="sm" data-contract-upload>＋ DOCX байршуулах</hamtry-button></header>
+    <header class="contract-heading"><div><p class="contract-eyebrow">ТҮРЭЭСЛҮҮЛЭГЧИЙН ОРОН ЗАЙ</p><h1 id="documents-title" tabindex="-1">Баримт бичиг, гэрээ</h1><p>Гэрээгээ байршуулж, засаад PDF хэлбэрээр татаарай.</p></div></header>
     <input class="contract-file-input" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" aria-label="DOCX гэрээ сонгох" hidden>
     <p class="contract-error" role="alert" hidden></p>
-    <div class="contract-library"><div class="contract-dropzone" tabindex="0" role="button" aria-label="DOCX гэрээ байршуулах">${fileIcon}<h2>Гэрээний файлаа энд оруулаарай</h2><p>Чирж оруулах эсвэл дарж сонгох</p><small>Зөвхөн .docx · 20 MB хүртэл</small></div><div class="contract-saved"><h2>Миний баримт бичгүүд <span data-document-count>0</span></h2><div class="contract-file-list"></div><p class="contract-no-files">Байршуулсан баримт бичиг алга.</p></div></div>
-    <section class="contract-editor-panel" aria-label="Гэрээ засварлах" hidden><header class="contract-editor-actions"><div>${fileIcon}<div><strong data-document-name></strong><span class="contract-save-state" role="status" aria-live="polite"></span></div></div><div><hamtry-button size="sm" variant="outline" data-contract-save disabled>Хадгалах</hamtry-button><hamtry-button size="sm" data-contract-pdf disabled>PDF татах ↗</hamtry-button></div></header><div class="contract-editor-mount"></div></section>
+    <div class="contract-library"><div class="contract-dropzone">${fileIcon}<h2>Гэрээний файлаа энд оруулаарай</h2><p>Чирж оруулах эсвэл товчоор сонгох</p><hamtry-button size="sm" data-contract-upload>DOCX байршуулах</hamtry-button><small>Зөвхөн .docx · 20 MB хүртэл</small></div><div class="contract-saved"><h2>Миний баримт бичгүүд <span data-document-count>0</span></h2><div class="contract-file-list"></div><p class="contract-no-files">Байршуулсан баримт бичиг алга.</p></div></div>
+    <hamtry-dialog class="contract-editor-dialog" heading="Гэрээ засварлах"><section class="contract-editor-panel"><header class="contract-editor-actions"><div>${fileIcon}<div><strong data-document-name></strong><span class="contract-save-state" role="status" aria-live="polite"></span></div></div><div><hamtry-button size="sm" variant="outline" data-contract-save disabled>Хадгалах</hamtry-button><hamtry-button size="sm" data-contract-pdf disabled>PDF татах ↗</hamtry-button><button type="button" class="contract-editor-close" data-contract-close aria-label="Цонх хаах">×</button></div></header><p class="contract-error" role="alert" hidden></p><div class="contract-editor-workspace"><aside class="contract-key-panel" aria-labelledby="contract-key-title"><h2 id="contract-key-title">Түлхүүр зоох</h2><p>Гэрээнд cursor байрлуулаад түлхүүр дээр дарна уу.</p><p class="contract-key-empty">Одоогоор зоох түлхүүр алга.</p><div class="contract-key-list"></div></aside><div class="contract-editor-mount"></div></div></section></hamtry-dialog>
+    <hamtry-dialog class="contract-delete-dialog" heading="Баримт бичиг устгах"><p><strong data-contract-delete-name></strong> файлыг устгах уу?</p><p>Энэ үйлдлийг буцаах боломжгүй.</p><div class="contract-delete-actions"><hamtry-button size="sm" variant="outline" data-contract-delete-cancel>Болих</hamtry-button><hamtry-button size="sm" variant="destructive" data-contract-delete-confirm>Устгах</hamtry-button></div></hamtry-dialog>
     <p class="contract-storage-note">Баримт бичиг энэ хөтөч дээр хадгалагдана. PDF үүсгэх үед гэрээний агуулгыг серверт түр боловсруулна.</p>
   </section>`
 }
 export function setupDocuments(root, listen) {
   const page = root.querySelector('.contract-documents'), input = page.querySelector('input[type="file"]')
-  const error = page.querySelector('.contract-error'), status = page.querySelector('.contract-save-state')
+  const errors = page.querySelectorAll('.contract-error'), status = page.querySelector('.contract-save-state')
   const saveButton = page.querySelector('[data-contract-save]'), pdfButton = page.querySelector('[data-contract-pdf]')
   const mount = page.querySelector('.contract-editor-mount'), dropzone = page.querySelector('.contract-dropzone')
+  const keyList = page.querySelector('.contract-key-list')
+  const editorDialog = page.querySelector('.contract-editor-dialog'), deleteDialog = page.querySelector('.contract-delete-dialog')
   let active = true, editor, current, dirty = false, revision = 0, ready = false, timer, saving, exporting = false, importing = false
-  let request = 0, deleting = false
-  const report = message => { if (!active) return; error.textContent = message; error.hidden = !message }
+  let request = 0, deleting = false, pendingDelete = null
+  const report = message => { if (!active) return; errors.forEach(error => { error.textContent = message; error.hidden = !message }) }
   const controls = () => {
     saveButton.disabled = !ready || exporting || deleting || Boolean(saving)
     pdfButton.disabled = !ready || exporting || deleting || Boolean(saving)
     page.querySelector('[data-contract-upload]').disabled = importing || exporting || deleting
+    keyList.querySelectorAll('button').forEach(button => { button.disabled = !ready || importing || exporting || deleting || Boolean(saving) })
     page.querySelectorAll('[data-document-delete]').forEach(button => { button.disabled = importing || exporting || deleting })
+  }
+  const refreshKeys = () => {
+    keyList.replaceChildren()
+    const keys = Array.isArray(current?.placeholderKeys) ? current.placeholderKeys : []
+    for (const key of keys) {
+      if (typeof key !== 'string' || !placeholderText(key)) continue
+      const button = window.document.createElement('button')
+      button.type = 'button'; button.className = 'contract-key-item'; button.dataset.contractKey = key; button.textContent = placeholderText(key)
+      keyList.append(button)
+    }
+    page.querySelector('.contract-key-empty').hidden = keyList.childElementCount > 0
+    controls()
   }
   const refreshList = async () => {
     const documents = await listDocuments()
@@ -41,7 +59,7 @@ export function setupDocuments(root, listen) {
       button.querySelector('small').textContent = `${(document.size / 1024).toFixed(0)} KB · ${new Date(document.updatedAt).toLocaleDateString('mn-MN')}`
       const row = window.document.createElement('div'); row.className = 'contract-file-row'
       const remove = window.document.createElement('button'); remove.type = 'button'; remove.className = 'contract-file-delete'
-      remove.dataset.documentDelete = document.id; remove.textContent = 'Устгах'
+      remove.dataset.documentDelete = document.id; remove.innerHTML = deleteIcon
       remove.setAttribute('aria-label', `${document.name} устгах`)
       remove.disabled = importing || exporting || deleting
       row.append(button, remove); list.append(row)
@@ -78,7 +96,7 @@ export function setupDocuments(root, listen) {
   }
   const openDocument = async id => {
     if (importing || exporting || deleting) return
-    if (current?.id === id) return
+    if (current?.id === id) { editorDialog.showModal(); return }
     if (dirty) await saveCurrent()
     if (deleting || !active) return
     const ticket = ++request
@@ -88,14 +106,16 @@ export function setupDocuments(root, listen) {
     if (!active || request !== ticket) return
     clearTimeout(timer); editor?.dispose(); mount.replaceChildren()
     current = record; ready = false; dirty = false; revision = 0
-    page.querySelector('.contract-editor-panel').hidden = false
+    refreshKeys()
+    page.querySelector('.contract-editor-panel').dataset.loading = 'true'
     page.querySelector('[data-document-name]').textContent = record.name
     status.textContent = 'Нээж байна…'; report(''); controls()
+    editorDialog.showModal()
     editor = mountContractEditor(mount, record.buffer, {
       name: record.name, onChange: changed, onSave: () => { void saveCurrent(true).catch(failure => report(failure.message)) },
       onOpen: () => input.click(),
-      onReady: () => { if (active && current?.id === record.id) { ready = true; status.textContent = 'Хадгалсан'; controls() } },
-      onError: failure => { if (active) { ready = false; controls(); report(`Гэрээг нээж чадсангүй. ${failure.message || ''}`) } },
+      onReady: () => { if (active && current?.id === record.id) { ready = true; delete page.querySelector('.contract-editor-panel').dataset.loading; status.textContent = 'Хадгалсан'; controls() } },
+      onError: failure => { if (active) { ready = false; delete page.querySelector('.contract-editor-panel').dataset.loading; controls(); report(`Гэрээг нээж чадсангүй. ${failure.message || ''}`) } },
     })
     await refreshList()
   }
@@ -103,7 +123,6 @@ export function setupDocuments(root, listen) {
     if (deleting || importing || exporting) return
     const record = await getDocument(id)
     if (!active || !record || deleting || importing || exporting) return
-    if (!window.confirm(`“${record.name}” файлыг устгах уу? Энэ үйлдлийг буцаах боломжгүй.`)) return
     deleting = true; request++; clearTimeout(timer); report(''); controls()
     mount.inert = true
     try {
@@ -113,8 +132,9 @@ export function setupDocuments(root, listen) {
       if (!active) return
       if (current?.id === id) {
         ready = false; dirty = false; current = null
+        refreshKeys()
         editor?.dispose(); editor = null; mount.replaceChildren()
-        page.querySelector('.contract-editor-panel').hidden = true
+        editorDialog.close()
         page.querySelector('[data-document-name]').textContent = ''
         status.textContent = ''
       }
@@ -142,19 +162,47 @@ export function setupDocuments(root, listen) {
     finally { importing = false; input.value = ''; if (active) controls() }
   }
   listen(page.querySelector('[data-contract-upload]'), 'click', () => input.click())
-  listen(dropzone, 'click', () => input.click())
-  listen(dropzone, 'keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); input.click() } })
   listen(input, 'change', () => { void upload(input.files[0]) })
   listen(dropzone, 'dragover', event => { event.preventDefault(); dropzone.dataset.dragging = 'true' })
   listen(dropzone, 'dragleave', () => { delete dropzone.dataset.dragging })
   listen(dropzone, 'drop', event => { event.preventDefault(); delete dropzone.dataset.dragging; void upload(event.dataTransfer.files[0]) })
   listen(page.querySelector('.contract-file-list'), 'click', event => {
     const remove = event.target.closest('[data-document-delete]')
-    if (remove) { void removeDocument(remove.dataset.documentDelete).catch(failure => report(failure.message)); return }
+    if (remove) {
+      if (deleting || importing || exporting) return
+      void getDocument(remove.dataset.documentDelete).then(record => {
+        if (!active || !record || deleting || importing || exporting) return
+        pendingDelete = record.id
+        deleteDialog.querySelector('[data-contract-delete-name]').textContent = `“${record.name}”`
+        deleteDialog.showModal()
+      }).catch(failure => report(failure.message))
+      return
+    }
     const button = event.target.closest('[data-document-id]')
     if (button) void openDocument(button.dataset.documentId).catch(failure => report(failure.message))
   })
+  listen(deleteDialog.querySelector('[data-contract-delete-cancel]'), 'click', () => deleteDialog.close())
+  listen(deleteDialog.querySelector('[data-contract-delete-confirm]'), 'click', () => {
+    const id = pendingDelete
+    if (!id) return
+    pendingDelete = null; deleteDialog.close()
+    void removeDocument(id).catch(failure => report(failure.message))
+  })
+  listen(deleteDialog, 'hamtry-dialog-close', () => { pendingDelete = null })
+  listen(page.querySelector('[data-contract-close]'), 'click', () => editorDialog.close())
+  listen(editorDialog, 'hamtry-dialog-close', () => {
+    if (active && dirty && ready) { clearTimeout(timer); void saveCurrent().catch(failure => report(failure.message)) }
+  })
   listen(saveButton, 'click', () => { report(''); void saveCurrent(true).catch(failure => report(failure.message)) })
+  listen(keyList, 'mousedown', event => { if (event.target.closest('button')) event.preventDefault() })
+  listen(keyList, 'click', event => {
+    const button = event.target.closest('[data-contract-key]')
+    if (!button || !ready || importing || exporting || deleting || saving) return
+    const text = placeholderText(button.dataset.contractKey)
+    if (!text) return
+    if (!editor?.insertText(text)) { report('Гэрээн дотор cursor байрлуулаад дахин оролдоно уу.'); return }
+    report('')
+  })
   listen(pdfButton, 'click', async () => {
     if (!ready || exporting || deleting) return
     exporting = true; report(''); controls(); pdfButton.textContent = 'PDF үүсгэж байна…'
@@ -172,5 +220,5 @@ export function setupDocuments(root, listen) {
   })
   listen(window, 'beforeunload', event => { if (dirty) { event.preventDefault(); event.returnValue = '' } })
   void refreshList().catch(failure => report(failure.message))
-  onCleanup(() => { active = false; request++; clearTimeout(timer); editor?.dispose() })
+  onCleanup(() => { active = false; request++; clearTimeout(timer); editorDialog.close(); deleteDialog.close(); editor?.dispose() })
 }

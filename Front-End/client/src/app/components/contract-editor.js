@@ -18,6 +18,7 @@ export function mountContractEditor(container, bytes, options) {
   })))
   return {
     async save() { const buffer = await ref.current?.save(); if (!buffer) throw new Error('Editor бэлэн болоогүй байна. Түр хүлээгээд дахин оролдоно уу.'); return buffer },
+    insertText(text) { const result = ref.current?.exec({ type: 'insertText', text }); if (result?.ok) ref.current.focus(); return Boolean(result?.ok) },
     dispose() { root.unmount() },
   }
 }
