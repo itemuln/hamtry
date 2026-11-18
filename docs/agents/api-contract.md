@@ -102,7 +102,7 @@ automatically become JS properties. Boolean attributes use presence semantics.
 | `hamtry-roommate-card` | heading/image/image-alt/location/price/description/saved; slotted extras | saved; hamtry-save `{ saved }` |
 | `hamtry-property-card` | Same card API, different image proportions | saved; hamtry-save `{ saved }` |
 | `hamtry-chip` | selected/disabled presence attributes, slotted label | selected; hamtry-toggle `{ selected }`; focus() |
-| `hamtry-dialog` | heading attribute, slotted content | open readonly; showModal(), close(value=""); hamtry-dialog-close `{ value }` |
+| `hamtry-dialog` | heading attribute, slotted content; CSS parts `dialog`, `header`, `body` | open readonly; showModal(), close(value=""); hamtry-dialog-close `{ value }` |
 
 Form controls use `ElementInternals` for `FormData`, validity, reset, state
 restore, and disabled fieldsets. Fields expose form, validity, validationMessage,

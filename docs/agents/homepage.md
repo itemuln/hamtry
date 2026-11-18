@@ -231,5 +231,5 @@ Marketplace and dashboard render backend records or empty states only. No sample
 
 ### Contract document deletion
 
-The documents section provides a separate delete button for each browser-local DOCX. Confirmation names the file. Deletion waits for an in-flight autosave, cancels pending opens and saves, removes the IndexedDB record, and closes the editor when deleting the current document. Other files remain intact.
+The documents section uploads browser-local DOCX files and opens editing with the key panel in a dialog. Each file row has a delete icon with dialog confirmation. Deletion waits for an in-flight autosave and closes the editor when deleting the current document.
 

@@ -96,6 +96,10 @@ The local `hamtry-navbar` component switches between `#dashboard`,
 `.docx` only (up to 20 MB), checks the OOXML package, and stores documents and
 edited versions in IndexedDB in the current browser.
 
+Upload a DOCX from the drop area, then select it to edit in a dialog. The dialog
+also shows available contract keys. Delete a saved file from its row after
+confirming in a separate dialog.
+
 The editor uses the free `@docx-editor.dev/react` and `@docx-editor.dev/core`
 packages. PDF download serializes the **current editor state** to DOCX,
 uses `docx-preview` to render self-contained HTML (embedded images/fonts as
