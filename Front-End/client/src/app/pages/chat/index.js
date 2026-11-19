@@ -44,7 +44,7 @@ export function setupChat(root, listen) {
     try {
       const result = await request(`/api/v1/chats/${encodeURIComponent(id)}/messages`)
       if (!active || current !== revision) return
-      result.data.forEach(addMessage)
+      list.replaceChildren(); result.data.forEach(addMessage)
       list.scrollTop = list.scrollHeight
     } catch (error) { if (active && current === revision) { form.hidden = true; list.hidden = true; empty.textContent = error.message; empty.hidden = false } }
   }
@@ -97,8 +97,9 @@ export function setupChat(root, listen) {
       const result = await request(`/api/v1/chats/${encodeURIComponent(chatId)}/messages`, { method: 'POST', body: { body } })
       if (!active || root.state.user.get()?.id !== userId) return
       const item = chats.find(chat => chat.id === chatId)
-      item.last_message = body; item.last_at = result.data.created_at
+      if (item) { item.last_message = body; item.last_at = result.data.created_at }
       const button = [...rows.querySelectorAll('[data-chat-id]')].find(row => row.dataset.chatId === chatId)
+      if (!button) { if (selected === chatId) input.value = ''; void load(); return }
       button.querySelector('.chat-conversation-copy > span').textContent = body
       button.querySelector('time').textContent = new Date(result.data.created_at).toLocaleDateString('mn-MN', { month: 'numeric', day: 'numeric' })
       rows.prepend(button)

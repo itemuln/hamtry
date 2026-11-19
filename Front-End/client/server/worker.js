@@ -28,7 +28,7 @@ export default {
         headers: { 'Content-Type': json ? 'application/json' : 'text/css', 'Cache-Control': 'no-store' },
       })
     }
-    if (path.startsWith('/api/v1/') || path.startsWith('/api/auth/') || path.startsWith('/api/liveness/')) return api.fetch(request, env, ctx)
+    if (['/api/graphql', '/api/openapi.json', '/api/docs'].includes(path) || path.startsWith('/api/v1/') || path.startsWith('/api/auth/') || path.startsWith('/api/liveness/')) return api.fetch(request, env, ctx)
     if (path === '/healthz') {
       return Response.json({ status: 'ok', service: 'hamtry-web' })
     }

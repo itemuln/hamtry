@@ -8,10 +8,10 @@ export async function startChat(db, listingId, userId) {
 }
 export const getChats = (db, userId) => repo.listChats(db, userId)
 export async function getMessages(db, chatId, userId) {
-  if (!await repo.findChat(db, chatId, userId)) return null
+  if (!(await repo.findChat(db, chatId, userId))) return null
   return repo.listMessages(db, chatId)
 }
 export async function sendMessage(db, chatId, userId, body) {
-  if (!await repo.findChat(db, chatId, userId)) return null
+  if (!(await repo.findChat(db, chatId, userId))) return null
   return repo.saveMessage(db, chatId, userId, body)
 }

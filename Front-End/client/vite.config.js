@@ -12,7 +12,7 @@ export default defineConfig({
       '@hamtry/library': resolve(import.meta.dirname, 'src/library/index.js'),
     },
   },
-  server: { proxy: { '/api/v1': 'http://127.0.0.1:8787', '/api/auth': 'http://127.0.0.1:8787', '/api/liveness': 'http://127.0.0.1:8787' } },
+  server: { proxy: { '/api/graphql': 'http://127.0.0.1:8787', '/api/openapi.json': 'http://127.0.0.1:8787', '/api/docs': 'http://127.0.0.1:8787', '/api/v1': 'http://127.0.0.1:8787', '/api/auth': 'http://127.0.0.1:8787', '/api/liveness': 'http://127.0.0.1:8787' } },
   worker: { format: 'es' },
   build: {
     rolldownOptions: {

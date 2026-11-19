@@ -20,6 +20,9 @@ a local-only secret if absent and is ignored by Git. Do not reuse it in producti
 
 ## Routes
 
+- `GET/POST /api/v1/chats`: list or open a conversation.
+- `GET/POST /api/v1/chats/:id/messages`: read or send messages as a participant.
+
 - `/api/auth/*`: Better Auth email/password registration, sign-in, sessions, logout.
 - `GET /api/v1/health`: database readiness and configured auth/media capabilities.
 - `GET /api/v1/listings`: kind, district, maxPrice, q, comma-separated condition
@@ -33,8 +36,6 @@ a local-only secret if absent and is ignored by Git. Do not reuse it in producti
 - `POST /api/v1/listings/:id/publish`: publish only a complete gallery.
 - `DELETE /api/v1/listings/:id`: archive; public listing/photo access ends.
 - `GET /api/v1/media/:id`: public published photo, or authenticated owner draft.
-- `GET/POST /api/v1/chats`: list a user's conversations or open one for a published listing.
-- `GET/POST /api/v1/chats/:id/messages`: read or send messages as a participant.
 - `DELETE /api/v1/media/:id`: remove a draft photo and all variants.
 - `GET/PATCH /api/v1/me`, `GET /api/v1/me/listings`.
 - `GET /api/v1/saved`, `PUT/DELETE /api/v1/saved/:id`.
@@ -81,8 +82,78 @@ authentication, cross-owner denial, publication, R2 media, saved items and CSRF;
 its cleanup never runs against remote D1. Frontend checks remain in client.
 
 Email delivery, email verification/password-recovery messages, real-camera/server
-acceptance and authenticated document features are not implemented here.
+acceptance and authenticated document/chat features are not implemented here.
 Self-introduction posting remains upcoming in the UI, as requested; the backend
 listing model supports both listing types. Admin roles are set by trusted database
 administration only, not signup or profile edits. Local SQLite/PostgreSQL/Spring
 scaffolds are not production API dependencies.
+
+## API documentation and languages
+
+Open `/api/docs` for the route index and `/api/openapi.json` for the OpenAPI 3.1
+document. REST remains at `/api/v1`. Query published listings with
+`POST /api/graphql` and a body such as:
+
+```json
+{"query":"{ listings(limit: 5) { data { id title price } pagination { nextCursor } } }"}
+```
+
+Set `Accept-Language: en` for English or `Accept-Language: mn` for Mongolian.
+Mongolian is the default. HTTP failures return `error.code` and
+`error.message`, and validation errors can include `error.fields`.
+GraphQL execution failures use `errors[].extensions.code`.
+
+## Module and provider boundaries
+
+The existing Worker deploys one Hono application. Profiles, saved listings,
+moderation, listings, media and verification register their routes separately.
+The REST and GraphQL catalog reads receive the same repository through
+`createApi({ catalog })`. An alternate implementation must support
+`search(filters)` and `get(id)` with the same visibility and pagination behavior.
+Listings has a REST controller, a transport-independent service, and a D1
+repository covering reads and writes. The other feature modules and identity
+still use D1 directly. A database migration also needs to cover those features.
+
+Keep payment gateway code at the outbound boundary once a provider and payment
+flow are chosen. Verify webhooks before applying events and enforce database
+uniqueness on the provider and event identifier. Keep public versioned assets
+in a separate bucket from private uploads when introducing an R2 asset origin.
+Deploy schema expansions before dependent code and defer removals until rollback
+no longer needs them.
+
+The API emits request duration in `Server-Timing`. Benchmark by feature before
+choosing a split. Favor a module with measurable independent scaling or failure
+isolation needs. Keep its public route in Hono and use a private Service Binding
+after it gets its own deployment.
+
+## Coding conventions
+
+Put validation shared by controllers or transports, common limits, and error
+handling in `src/utils/`. Keep feature rules in services and SQL in repositories.
+Use named constants for limits shared by validation, storage, and documentation.
+
+Route handlers return errors with `problem`. Services and validators throw
+`ApiError` with a stable `ERROR` code when a request cannot continue. Add any new
+user-facing message in both languages in `src/utils/errors.js`. Keep raw
+exception text in server logs instead of including it in an API response.
+
+Keep JavaScript and comments within 120 characters per line. ESLint enforces
+this limit in API source and tests. Break long SQL statements at clause
+boundaries and keep values bound through prepared statements.
+
+### Feature layout and review
+
+Group code by feature. Use Listings as the reference: the controller handles HTTP,
+the service owns business operations, the repository owns SQL, and the schema file
+owns feature validation. Cross-feature imports use the module's `index.js`. A
+small feature can stay in one file until separating responsibilities helps.
+ESLint enforces the public import boundary for Listings.
+
+Use kebab-case filenames, camelCase functions and variables, PascalCase classes,
+and UPPER_SNAKE_CASE constants. Name functions after the operation they perform.
+Use comments to explain constraints and tradeoffs. Put broad formatting changes
+in a separate review from behavior changes when practical.
+
+Run `npm run format` to format source and tests. CI checks formatting, lint, and
+tests. Use service tests for business rules, local D1 integration tests for SQL
+and persistence, and request tests for REST and GraphQL contracts.

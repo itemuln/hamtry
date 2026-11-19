@@ -36,6 +36,7 @@ jobs:
       - run: npm test
       - run: npm run api:test
       - run: npm run lint --prefix ../../Back-End/api
+      - run: npm run format:check --prefix ../../Back-End/api
       - run: npm run build
       - name: Deploy Worker and assets
         run: npm run deploy
