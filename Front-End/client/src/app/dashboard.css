@@ -122,34 +122,9 @@ hamtry-home footer.dashboard-footer small { grid-column: 1/-1; flex-basis: auto;
 .dashboard-viewing-copy { display:flex; flex-direction:column; min-width:0; gap:var(--spacing-1); overflow-wrap:anywhere; }
 .dashboard-meeting-status { font-size:var(--type-caption); font-weight:600; }
 .dashboard-viewing time { font-size:var(--type-caption); font-variant-numeric:tabular-nums; }
-.dashboard-message-list { display:flex; gap:var(--spacing-3); overflow-x:auto; overscroll-behavior-x:contain; padding-block:var(--spacing-2); scroll-snap-type:x mandatory; }
-.dashboard-messages { background:var(--surface-elevated); }
-.dashboard-message { position:relative; display:grid; grid-template-columns:2.5rem minmax(0,1fr); grid-template-rows:auto auto; align-items:start; flex:0 0 min(20rem,90%); gap:var(--spacing-2) var(--spacing-3); scroll-snap-align:start; }
-.dashboard-message .dashboard-character { grid-column:1; grid-row:1; align-self:start; flex-basis:2.5rem; width:2.5rem; height:2.5rem; overflow:hidden; border-radius:var(--radius-full); }
-.dashboard-message .dashboard-character img { object-fit:cover; object-position:center 10%; }
-.dashboard-message-bubble { position:relative; grid-column:2; grid-row:1; min-width:0; padding:var(--spacing-3); padding-right:var(--spacing-8); border-radius:var(--radius-lg); background:var(--surface-interactive); color:var(--text-primary); overflow-wrap:anywhere; }
-.dashboard-message-bubble::after { content:""; position:absolute; left:-.75rem; top:50%; width:0; height:0; border:.75rem solid transparent; border-right-color:var(--surface-interactive); border-left:0; border-bottom:0; margin-top:-.375rem; }
-.dashboard-message.is-unread .dashboard-message-bubble { background:var(--status-info-subtle); }
-.dashboard-message.is-unread .dashboard-message-bubble::after { border-right-color:var(--status-info-subtle); }
-.dashboard-message p { padding-block:var(--spacing-1); }
-.dashboard-message small { color:var(--text-secondary); }
-.dashboard-message.is-unread small { color:var(--text-primary); font-weight:600; }
-.dashboard-reply-warning { display:block; }
-.dashboard-message .dashboard-warning-icon { position:absolute; top:-.5rem; right:0; display:grid; place-items:center; width:2rem; height:2rem; padding:var(--spacing-1); border:1px solid var(--status-error); border-radius:50%; background:var(--status-warning-subtle); cursor:help; }
-.dashboard-warning-icon img { width:1.25rem; height:1.25rem; }
-.dashboard-message .dashboard-warning-text { position:fixed; inset:auto; box-sizing:border-box; width:min(18rem,calc(100vw - 1.5rem)); max-height:calc(100dvh - 1.5rem); overflow:auto; margin:0; padding:var(--spacing-4); border:0; border-radius:var(--ui-radius-panel); box-shadow:var(--ui-shadow-panel); background:var(--status-warning-subtle); color:var(--text-primary); font-size:var(--type-caption); line-height:1.45; }
-.dashboard-warning-text:not(:popover-open) { display:none; }
-:root[data-appearance="dark"] .dashboard-message .dashboard-warning-text { color:var(--text-inverse); }
-.dashboard-message .dashboard-warning-icon { animation: dashboard-warning-blink 2s ease-in-out infinite; }
-.dashboard-message .dashboard-warning-icon:is(:hover, :focus-visible) { animation: none; opacity: 1; }
-@keyframes dashboard-warning-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
-.dashboard-message [data-read-message] { grid-column:2; justify-self:end; min-height:var(--size-control-sm); padding:var(--spacing-1) var(--spacing-2); border:var(--border-width) solid var(--border-default); border-radius:var(--radius-md); background:var(--surface-elevated); color:var(--text-primary); font-size:var(--type-caption); cursor:pointer; }
-.dashboard-messages button:disabled { opacity:.55; cursor:default; }
-.dashboard-messages .dashboard-panel-heading { margin-bottom:var(--spacing-3); }
-.dashboard-messages-status { color:var(--text-secondary); font-size:var(--type-caption); }
 .dashboard-inquiries { border-color:var(--border-default); }
 .dashboard-inquiry .dashboard-character { height:var(--size-avatar-lg); }
-:is(#dashboard-viewings,#dashboard-messages,#dashboard-inquiries) { scroll-margin-top:var(--spacing-6); }
+:is(#dashboard-viewings,#dashboard-inquiries) { scroll-margin-top:var(--spacing-6); }
 
 @media (max-width: 68rem) {
   .dashboard-workspace { padding: var(--spacing-4); }
@@ -193,7 +168,6 @@ hamtry-home footer.dashboard-footer small { grid-column: 1/-1; flex-basis: auto;
   .dashboard-utility .dashboard-search { flex:1; min-width:0; }
   .dashboard-utility .dashboard-icon-button { display:grid; }
   .dashboard-inquiry { grid-template-columns:var(--size-avatar-lg) minmax(0,1fr) 6.25rem; }
-  .dashboard-messages .dashboard-panel-heading button { width:auto; padding:var(--spacing-2); }
 }
 
 /* Shared local navbar follows the selected rooms-navigation treatment. */
