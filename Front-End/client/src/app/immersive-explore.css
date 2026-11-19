@@ -18,6 +18,10 @@ p { color:var(--text-secondary); }
 .map-modes [aria-pressed=true] { background:var(--brand-primary); color:var(--text-inverse); }
 .sample-note,.reference { font-size:.9375rem; }
 .map-rooms { display:grid; gap:var(--ui-space-2); }
+.market-summary { display:grid; grid-template-columns:auto 1fr; align-items:baseline; column-gap:.55rem; padding:.9rem 0 1rem; margin:.35rem 0 .5rem; border-bottom:1px solid var(--border-default); }
+.market-total { font:700 1.8rem/1 var(--font-display); font-variant-numeric:tabular-nums; color:var(--brand-primary); }
+.market-summary > span { color:var(--text-primary); font-weight:600; }
+.market-summary small { grid-column:1/-1; margin-top:.4rem; color:var(--text-secondary); font-size:.875rem; }
 .map-rooms button { text-align:left; padding:var(--ui-space-4); border:1px solid var(--border-default); border-radius:var(--radius-md); background:transparent; }
 .map-rooms button[aria-pressed=true] { background:var(--brand-accent-lime); color:var(--brand-primary); border-color:var(--brand-primary); }
 .map-rooms strong,.map-rooms span { display:block; }
@@ -61,6 +65,8 @@ input { accent-color:var(--brand-primary); }
 }
 
 .map-toolbar .map-modes { margin:0; background:var(--surface-elevated); }
+.map-toolbar { align-items:center; }
+.map-toolbar .map-place { padding:var(--ui-space-3) var(--ui-space-4); border:1px solid var(--border-default); border-radius:var(--radius-action); background:var(--surface-elevated); font-size:.9375rem; font-weight:600; }
 :host([embedded]) { height:100%; min-height:0; }
 :host([embedded]) header,:host([embedded]) .explore-panel { display:none; }
 :host([embedded]) .immersive-shell,:host([embedded]) main { height:100%; min-height:0; }
@@ -69,7 +75,7 @@ input { accent-color:var(--brand-primary); }
 :host([embedded]) .map-canvas { min-height:0; }
 :host([embedded]) .map-toolbar { right:3.5rem; }
 :host([embedded]) .map-toolbar button,:host([embedded]) .map-toolbar label { font-size:.875rem; }
-@media(max-width:40em) { :host([embedded]) .map-toolbar { left:.5rem; top:.5rem; gap:var(--ui-space-small); } :host([embedded]) .map-toolbar button,:host([embedded]) .map-toolbar label { padding:var(--ui-space-2) var(--ui-space-control); font-size:.8125rem; } :host([embedded]) .room-preview { max-height:calc(100% - 6rem); bottom:2rem; } }
+@media(max-width:40em) { :host([embedded]) .map-toolbar { left:.5rem; top:.5rem; gap:var(--ui-space-small); } :host([embedded]) .map-toolbar button,:host([embedded]) .map-toolbar label { padding:var(--ui-space-2) var(--ui-space-control); font-size:.8125rem; } :host([embedded]) .map-toolbar .map-place { display:none; } :host([embedded]) .room-preview { max-height:calc(100% - 6rem); bottom:2rem; } }
 
 .map-toolbar .map-modes button { white-space:nowrap; min-height:2.5rem; border:0; padding:var(--ui-space-label-gap) var(--ui-space-3); }
 

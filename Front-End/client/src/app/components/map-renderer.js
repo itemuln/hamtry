@@ -85,7 +85,7 @@ export function createApartmentMap(container, { pick, onSelect, onLocation, onRe
         } else {
           button.textContent = new Intl.NumberFormat('mn-MN').format(item.price / 1000) + ' мян. ₮'
         }
-        button.setAttribute('aria-label', `${item.title} — ${item.price.toLocaleString('mn-MN')} төгрөг, дэлгэрэнгүй`)
+          button.setAttribute('aria-label', `${item.title} — ${item.district}, сарын түрээс ${item.price.toLocaleString('mn-MN')} төгрөг, дэлгэрэнгүй`)
         button.setAttribute('aria-pressed', String(selected === item.id))
       }
     },

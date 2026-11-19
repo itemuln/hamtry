@@ -19,11 +19,12 @@ export class HamtryImmersiveExplore extends HamtryElement {
     this.root.adoptedStyleSheets = [sheet]
     this.root.innerHTML = `<div class="immersive-shell">
       <header><a class="brand" href="/">hamtry.</a><nav aria-label="Үндсэн цэс"><a href="/#rooms">Өрөөнүүд</a><a href="/#roommates">Хамтрагчид</a></nav></header>
-      <main><aside class="explore-panel"><h1>Хот дотроос<br>орон зайгаа ол.</h1><p>Улаанбаатарыг ойроос харж, өрөөний байршлуудтай танилцаарай.</p>
+      <main><aside class="explore-panel"><h1>Улаанбаатарт<br>гэрээ олоорой.</h1><p>Дүүргээр нь судалж, сарын түрээс болон байрны орчныг газрын зураг дээрээс харьцуулаарай.</p>
 
-        <h2>Өрөөнүүд <span class="count"></span></h2><div class="map-rooms" role="group" aria-label="Өрөөний байршил сонгох"></div>
+        <section class="market-summary" aria-label="Зарын тойм"><strong class="market-total">—</strong><span>байршилтай зар</span><small>Улаанбаатар · сарын түрээс</small></section>
+        <h2>Газрын зурагт харагдаж буй зар <span class="count"></span></h2><div class="map-rooms" role="group" aria-label="Байрны зар сонгох"></div>
         <p class="reference">ImmersiveMap-ийн зарчимд тулгуурласан веб хувилбар. <a href="https://github.com/artembobkin/ImmersiveMap" target="_blank" rel="noopener noreferrer">Эх төсөл ↗</a></p>
-      </aside><section class="map-stage" aria-label="Улаанбаатарын интерактив газрын зураг"><div class="map-canvas"></div><div class="map-toolbar"><div class="map-modes" role="group" aria-label="Газрын зургийн харагдац"><button type="button" data-mode="city" aria-pressed="true">3D</button><button type="button" data-mode="flat" aria-pressed="false">2D</button></div></div><p class="building-legend"><span aria-hidden="true"></span>Зартай барилга <small>Зааж эсвэл дарж үзээрэй</small></p><p class="map-status" role="status">Газрын зураг ачаалж байна…</p><div class="room-preview" role="region" aria-label="Сонгосон өрөө" hidden><button class="close-preview" type="button" aria-label="Дэлгэрэнгүй хаах"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><article class="map-property"><img class="room-image" alt=""><div class="property-copy"><h2></h2><p class="room-meta"></p><strong class="room-price"></strong><div class="room-facts"></div><p class="room-description"></p><div class="room-owner"></div></div></article></div></section></main></div>`
+      </aside><section class="map-stage" aria-label="Улаанбаатарын интерактив үл хөдлөх хөрөнгийн газрын зураг"><div class="map-canvas"></div><div class="map-toolbar"><div class="map-modes" role="group" aria-label="Газрын зургийн харагдац"><button type="button" data-mode="city" aria-pressed="true">3D хот</button><button type="button" data-mode="flat" aria-pressed="false">Дагуул</button></div><span class="map-place">Улаанбаатар, Монгол</span></div><p class="building-legend"><span aria-hidden="true"></span>Зартай барилга <small>Барилга сонгож зар үзнэ үү</small></p><p class="map-status" role="status">Газрын зураг ачаалж байна…</p><div class="room-preview" role="region" aria-label="Сонгосон байрны зар" hidden><button class="close-preview" type="button" aria-label="Дэлгэрэнгүй хаах"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><article class="map-property"><img class="room-image" alt=""><div class="property-copy"><h2></h2><p class="room-meta"></p><strong class="room-price"></strong><div class="room-facts"></div><p class="room-description"></p><div class="room-owner"></div></div></article></div></section></main></div>`
   }
   setup() {
     const $ = selector => required(selector, this.root)
@@ -39,6 +40,7 @@ export class HamtryImmersiveExplore extends HamtryElement {
     container.replaceChildren(); rooms.replaceChildren(); $('.room-preview').hidden = true
     status.hidden = false; status.textContent = 'Газрын зураг ачаалж байна…'
     $('.count').textContent = `(${items.length})`
+    $('.market-total').textContent = new Intl.NumberFormat('mn-MN').format(items.length)
     const select = id => {
       const item = items.find(item => item.id === id)
       if (!item) return
@@ -86,11 +88,12 @@ export class HamtryImmersiveExplore extends HamtryElement {
     useEffect(() => {
       items = (this.listings ?? this.app.catalog.get() ?? []).filter(item => validLocation(item.location))
       $('.count').textContent = `(${items.length})`
+      $('.market-total').textContent = new Intl.NumberFormat('mn-MN').format(items.length)
       rooms.replaceChildren()
       for (const item of items) {
         const button = document.createElement('button'); button.type = 'button'; button.dataset.id = item.id; button.setAttribute('aria-pressed', String(item.id === selected))
         const title = document.createElement('strong'); title.textContent = item.title
-        const meta = document.createElement('span'); meta.textContent = `${item.district} · ${money(item.price)}`
+        const meta = document.createElement('span'); meta.textContent = `${item.district} · ${money(item.price)} / сар`
         button.append(title, meta); rooms.append(button)
       }
       if (!items.length) rooms.textContent = 'Байршилтай зар алга. Хайлтын нөхцөлөө өөрчилж үзээрэй.'
