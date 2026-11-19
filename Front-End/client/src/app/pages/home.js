@@ -4,6 +4,8 @@ import { findListings, initialFilters, money, readRoute, validLocation } from '.
 import { createAppState } from '../state/store.js'
 import { request, currentUser, publishListing } from '../state/api.js'
 import { dashboardMarkup, setupDashboard, updateDashboard } from './dashboard.js'
+import { chatMarkup, setupChat } from './chat/index.js'
+import './chat/style.css'
 
 const searchIcons = {
   rooms: '<path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/>',
@@ -50,7 +52,7 @@ export class HamtryHome extends HTMLElement {
       <a class="skip-link" href="#main-content">Үндсэн агуулга руу очих</a>
       <header class="site-header">
         <a class="wordmark" href="#rooms" aria-label="Hamtry нүүр"><span class="brand-mark" aria-hidden="true">h.</span>hamtry<span class="brand-period">.</span></a>
-        <nav id="main-nav" class="main-nav" aria-label="Үндсэн цэс"><span class="nav-indicator" aria-hidden="true" hidden></span><a href="#map" data-nav="map"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5Z"/></svg><span>3D ертөнц</span></a><a href="#rooms" data-nav="home">${searchIcon('rooms')}<span>Нүүр хуудас</span></a><a href="#saved" data-nav="saved"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4Z"/></svg><span>Хадгалсан</span> <span class="saved-count">0</span></a></nav>
+        <nav id="main-nav" class="main-nav" aria-label="Үндсэн цэс"><span class="nav-indicator" aria-hidden="true" hidden></span><a href="#map" data-nav="map"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5Z"/></svg><span>3D ертөнц</span></a><a href="#rooms" data-nav="home">${searchIcon('rooms')}<span>Нүүр хуудас</span></a><a href="#chat" data-nav="chat">${searchIcon('message')}<span>Чат</span></a></nav>
         <div class="header-actions"><button type="button" class="host-button add-listing-button" aria-haspopup="dialog" aria-controls="listing-type-menu" aria-expanded="false">${searchIcon('plus')}Зар нэмэх</button><button type="button" class="menu-button" aria-label="Цэс" aria-haspopup="dialog" aria-controls="header-menu" aria-expanded="false">${searchIcon('menu')}</button><button type="button" class="profile-button" data-action="profile" aria-label="Миний орон зай"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3"/><path d="M6 19a6 6 0 0 1 12 0"/></svg></button></div>
       </header>
       <div class="search-dock">
@@ -81,6 +83,7 @@ export class HamtryHome extends HTMLElement {
       </div>
       <main id="main-content">
       ${dashboardMarkup()}
+      ${chatMarkup()}
           <section class="listing-section page-width" id="results" tabindex="-1" aria-label="Өрөөнүүд">
                         <div class="results-meta"><p class="result-count" role="status" aria-live="polite"></p></div>
                         <div class="browse-layout"><hamtry-immersive-map class="browse-map" embedded></hamtry-immersive-map><div class="listing-results"><p class="map-location-note" hidden>Эдгээр хамтрагчийн байршил оруулаагүй байна.</p><div class="listing-grid"></div>
@@ -136,7 +139,7 @@ export class HamtryHome extends HTMLElement {
         await request(`/api/auth/${mode === 'register' ? 'sign-up' : 'sign-in'}/email`, { method: 'POST', body })
         if (demoRole) state.role.set(demoRole)
         await loadAccount(); accountForm.reset(); accountFeedback.textContent = ''; profile.close(); toast('Нэвтэрлээ.')
-        if (demoRole) location.hash = demoRole === 'provider' ? 'dashboard' : 'rooms'
+        if (demoRole && this.dataset.page !== 'chat') location.hash = demoRole === 'provider' ? 'dashboard' : 'rooms'
       } catch (error) { accountFeedback.textContent = error.message }
       finally { accountBusy = false; required('.account-submit', this).disabled = false }
     }
@@ -273,6 +276,7 @@ export class HamtryHome extends HTMLElement {
       publish.showModal()
     }
     setupDashboard(this, { showPublish, toast, listen })
+    const chat = setupChat(this, listen)
     const addListing = required('.add-listing-button', this)
     const positionHeaderMenu = (menu, button) => {
       const anchor = button.getBoundingClientRect()
@@ -556,11 +560,9 @@ export class HamtryHome extends HTMLElement {
     listen(this, 'click', event => {
       if (event.target.closest('.detail-save')) save(detailId)
       if (event.target.closest('button.contact-concept')) {
-        if (!state.user.get()) { profile.showModal(); return }
-        void request('/api/v1/chats', { method: 'POST', body: { listingId: detailId } }).then(result => {
-          required('.provider-chat', this).openChat(result.data.id)
-          location.hash = 'dashboard/chat'
-        }).catch(error => toast(error.message))
+        chat.openListing(detailId)
+        location.hash = 'chat'
+        if (!state.user.get()) profile.showModal()
       }
       if (event.target.closest('.detail-collapse') && expandedCard) {
         const id = detailId
@@ -624,9 +626,10 @@ export class HamtryHome extends HTMLElement {
     }
     useEffect(() => {
       const route = state.route.get()
-      const page = route.page === 'detail' ? this.previousPage : route.page
+      const page = route.page === 'detail' ? this.previousPage
+        : route.page === 'dashboard' && route.section === 'chat' ? 'chat' : route.page
       const kind = page === 'map' || page === 'list' ? 'rooms' : page === 'rooms' || page === 'roommates' ? page : state.kind.get()
-      const savedPage = page === 'saved', dashboard = page === 'dashboard'
+      const savedPage = page === 'saved', dashboard = page === 'dashboard', chatting = page === 'chat'
       const searchFrames = this.dataset.searchKind && this.dataset.searchKind !== kind ? captureSearchLayout() : []
       this.dataset.searchKind = kind
       for (const id of ['search-district', 'search-budget']) {
@@ -635,11 +638,12 @@ export class HamtryHome extends HTMLElement {
       }
       required('.provider-dashboard', this).hidden = !dashboard
       updateDashboard(this, state.published.get())
-      if (route.page !== 'detail') this.previousPage = route.page
+      chat.setVisible(chatting, state.backend.get(), state.user.get()?.id)
+      if (route.page !== 'detail') this.previousPage = chatting ? 'rooms' : page
       this.dataset.page = page
-      required('#results', this).hidden = dashboard
-      required('.search-dock', this).hidden = dashboard
-      if (dashboard) closeSearchPanels()
+      required('#results', this).hidden = dashboard || chatting
+      required('.search-dock', this).hidden = dashboard || chatting
+      if (dashboard || chatting) closeSearchPanels()
       const roomMap = page === 'map'
       this.dataset.view = roomMap ? 'map' : 'list'
       required('.browse-map', this).hidden = !roomMap

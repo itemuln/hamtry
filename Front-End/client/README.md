@@ -138,6 +138,7 @@ Install both package dependencies before building: `npm ci --prefix ../../Back-E
 ### Local demo sign-in
 
 With the local API running, use `npm run api:seed:demo` to create or verify
-five seeker and five provider accounts in local D1. Open the profile dialog
+five seeker and five provider accounts in local D1 and publish one demo room per provider.
+Rooms reuse the existing photo in `tests/fixtures/room.png`. Open the profile dialog
 on localhost in Vite development mode and select an account below sign-in.
 Production builds exclude the picker and its test credentials.

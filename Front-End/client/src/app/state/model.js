@@ -21,7 +21,7 @@ export function readRoute(hash) {
   const path = hash.replace(/^#\/?/, '') || 'rooms'
   if (path === 'dashboard/documents' || path === 'dashboard/chat') return { page: 'dashboard', section: path.split('/')[1] }
   if (path.startsWith('listing/')) return { page: 'detail', id: path.slice(8) }
-  return { page: ['map', 'list', 'rooms', 'roommates', 'saved', 'dashboard'].includes(path) ? path : 'rooms' }
+  return { page: ['map', 'list', 'rooms', 'roommates', 'saved', 'chat', 'dashboard'].includes(path) ? path : 'rooms' }
 }
 // MapLibre-ийн Mercator зурагт тохирох [уртраг, өргөрөг]. Хоосон input-ийг 0 гэж үзэхгүй.
 export const validLocation = point => Array.isArray(point) && point.length === 2 && point.every(Number.isFinite) && Math.abs(point[0]) <= 180 && Math.abs(point[1]) <= 85
