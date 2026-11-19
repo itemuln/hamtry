@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs'
 export function testDatabase() {
   const sqlite = new DatabaseSync(':memory:')
   sqlite.exec(readFileSync(new URL('../migrations/0001_initial.sql', import.meta.url), 'utf8'))
+  sqlite.exec(readFileSync(new URL('../migrations/0003_chat.sql', import.meta.url), 'utf8'))
   const statement = (sql, values = []) => ({
     bind(...params) { return statement(sql, params) },
     async all() {

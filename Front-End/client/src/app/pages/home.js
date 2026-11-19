@@ -514,6 +514,13 @@ export class HamtryHome extends HTMLElement {
     })
     listen(this, 'click', event => {
       if (event.target.closest('.detail-save')) save(detailId)
+      if (event.target.closest('button.contact-concept')) {
+        if (!state.user.get()) { profile.showModal(); return }
+        void request('/api/v1/chats', { method: 'POST', body: { listingId: detailId } }).then(result => {
+          required('.provider-chat', this).openChat(result.data.id)
+          location.hash = 'dashboard/chat'
+        }).catch(error => toast(error.message))
+      }
       if (event.target.closest('.detail-collapse') && expandedCard) {
         const id = detailId
         motion.play(expandedCard, { opacity: [getComputedStyle(expandedCard).opacity, 0] }, { duration: 160, onComplete: () => {
@@ -728,7 +735,10 @@ export class HamtryHome extends HTMLElement {
   }
   renderDetail(root, item, actions, previewRecords = []) {
     // Зар/хэрэглэгчийн текстийг зөвхөн textContent-оор оруулна; innerHTML нь static skeleton.
-    root.innerHTML = (actions ? '<button type="button" class="detail-collapse" aria-label="Хураах" title="Хураах">' + searchIcon('close') + '</button>' : '') + '<div class="detail-layout"><div class="detail-media"></div><div class="detail-info"><h3></h3><p class="detail-location"></p><div class="detail-owner"><span class="owner-avatar" aria-hidden="true"></span><div><strong class="owner-name"></strong><small class="owner-description"></small></div><span class="contact-concept" role="img" aria-label="Мессеж бичих — Тун удахгүй" aria-disabled="true" title="Мессеж бичих — Тун удахгүй">' + searchIcon('message') + '</span></div><div class="detail-summary">' + searchIcon('money') + '<strong class="detail-price"></strong><span class="price-period">/сар</span></div><p class="detail-description"></p><div class="detail-facts"><div><span class="detail-size-label"></span><strong class="detail-size"></strong></div><hamtry-move-in-picker></hamtry-move-in-picker></div><div class="detail-traits" aria-label="Нөхцөл"></div>' + (actions ? '<div class="detail-actions"><hamtry-button class="detail-save">Хадгалах ♡</hamtry-button>' + (validLocation(item.location) ? '<button type="button" class="detail-map">' + searchIcon('map') + 'Map</button>' : '') + '</div>' : '') + '</div></div>'
+    const contact = item.remote && !item.demo && item.ownerId !== this.state.user.get()?.id
+      ? '<button class="contact-concept" type="button" aria-label="Мессеж бичих" title="Мессеж бичих">' + searchIcon('message') + '</button>'
+      : '<span class="contact-concept" role="img" aria-label="Мессеж бичих боломжгүй" aria-disabled="true">' + searchIcon('message') + '</span>'
+    root.innerHTML = (actions ? '<button type="button" class="detail-collapse" aria-label="Хураах" title="Хураах">' + searchIcon('close') + '</button>' : '') + '<div class="detail-layout"><div class="detail-media"></div><div class="detail-info"><h3></h3><p class="detail-location"></p><div class="detail-owner"><span class="owner-avatar" aria-hidden="true"></span><div><strong class="owner-name"></strong><small class="owner-description"></small></div>' + contact + '</div><div class="detail-summary">' + searchIcon('money') + '<strong class="detail-price"></strong><span class="price-period">/сар</span></div><p class="detail-description"></p><div class="detail-facts"><div><span class="detail-size-label"></span><strong class="detail-size"></strong></div><hamtry-move-in-picker></hamtry-move-in-picker></div><div class="detail-traits" aria-label="Нөхцөл"></div>' + (actions ? '<div class="detail-actions"><hamtry-button class="detail-save">Хадгалах ♡</hamtry-button>' + (validLocation(item.location) ? '<button type="button" class="detail-map">' + searchIcon('map') + 'Map</button>' : '') + '</div>' : '') + '</div></div>'
     const media = required('.detail-media', root)
     if (item.kind === 'rooms') {
       const tour = document.createElement('hamtry-photo-tour')

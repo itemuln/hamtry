@@ -95,6 +95,8 @@ The local `hamtry-navbar` component switches between `#dashboard`,
 `#dashboard/documents`, and `#dashboard/chat`. The documents section accepts
 `.docx` only (up to 20 MB), checks the OOXML package, and stores documents and
 edited versions in IndexedDB in the current browser.
+The chat section reads and sends authenticated messages through the Hono Worker
+and D1. A conversation starts from the message button on a published listing.
 
 Upload a DOCX from the drop area, then select it to edit in a dialog. The dialog
 also shows available contract keys. Delete a saved file from its row after

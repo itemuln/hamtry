@@ -7,6 +7,7 @@ import { registerMedia } from './features/media.js'
 import { profileSchema, jsonBody } from './validation.js'
 import { z } from 'zod'
 import { registerLiveness } from './features/liveness.js'
+import { chatController } from './features/chat/controller.js'
 
 export const api = new Hono()
 export const authFor = c => c.get('auth') || (() => { const auth = createAuth(c.env, new URL(c.req.url).origin); c.set('auth', auth); return auth })()
@@ -33,6 +34,7 @@ api.get('/api/v1/health', async c => {
 api.all('/api/auth/*', c => authFor(c).handler(c.req.raw))
 const v1 = new Hono()
 v1.route('/listings', listingRoutes)
+v1.route('/chats', chatController(requireUser))
 registerListingWrites(v1, requireUser)
 registerMedia(v1, requireUser, authFor)
 v1.get('/me', requireUser, async c => {

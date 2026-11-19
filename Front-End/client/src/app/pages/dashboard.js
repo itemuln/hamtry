@@ -2,13 +2,15 @@ import brandHome from '../assets/dashboard/brand-home.svg'
 import searchIcon from '../assets/dashboard/search.svg'
 import bellIcon from '../assets/dashboard/bell.svg'
 import plusIcon from '../assets/dashboard/plus.svg'
-import { messagesMarkup, viewingsMarkup, setupAttention, characterMarkup, meetings, people } from './dashboard-attention.js'
+import { viewingsMarkup, setupAttention, characterMarkup, meetings, people } from './dashboard-attention.js'
+import { chatMarkup, setupChat } from './chat/index.js'
 import { verificationMarkup, setupVerification } from './selfie-verification.js'
 import { calendarGrid } from '../state/model.js'
 import { rentalRequests, requestedListing } from '../state/dashboard-requests.js'
 import { meetingSheetMarkup, setupMeetingSheet } from './meeting-sheet.js'
 import { requestDetailsMarkup, setupRequestDetails, updateRequestRows } from './request-details.js'
 import { documentsMarkup, setupDocuments } from './contract-documents.js'
+import './chat/style.css'
 
 const icon = (src, alt = '') => `<img src="${src}" alt="${alt}">`
 
@@ -20,7 +22,7 @@ export function dashboardMarkup() {
       <div class="dashboard-workspace">
         <header class="dashboard-utility"><a class="dashboard-brand" href="#rooms">${icon(brandHome)}<span>hamtry</span></a><hamtry-navbar class="provider-navbar" label="Түрээслүүлэгчийн үндсэн цэс"></hamtry-navbar><button class="dashboard-icon-button" type="button" data-notifications data-dashboard-scroll="dashboard-messages" aria-label="Мэдэгдэл">${icon(bellIcon)}<span class="dashboard-count" data-notification-count>0</span></button><button class="dashboard-profile" type="button" data-dashboard-profile>Миний орон зай</button></header>
         <div class="dashboard-home-panel" data-provider-section="home"><div class="dashboard-heading"><label class="dashboard-search">${icon(searchIcon)}<span class="sr-only">Зар, хүсэлт хайх</span><input type="search" placeholder="Зар, хүсэлт, хүн хайх…"></label><hamtry-button class="dashboard-add" data-dashboard-publish>${icon(plusIcon)}Шинэ зар нэмэх</hamtry-button></div>
-        <div class="dashboard-metrics" aria-label="Товч мэдээлэл"><article><strong>Идэвхтэй зар</strong><b data-listing-count>0</b><small data-listing-summary></small></article><article class="dashboard-metric-new-requests"><strong>Шинэ хүсэлт</strong><b data-request-count>0</b><small data-request-summary>Хүсэлт алга</small></article><article class="dashboard-views-metric"><strong>Зарын үзэлт</strong><b>—</b><small>Үзэлтийн мэдээлэл хараахан байхгүй.</small></article><article class="dashboard-metric-unread-messages"><strong>Уншаагүй мессеж</strong><b data-unread-count>0</b><small data-unread-summary>Мессеж алга</small></article></div>
+        <div class="dashboard-metrics" aria-label="Товч мэдээлэл"><article><strong>Идэвхтэй зар</strong><b data-listing-count>0</b><small data-listing-summary></small></article><article class="dashboard-metric-new-requests"><strong>Шинэ хүсэлт</strong><b data-request-count>0</b><small data-request-summary>Хүсэлт алга</small></article><article class="dashboard-views-metric"><strong>Зарын үзэлт</strong><b>—</b><small>Үзэлтийн мэдээлэл хараахан байхгүй.</small></article><article class="dashboard-metric-unread-messages"><strong>Чат</strong><b data-chat-count-summary>0</b><small><a href="#dashboard/chat">Харилцан яриа харах</a></small></article></div>
         <div class="dashboard-columns"><div class="dashboard-main-column">
           <section class="dashboard-panel dashboard-listings" id="dashboard-listings" aria-labelledby="dashboard-listings-title"><div class="dashboard-panel-heading"><h2 id="dashboard-listings-title">Миний зарууд</h2><button type="button" data-listings-all>Бүгдийг харах</button></div><div class="dashboard-filters" role="group" aria-label="Зарын төлөв"><hamtry-chip selected data-filter="all">Бүгд <span data-all-count>0</span></hamtry-chip><hamtry-chip data-filter="active">Идэвхтэй <span data-active-count>0</span></hamtry-chip><hamtry-chip data-filter="draft">Ноорог <span data-draft-count>0</span></hamtry-chip></div><p class="dashboard-map-hint">Газрын зураг дээрх тэмдэг дээр дарж зарыг харна.</p><hamtry-immersive-map class="dashboard-property-map" embedded aria-label="Миний заруудын газрын зураг"></hamtry-immersive-map><p class="dashboard-empty" hidden>Илэрц олдсонгүй.</p></section>
 
@@ -32,7 +34,7 @@ export function dashboardMarkup() {
         </div></div>
         </div>
         ${documentsMarkup()}
-        <section class="provider-chat" data-provider-section="chat" aria-label="Чат" hidden><h1 tabindex="-1">Чат</h1>${messagesMarkup()}</section>
+        ${chatMarkup()}
         <p class="dashboard-demo-note">Хүсэлт, мессеж, уулзалтын үйлчилгээ тун удахгүй.</p>
       </div>
     </div>
@@ -66,9 +68,10 @@ export function setupDashboard(root, { showPublish, toast, listen }) {
     { id: 'chat', label: 'Чат', icon: 'chat', href: '#dashboard/chat' },
   ]
   setupDocuments(dashboard, listen)
+  setupChat(root, listen)
   let month = new Date()
   let filter = 'all'
-  const refreshAttention = setupAttention(dashboard, listen)
+  const refreshAttention = setupAttention(dashboard)
   setupRequestDetails(root, { listen, onDecision: refreshAttention })
   setupMeetingSheet(dashboard, {
     listen,
@@ -128,6 +131,8 @@ export function updateDashboard(root, published, filter = root.querySelector('.d
   const dashboard = root.querySelector('.provider-dashboard')
   const section = root.state.route.get().section || 'home'
   for (const panel of dashboard.querySelectorAll('[data-provider-section]')) panel.hidden = panel.dataset.providerSection !== section
+  const chatKey = section === 'chat' ? root.state.user.get()?.id || 'guest' : null
+  if (dashboard.chatKey !== chatKey) { dashboard.chatKey = chatKey; if (chatKey) void dashboard.querySelector('.provider-chat').loadChat() }
   dashboard.querySelector('.provider-navbar').active = section
   const entries = published.map(item => ({ ...item, detail: item.district }))
   dashboard.querySelector('[data-listing-count]').textContent = String(entries.filter(item => item.status === 'published').length)

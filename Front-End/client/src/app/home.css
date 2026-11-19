@@ -436,6 +436,7 @@ hamtry-home .menu-button { display:grid; place-items:center; width:2.75rem; heig
 .detail-size-label { color:var(--home-quiet); font-size:.75rem; }
 .detail-facts .detail-size { font:600 1.05rem var(--font-sans); }
 .detail-owner .contact-concept { display:grid; place-items:center; flex:none; width:2.75rem; height:2.75rem; margin:0; border-radius:var(--ui-radius-control); color:var(--brand-primary); background:var(--surface-interactive); text-decoration:none; cursor:default; }
+.detail-owner button.contact-concept { border:0; cursor:pointer; }
 .contact-concept svg { width:1.3rem; height:1.3rem; }
 .detail-actions .detail-map { gap:var(--ui-space-2); }
 @media(max-width:48rem) { .detail-info h3 { padding-right:0; } .detail-content { padding:var(--ui-space-4); } .detail-collapse { top:1.5rem; right:1.5rem; } }

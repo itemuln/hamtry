@@ -33,6 +33,8 @@ a local-only secret if absent and is ignored by Git. Do not reuse it in producti
 - `POST /api/v1/listings/:id/publish`: publish only a complete gallery.
 - `DELETE /api/v1/listings/:id`: archive; public listing/photo access ends.
 - `GET /api/v1/media/:id`: public published photo, or authenticated owner draft.
+- `GET/POST /api/v1/chats`: list a user's conversations or open one for a published listing.
+- `GET/POST /api/v1/chats/:id/messages`: read or send messages as a participant.
 - `DELETE /api/v1/media/:id`: remove a draft photo and all variants.
 - `GET/PATCH /api/v1/me`, `GET /api/v1/me/listings`.
 - `GET /api/v1/saved`, `PUT/DELETE /api/v1/saved/:id`.
@@ -79,7 +81,7 @@ authentication, cross-owner denial, publication, R2 media, saved items and CSRF;
 its cleanup never runs against remote D1. Frontend checks remain in client.
 
 Email delivery, email verification/password-recovery messages, real-camera/server
-acceptance and authenticated document/chat features are not implemented here.
+acceptance and authenticated document features are not implemented here.
 Self-introduction posting remains upcoming in the UI, as requested; the backend
 listing model supports both listing types. Admin roles are set by trusted database
 administration only, not signup or profile edits. Local SQLite/PostgreSQL/Spring
