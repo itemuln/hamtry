@@ -128,17 +128,58 @@ export class HamtryHome extends HTMLElement {
       required('.account-mode', this).textContent = accountMode === 'register' ? 'Нэвтрэх рүү буцах' : 'Шинэ бүртгэл үүсгэх'
       accountFeedback.textContent = ''
     })
-    listen(accountForm, 'submit', async event => {
-      event.preventDefault(); if (accountBusy) return
-      accountBusy = true; required('.account-submit', this).disabled = true; accountFeedback.textContent = 'Хүлээнэ үү…'
-      const fields = new FormData(accountForm), body = { email: fields.get('email'), password: fields.get('password') }
-      if (accountMode === 'register') body.name = fields.get('name')
+    const authenticate = async (body, mode, demoRole) => {
+      if (accountBusy) return
+      accountBusy = true; required('.account-submit', this).disabled = true
+      accountFeedback.textContent = 'Хүлээнэ үү…'
       try {
-        await request(`/api/auth/${accountMode === 'register' ? 'sign-up' : 'sign-in'}/email`, { method: 'POST', body })
+        await request(`/api/auth/${mode === 'register' ? 'sign-up' : 'sign-in'}/email`, { method: 'POST', body })
+        if (demoRole) state.role.set(demoRole)
         await loadAccount(); accountForm.reset(); accountFeedback.textContent = ''; profile.close(); toast('Нэвтэрлээ.')
+        if (demoRole) location.hash = demoRole === 'provider' ? 'dashboard' : 'rooms'
       } catch (error) { accountFeedback.textContent = error.message }
       finally { accountBusy = false; required('.account-submit', this).disabled = false }
+    }
+    listen(accountForm, 'submit', event => {
+      event.preventDefault()
+      const fields = new FormData(accountForm), body = { email: fields.get('email'), password: fields.get('password') }
+      if (accountMode === 'register') body.name = fields.get('name')
+      void authenticate(body, accountMode)
     })
+    if (import.meta.env.DEV && ['localhost', '127.0.0.1'].includes(location.hostname)) {
+      void import('../../../dev/demo-accounts.js').then(({ demoGroups, DEMO_PASSWORD }) => {
+        if (!active) return
+        const picker = document.createElement('fieldset')
+        picker.className = 'account-demo-picker'
+        const legend = document.createElement('legend')
+        legend.textContent = 'Туршилтын бүртгэлээр нэвтрэх'
+        picker.append(legend)
+        for (const group of demoGroups) {
+          const section = document.createElement('div')
+          section.className = 'account-demo-group'
+          const label = document.createElement('strong')
+          label.textContent = group.label
+          section.append(label)
+          for (const [index, account] of group.accounts.entries()) {
+            const button = document.createElement('button')
+            button.type = 'button'
+            button.textContent = String(index + 1)
+            button.setAttribute('aria-label', account.name)
+            button.addEventListener('click', async () => {
+              if (accountBusy) return
+              picker.disabled = true
+              try {
+                await authenticate({ email: account.email, password: DEMO_PASSWORD }, 'login', group.role)
+              } finally { picker.disabled = false }
+            })
+            section.append(button)
+          }
+          picker.append(section)
+        }
+        accountForm.append(picker)
+        listen(required('.account-mode', this), 'click', () => { picker.hidden = accountMode !== 'login' })
+      })
+    }
     listen(required('.account-logout', this), 'click', async () => {
       try { await request('/api/auth/sign-out', { method: 'POST', body: {} }); state.user.set(null); state.saved.set([]); state.remoteSaved.set([]); state.published.set([]); state.persist(); profile.close(); toast('Гарлаа.') } catch (error) { toast(error.message) }
     })

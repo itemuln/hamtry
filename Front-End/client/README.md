@@ -134,3 +134,10 @@ modules are not enabled.
 Backend setup and API contract: [Back-End/api/README.md](../../Back-End/api/README.md).
 Install both package dependencies before building: `npm ci --prefix ../../Back-End/api` from this directory, then `npm ci`.
 `npm run dev` starts/reuses the local Hono Worker alongside the existing Python service and Vite. The local Worker uses `wrangler.local.jsonc`; production uses the existing `wrangler.jsonc`. Local secrets are generated in ignored `.dev.vars`. Use `npm run api:migrate` to initialize local D1, and `npm run api:test` for backend unit tests.
+
+### Local demo sign-in
+
+With the local API running, use `npm run api:seed:demo` to create or verify
+five seeker and five provider accounts in local D1. Open the profile dialog
+on localhost in Vite development mode and select an account below sign-in.
+Production builds exclude the picker and its test credentials.

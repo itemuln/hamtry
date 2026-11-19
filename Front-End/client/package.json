@@ -14,7 +14,8 @@
     "preview:cloudflare": "wrangler dev",
     "api:dev": "wrangler dev --config wrangler.local.jsonc --port 8787",
     "api:migrate": "wrangler d1 migrations apply hamtry-db-local --local --config wrangler.local.jsonc",
-    "api:test": "npm --prefix ../../Back-End/api test"
+    "api:test": "npm --prefix ../../Back-End/api test",
+    "api:seed:demo": "node dev/seed-demo-accounts.js"
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",
